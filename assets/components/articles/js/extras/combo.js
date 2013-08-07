@@ -8,7 +8,7 @@ Articles.combo.Tag = function(config, getStore) {
         ,fields: ['tag']
         ,mode: 'remote'
         ,allowAddNewData: true
-        ,addNewDataOnBlur : true
+        ,addNewDataOnBlur : false
         ,itemDelimiterKey: 188
         ,triggerAction: 'all'
         ,typeAheadDelay: 50
@@ -43,6 +43,11 @@ Articles.combo.Tag = function(config, getStore) {
             tag: v
         };
         bs.addNewItem(newObj);
+    });
+
+    this.on('removeitem', function(combo){
+        combo.lastQuery = '';
+        MODx.fireResourceFormChange();
     });
 
     this.on('blur', function(combo){
