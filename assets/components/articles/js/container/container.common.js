@@ -1598,7 +1598,20 @@ Ext.extend(Articles.panel.ContainerTemplateSettings,MODx.Panel,{
                 ,forId: 'articles-setting-tplArticleRow'
                 ,html: _('articles.setting.tplArticleRow_desc')
                 ,cls: 'desc-under'
-
+            },{
+                xtype: 'textfield'
+                ,name: 'setting_tplArticleRowOdd'
+                ,id: 'articles-setting-tplArticleRowOdd'
+                ,fieldLabel: _('articles.setting.tplArticleRowOdd')
+                ,description: MODx.expandHelp ? '' : _('articles.setting.tplArticleRowOdd_desc')
+                ,anchor: '100%'
+                ,value: config.record.setting_tplArticleRowOdd || ''
+                ,listeners: oc
+            },{
+                xtype: MODx.expandHelp ? 'label' : 'hidden'
+                ,forId: 'articles-setting-tplArticleRowOdd'
+                ,html: _('articles.setting.tplArticleRowOdd_desc')
+                ,cls: 'desc-under'
             }]
         }];
     }
