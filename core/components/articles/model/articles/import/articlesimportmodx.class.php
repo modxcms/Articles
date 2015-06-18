@@ -114,7 +114,7 @@ class ArticlesImportMODX extends ArticlesImport {
         $where['id:!='] = array((int)$this->modx->getOption('site_start',null,1));
 
         $where['isfolder'] = false;
-        $where['class_key:!='] = 'Article';
+        $where['class_key'] = 'Article';
         $c->where($where);
 
         if (!empty($this->config['modx-tagsField'])) {
