@@ -172,6 +172,7 @@ class ArticlesImportMODX extends ArticlesImport {
         $resource->set('cacheable',true);
         $resource->set('class_key','Article');
         $resource->set('parent',$this->container->get('id'));
+        $resource->set('context_key',$this->container->get('context_key'));
         $settings = $this->container->getProperties('articles');
         $resource->setProperties($settings,'articles');
 
