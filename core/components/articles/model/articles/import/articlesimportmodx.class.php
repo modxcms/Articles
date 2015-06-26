@@ -166,6 +166,18 @@ class ArticlesImportMODX extends ArticlesImport {
      * @return boolean
      */
     public function importResource(modResource $resource) {
+        if (!empty($this->config['modx-duplicate'])) {
+            $resource = $resource->duplicate(array(
+                'publishedMode' => 'unpublish',
+                'preserve_alias' => false,
+                'prefixDuplicate' => false
+            ));
+
+            if (!($resource instanceof modResource)) {
+                return false;
+            }
+        }
+
         $resource->set('searchable',true);
         $resource->set('richtext',true);
         $resource->set('isfolder',false);
