@@ -114,7 +114,7 @@ class ArticlesImportMODX extends ArticlesImport {
         $where['id:!='] = array((int)$this->modx->getOption('site_start',null,1));
 
         $where['isfolder'] = false;
-        $where['class_key:!='] = 'Article';
+        $where['class_key'] = 'Article';
         $c->where($where);
 
         if (!empty($this->config['modx-tagsField'])) {
@@ -166,12 +166,25 @@ class ArticlesImportMODX extends ArticlesImport {
      * @return boolean
      */
     public function importResource(modResource $resource) {
+        if (!empty($this->config['modx-duplicate'])) {
+            $resource = $resource->duplicate(array(
+                'publishedMode' => 'unpublish',
+                'preserve_alias' => false,
+                'prefixDuplicate' => false
+            ));
+
+            if (!($resource instanceof modResource)) {
+                return false;
+            }
+        }
+
         $resource->set('searchable',true);
         $resource->set('richtext',true);
         $resource->set('isfolder',false);
         $resource->set('cacheable',true);
         $resource->set('class_key','Article');
         $resource->set('parent',$this->container->get('id'));
+        $resource->set('context_key',$this->container->get('context_key'));
         $settings = $this->container->getProperties('articles');
         $resource->setProperties($settings,'articles');
 
