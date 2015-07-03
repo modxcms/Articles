@@ -131,7 +131,7 @@ $_lang['articles.template'] = 'Plantilla';
 $_lang['articles.template_desc'] = 'La Plantilla usada por la Página Principal de Listado.';
 $_lang['articles.tags'] = 'Tags';
 $_lang['articles.unpublished'] = 'No Publicado';
-$_lang['none'] = 'Ninguno';Ordernación
+$_lang['none'] = 'Ninguno';
 
 /* General */
 $_lang['articles.setting.updateServicesEnabled'] = 'Activar Servicios de Actualización';
@@ -153,7 +153,7 @@ $_lang['articles.setting.processTVsList_desc'] = 'Una lista opcional con los nom
 $_lang['articles.setting.otherGetArchives'] = 'Otros parámetros de Listado';
 $_lang['articles.setting.otherGetArchives_desc'] = 'Cualquier otras propiedades que le gustaría añadir a la llamada getResources/getPage en la Página de Listado de Artículos. Póngalos con la sintaxis de etiquetas MODX, como si estuviera añadiendo un tag a un snippet (eje., &property=`value`).';
 $_lang['articles.setting.articleUriTemplate'] = 'Formato de la URL de los Artículos';
-$_lang['articles.setting.articleUriTemplate_desc'] = '% Y = año, 4 dígitos,% m = mes (con ceros a la izquierda),% d = día (con ceros a la izquierda), alias% = El Alias de Artículo, id = La ID del Artículo, ext% = Extensión de archivo (por ejemplo, html) . <b> Nota: </ b>: Los cambios en esta configuración sólo afectan a los * nuevos * Artículos, a menos que cambie el alias o des-publiqué y luego vuelva a publicar Artículos antiguos, entonces se regenerará su URL al nuevo formato.';
+$_lang['articles.setting.articleUriTemplate_desc'] = '%Y = año, 4 dígitos,%m = mes (con ceros a la izquierda), %d = día (con ceros a la izquierda), %alias = El Alias de Artículo, %id = La ID del Artículo, %ext = Extensión de archivo (por ejemplo, html) . <b>Nota:</b> Los cambios en esta configuración sólo afectan a los *nuevos* artículos, a menos que cambie el alias o des-publiqué y luego vuelva a publicar artículos antiguos, entonces se regenerará su URL al nuevo formato.';
 
 /* template / archives settings */
 $_lang['articles.setting.articleTemplate'] = 'Plantilla de Artículos';
@@ -164,18 +164,18 @@ $_lang['articles.setting.tplarticleRowOdd'] = '"Chuck" para las filas impares de
 $_lang['articles.setting.tplarticleRowOdd_desc'] = 'Igual que el "Chuck para las filas de Artículos pero estos son aplicados a las filas impares.';
 $_lang['articles.setting.archiveByMonth'] = '"Archive" por Mes';
 $_lang['articles.setting.archiveByMonth_desc'] = 'Mostrará "Archive" por mes ó por años, Si es "Si" seran archivos por meses.';
-$_lang['articles.setting.tplArchiveMonth'] = '"Chuck" para Listado de "Archive"';
-$_lang['articles.setting.tplArchiveMonth_desc'] = 'El "Chuck" usado por cada fila de mes/año que es listado de "Archive" ';
-$_lang['articles.setting.archiveListingsLimit'] = 'Número de elementos a Mostrar en "Archive"';
-$_lang['articles.setting.archiveListingsLimit_desc'] = 'El número meses/años a mostrar en "Archive".';
-$_lang['articles.setting.archiveCls'] = 'La Clase CSS de "Archive"';
+$_lang['articles.setting.tplArchiveMonth'] = '"Chuck" para Listado de Archivos';
+$_lang['articles.setting.tplArchiveMonth_desc'] = 'El "Chuck" usado por cada fila de mes/año que es listado de Archivos';
+$_lang['articles.setting.archiveListingsLimit'] = 'Número de elementos a Mostrar en Archivos';
+$_lang['articles.setting.archiveListingsLimit_desc'] = 'El número meses/años a mostrar en Archivos.';
+$_lang['articles.setting.archiveCls'] = 'La Clase CSS de Archivos';
 $_lang['articles.setting.archiveCls_desc'] = 'Una clase CSS a aplicar por cada archivo listado.';
-$_lang['articles.setting.archiveAltCls'] = 'Clase Altenativa para "Archive"';
+$_lang['articles.setting.archiveAltCls'] = 'Clase Altenativa para Archivos';
 $_lang['articles.setting.archiveAltCls_desc'] = 'Una clase CSS a aplicar por cada fila alternativa en el listado de archivos.';
 $_lang['articles.setting.archiveGroupByYear'] = 'Agrupar por Años';
-$_lang['articles.setting.archiveGroupByYear_desc'] = 'Si se define a 1, el resultado del grupo de archivos por años sera una lista anidada, Si se define a 1, se ignorará la configuración de "Archive por Mes".';
+$_lang['articles.setting.archiveGroupByYear_desc'] = 'Si se define a 1, el resultado del grupo de archivos por años sera una lista anidada, Si se define a 1, se ignorará la configuración de Archivos por Mes".';
 $_lang['articles.setting.archiveGroupByYearTpl'] = '"Chuck" para Agrupar por Años';
-$_lang['articles.setting.archiveGroupByYearTpl_desc'] = 'Si "Agrupar por Años" se define a 1, Será el "Chuck" contenedor de la lista agrupa de "Archive".';
+$_lang['articles.setting.archiveGroupByYearTpl_desc'] = 'Si "Agrupar por Años" se define a 1, Será el "Chuck" contenedor de la lista agrupa de Archivos.';
 
 /* Pagination */
 $_lang['articles.setting.articlesPerPage'] = 'Artículos por página';
