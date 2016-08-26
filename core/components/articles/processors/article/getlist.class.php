@@ -186,10 +186,9 @@ class ArticleGetListProcessor extends modObjectGetListProcessor {
         $resourceArray = parent::prepareRow($object);
 
         if (!empty($resourceArray['publishedon'])) {
-        	$publishedon = strtotime($resourceArray['publishedon']);
-            $resourceArray['publishedon_date'] = strftime($this->modx->getOption('articles.mgr_date_format',null,'%b %d'),$publishedon);
-            $resourceArray['publishedon_time'] = strftime($this->modx->getOption('articles.mgr_time_format',null,'%H:%I %p'),$publishedon);
-            $resourceArray['publishedon'] = strftime('%b %d, %Y %H:%I %p',$publishedon);
+            $resourceArray['publishedon_date'] = date($this->modx->getOption('articles.mgr_date_format',null,"M d"),$resourceArray['publishedon']);
+            $resourceArray['publishedon_time'] = date($this->modx->getOption('articles.mgr_time_format',null,"H:i:s"),$resourceArray['publishedon']);
+            $resourceArray['publishedon'] = date("Y-m-d H:i:s",$resourceArray['publishedon']);
         }
         $resourceArray['action_edit'] = '?a='.$this->editAction.'&action=post/update&id='.$resourceArray['id'];
         if (!array_key_exists('comments',$resourceArray)) $resourceArray['comments'] = 0;

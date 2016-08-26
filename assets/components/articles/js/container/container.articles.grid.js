@@ -398,16 +398,16 @@ Ext.extend(Articles.grid.ContainerArticles,MODx.grid.Grid,{
             }
         });
     }
+    ,handleButtons: function(e){
+        var t = e.getTarget();
+        var elm = t.className.split(' ')[0];
 
-
-	,handleButtons: function(e){
-		var t = e.getTarget();
-		var elm = t.className.split(' ')[0];
-		if(elm == 'controlBtn') {
-			var action = t.className.split(' ')[1];
-			var record = this.getSelectionModel().getSelected();
+        if(elm == 'controlBtn') {
+            var action = t.className.split(' ')[1];
+            var record = this.getSelectionModel().getSelected();
             this.menu.record = record;
-			switch (action) {
+
+            switch (action) {
                 case 'delete':
                     this.deleteArticle();
                     break;
@@ -415,22 +415,22 @@ Ext.extend(Articles.grid.ContainerArticles,MODx.grid.Grid,{
                     this.undeleteArticle();
                     break;
                 case 'edit':
-					this.editArticle();
+                    this.editArticle();
                     break;
-				case 'publish':
-					this.publishArticle();
-					break;
-				case 'unpublish':
-					this.unpublishArticle();
-					break;
-				case 'view':
-					this.viewArticle();
-					break;
-				default:
-					window.location = record.data.edit_action;
-					break;
+                case 'publish':
+                    this.publishArticle();
+                    break;
+                case 'unpublish':
+                    this.unpublishArticle();
+                    break;
+                case 'view':
+                    this.viewArticle();
+                    break;
+                default:
+                    window.location = record.data.edit_action;
+                    break;
             }
-		}
-	}
+        }
+    }
 });
 Ext.reg('articles-grid-container-articles',Articles.grid.ContainerArticles);
