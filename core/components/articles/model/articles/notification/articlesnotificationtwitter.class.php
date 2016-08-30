@@ -20,7 +20,9 @@
  * @package articles
  */
 require_once (dirname(__FILE__).'/articlesnotification.class.php');
-require_once (dirname(__FILE__).'/lib.twitteroauth.php');
+require_once (dirname(__FILE__).'/autoloadTOA.php');
+
+use Abraham\TwitterOAuth\TwitterOAuth;
 /**
  * Posts titles, URLs and tags for new Articles to Twitter
  * @package articles
@@ -45,8 +47,8 @@ class ArticlesNotificationTwitter extends ArticlesNotification {
         if (!$container) return false;
 
         $keys = $container->getTwitterKeys();
-        $accessToken = $container->decrypt($this->config['notifyTwitterAccessToken']);
-        $accessTokenSecret = $container->decrypt($this->config['notifyTwitterAccessTokenSecret']);
+        $accessToken = $container->decrypt($this->config['notifyTwitterAccessToken_'.$container->get('alias')]);
+        $accessTokenSecret = $container->decrypt($this->config['notifyTwitterAccessTokenSecret_'.$container->get('alias')]);
         $connection = new TwitterOAuth($keys['consumer_key'],$keys['consumer_key_secret'],$accessToken,$accessTokenSecret);
         $output = $connection->post('statuses/update', array('status' => $message));
         return $output;

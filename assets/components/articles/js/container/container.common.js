@@ -1,6 +1,3 @@
-
-
-
 Articles.panel.ContainerAdvancedSettings = function(config) {
     config = config || {};
     var oc = {
@@ -738,6 +735,13 @@ Articles.panel.ContainerAdvancedSettings = function(config) {
                 msgTarget: 'under'
             }
             ,items: [{
+                xtype: 'button'
+                ,name: 'setting_notifyTwitterRegisterBtn'
+                ,id: 'articles-setting-notifyTwitterRegisterBtn'
+                ,fieldLabel: _('articles.setting.notifyTwitterRegisterBtn')
+                ,anchor: '100%'
+                ,handler: this.regTwitter   
+            },{
                 xtype: 'combo-boolean'
                 ,name: 'setting_notifyTwitter'
                 ,hiddenName: 'setting_notifyTwitter'
@@ -756,7 +760,6 @@ Articles.panel.ContainerAdvancedSettings = function(config) {
                     authUrl: Articles.assets_url+'twitter.auth.php?container='+MODx.request.id
                 })
                 ,cls: 'desc-under'
-
             },{
                 xtype: 'text-password'
                 ,name: 'setting_notifyTwitterConsumerKey'
@@ -1513,7 +1516,25 @@ Articles.panel.ContainerAdvancedSettings = function(config) {
     Articles.panel.ContainerAdvancedSettings.superclass.constructor.call(this,config);
 };
 Ext.extend(Articles.panel.ContainerAdvancedSettings,MODx.VerticalTabs,{
-
+    regTwitter: function(btn,e) {
+        var r = {
+            'id': MODx.request.id
+            ,'service': 'MODX'
+        };
+        if (!this.windows.RegTwitter) {
+            this.windows.RegTwitter = MODx.load({
+                xtype: 'articles-window-twitter'
+                ,record: r
+                ,listeners: {
+                    'success': {fn:function(r) {
+                        this.refresh();
+                    },scope:this}
+                }
+            });
+        }
+        this.windows.RegTwitter.setValues(r);
+        this.windows.RegTwitter.show(e.target);
+    }
 });
 Ext.reg('articles-tab-advanced-settings',Articles.panel.ContainerAdvancedSettings);
 

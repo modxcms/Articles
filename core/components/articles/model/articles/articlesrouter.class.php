@@ -43,7 +43,7 @@ class ArticlesRouter {
 
         /* handle redirects */
         $search = $_SERVER['REQUEST_URI'];
-        $base_url = $this->modx->getOption('base_url');
+        $base_url = $this->modx->getOption('base_url',null,MODX_BASE_URL);
         if ($base_url != '/') {
             $search = str_replace($base_url,'',$search);
         }
