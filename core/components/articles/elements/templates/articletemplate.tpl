@@ -38,7 +38,7 @@
 <div id="main" class="grid_12">
     <h2 class="title"><a href="[[~[[*id]]]]">[[*pagetitle]]</a></h2>
     <p class="post-info">
-        <span class="left">Posted on [[*publishedon:strtotime:date=`%b %d, %Y`]] by <a href="[[~[[*parent]]]]author/[[*publishedby:userinfo=`username`]]">[[*publishedby:userinfo=`username`]]</a></span>
+     <span class="left">Posted on [[*publishedon:strtotime:date=`%b %d, %Y`]] by <a href="[[~[[*parent]]]]author/[[*createdby:userinfo=`username`]]">[[*createdby:userinfo=`username`]]</a></span>
 [[*articlestags:notempty=`
         <span class="tags left">&nbsp;| Tags: [[+article_tags]]</span>
 `]]
