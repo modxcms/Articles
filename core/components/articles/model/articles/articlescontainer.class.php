@@ -267,12 +267,12 @@ class ArticlesContainer extends modResource {
         $isRss = false;
         $settings = $this->getContainerSettings();
         $feedAppendage = $this->xpdo->getOption('rssAlias',$settings,'feed.rss,rss');
-        if(is_array($feedAppendage)){$feedAppendage = explode(',',$feedAppendage);}
-        
-        $fullUri = $this->xpdo->getOption('base_url',null,MODX_BASE_URL).$this->get('uri');
-        
-        $requestUri = ($this->xpdo->getOption('friendly_urls', null, false)) ? $_SERVER['REQUEST_URI'] : strstr($_SERVER['REQUEST_URI'],'?');
-        if (strcasecmp($requestUri,$fullUri) == 0) {
+        $feedAppendage = explode(',',$feedAppendage);
+        $fullUri = $this->xpdo->context->getOption('base_url',null,MODX_BASE_URL).$this->get('uri');
+
+        $hasQuery = strpos($_SERVER['REQUEST_URI'],'?');
+        $requestUri = !empty($hasQuery) ? substr($_SERVER['REQUEST_URI'],0,$hasQuery) : $_SERVER['REQUEST_URI'];
+        if (strpos($requestUri,$fullUri) === 0 && strlen($fullUri) != strlen($requestUri)) {
             $appendage = rtrim(str_replace($fullUri,'',$requestUri),'/');
             if (in_array($appendage,$feedAppendage)) {
                 $isRss = true;

@@ -88,15 +88,15 @@
             ,"area": "site"
             ,"value": "H:i:s"
         },{
-            "key": "notifyTwitterConsumerKey"
+            "key": "container_ids"
             ,"type": "textfield"
-            ,"area": "site"
-            ,"value": "lqTxfNnXdujbguuosYnhmsvXy6fL6Q=="
+            ,"area": "furls"
+            ,"value": ""
         },{
-            "key": "notifyTwitterConsumerKeySecret"
+            "key": "container_ids"
             ,"type": "textfield"
-            ,"area": "site"
-            ,"value": "nczipN69mNvdau7s1offYpnM35Gi15yU4pfqu3TW4arr2ZfMprl1sZ7M"
+            ,"area": "furls"
+            ,"value": ""
         }]
     }
     ,"extensionPackage": {}
