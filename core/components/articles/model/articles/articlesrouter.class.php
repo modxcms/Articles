@@ -80,7 +80,7 @@ class ArticlesRouter {
 
         /* tag handling! */
         if ($params[0] == 'tags') {
-            $_REQUEST[$prefix.'author'] = $_GET['tag'] = urldecode($params[1]);
+            $_REQUEST[$prefix.'tag'] = $_GET['tag'] = urldecode($params[1]);
         /* author based */
         } else if ($params[0] == 'user' || $params[0] == 'author') {
             $_REQUEST[$prefix.'author'] = $_GET[$prefix.'author'] = urldecode($params[1]);
