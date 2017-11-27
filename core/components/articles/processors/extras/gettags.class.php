@@ -18,7 +18,7 @@ class ArticleExtrasGetTagsProcessor extends modObjectGetListProcessor {
             return false;
         }
 
-        $articleIDs = $this->modx->getChildIds($parent->id,6,array('context' => 'web'));
+        $articleIDs = $this->modx->getChildIds($parent->id,6,array('context' => $parent->get('context_key')));
 
         $templateVariable = $this->modx->getObject('modTemplateVar', array('name' => 'articlestags'));
         if(!$templateVariable){
