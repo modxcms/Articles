@@ -150,13 +150,14 @@ class ArticlesImportWordPress extends ArticlesImport {
      * @return Article|boolean
      */
     public function createArticle(SimpleXMLElement $item) {
-        $postType = (string)$this->getXPath($item,'wp:post_type');
+        $wp = $item->children('wp',true);
+        $postType = (string)$wp->post_type;
         if ($postType != 'post') return false;
 
         $settings = $this->container->getContainerSettings();
         $creator = $this->matchCreator((string)$item->xpath('dc:creator'.'/text()'),1);
         /** @var SimpleXMLElement $wp */
-        $wp = $item->children('wp',true);
+        
         $pubDate =  strtotime((string)$item->pubDate);
         if (empty($pubDate)) {
             $pubDate = strtotime((string)$wp->post_date);
@@ -197,9 +198,9 @@ class ArticlesImportWordPress extends ArticlesImport {
         $string = (string)$string;
         $string = html_entity_decode((string)$string,ENT_COMPAT);
         $string = str_replace(array(
-            'Ò',
-            'Ó',
-            'É',
+            'Ã’',
+            'Ã“',
+            'Ã‰',
             '[[',
             ']]',
         ),array(
