@@ -1,5 +1,9 @@
 Changelog for Articles.
 
+Articles 1.7.13
+===============================
+- Fix the tag filtering with integer values [#137]
+
 Articles 1.7.12
 ===============================
 - Fixes an issue where the Articles RSS URL would return the error page
