@@ -229,7 +229,6 @@ class ArticlesContainer extends modResource {
     public function process() {
         if ($this->isRss()) {
             $this->set('template',0);
-            $this->set('contentType','application/rss+xml');
             /** @var modContentType $contentType */
             $contentType = $this->xpdo->getObject('modContentType',array('mime_type' => 'application/rss+xml'));
             if ($contentType) {
