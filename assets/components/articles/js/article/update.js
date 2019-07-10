@@ -460,7 +460,9 @@ Ext.extend(Articles.panel.Article,MODx.panel.Resource,{
                         MODx.fireResourceFormChange();
                     }
                     ,additem: function(){
-                        MODx.fireResourceFormChange();
+                        if (this.isDirty()) {
+                            MODx.fireResourceFormChange();
+                        }
                     }
                     ,select: function(){
                         MODx.fireResourceFormChange();
