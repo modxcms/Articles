@@ -68,9 +68,10 @@ Ext.extend(Articles.extra.Tags,Ext.form.ComboBox,{
     }
 
     ,isDirty : function() {
-        if(this.disabled || !this.rendered) {
+        if(this.disabled || !this.rendered || typeof this.getFieldValue() === 'undefined') {
             return false;
         }
+
         return String(this.getFieldValue()) !== String(this.originalValue);
     }
 
