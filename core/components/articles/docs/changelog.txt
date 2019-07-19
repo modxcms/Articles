@@ -3,11 +3,11 @@ Changelog for Articles.
 Articles 1.7.13
 ===============================
 - Fix the tag filtering with integer values [#137]
+- Warn users about unsaved changes only if there are actual unsaved changes [issue #53]
 
 Articles 1.7.12
 ===============================
 - Fixes an issue where the Articles RSS URL would return the error page
-- Warn users about unsaved changes only if there are actual unsaved changes
 - Adds the possibility to set the summary (introtext) for the Articles container [#142]
 - Fixes a bug where the setting `Group By Year Chunk` had no effect [#122]
 - Update French translations [#121]
