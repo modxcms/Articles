@@ -17,7 +17,7 @@ Articles.page.UpdateContainer = function(config) {
 Ext.extend(Articles.page.UpdateContainer,MODx.page.UpdateResource,{
     cancel: function(btn,e) {
         var fp = Ext.getCmp(this.config.formpanel);
-        if (fp && fp.warnUnsavedChanges) {
+        if (fp && fp.isDirty()) {
             Ext.Msg.confirm(_('warning'),_('resource_cancel_dirty_confirm'),function(e) {
                 if (e == 'yes') {
                     fp.warnUnsavedChanges = false;
