@@ -355,6 +355,7 @@ class ArticlesContainer extends modResource {
           &sortby=`'.$this->xpdo->getOption('sortBy',$settings,'publishedon').'`
           &sortdir=`'.$this->xpdo->getOption('sortDir',$settings,'DESC').'`
           &tpl=`'.$this->xpdo->getOption('tplArticleRow',$settings,'sample.ArticleRowTpl').'`
+          &tplOdd=`'.$this->xpdo->getOption('tplArticleRowOdd',$settings,0).'`
 
           &limit=`'.$this->xpdo->getOption('articlesPerPage',$settings,10).'`
           &pageLimit=`'.$this->xpdo->getOption('pageLimit',$settings,5).'`

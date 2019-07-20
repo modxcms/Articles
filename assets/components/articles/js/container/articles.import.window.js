@@ -177,6 +177,20 @@ Articles.panel.ImportOptionsMODX = function(config) {
                     ,forId: this.ident+'-modx-tagsField'
                     ,html: _('articles.import_modx_tagsField_desc')
                     ,cls: 'desc-under'
+                },{
+                    xtype: 'checkbox'
+                    ,boxLabel: _('articles.import_modx_duplicate')
+                    ,description: MODx.expandHelp ? '' : _('articles.import_modx_duplicate_desc')
+                    ,name: 'modx-duplicate'
+                    ,id: this.ident+'-modx-duplicate'
+                    ,inputValue: 1
+                    ,checked: false
+                    ,anchor: '100%'
+                },{
+                    xtype: MODx.expandHelp ? 'label' : 'hidden'
+                    ,forId: this.ident+'-modx-duplicate'
+                    ,html: _('articles.import_modx_duplicate_desc')
+                    ,cls: 'desc-under'
                 }]
             },{
                 columnWidth: .5
