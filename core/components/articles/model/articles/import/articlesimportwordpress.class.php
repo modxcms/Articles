@@ -60,15 +60,15 @@ class ArticlesImportWordPress extends ArticlesImport {
                 $this->addError('wp-file-server',$this->modx->lexicon('articles.import_wp_file_err_nf'));
                 return false;
             }
-            $file = str_replace(array(
+            $file = str_replace([
                 '{core_path}',
                 '{base_path}',
                 '{assets_path}',
-            ),array(
+            ], [
                 $this->modx->getOption('core_path',null,MODX_CORE_PATH),
                 $this->modx->getOption('base_path',null,MODX_BASE_PATH),
                 $this->modx->getOption('assets_path',null,MODX_ASSETS_PATH),
-            ),$file);
+            ],$file);
             if (!file_exists($file)) {
                 $this->addError('wp-file-server',$this->modx->lexicon('articles.import_wp_file_err_nf'));
                 return false;
@@ -87,15 +87,15 @@ class ArticlesImportWordPress extends ArticlesImport {
         /** Fix improper <pre> placements */
         $contents = str_replace('</pre>]]>','</pre> ]]>',$contents);
         /** Fix stupid WordPress bug with ]] tags and ~ inside content. Escape your stuff next time, WordPress. GG kthxbai. */
-        $contents = preg_replace_callback('#\[\[\+(.*?)\]\]#si',array('ArticlesImportWordPress','parseMODXPlaceholders'),$contents);
-        $contents = preg_replace_callback('#\[\[\~(.*?)\]\]#si',array('ArticlesImportWordPress','parseMODXLinks'),$contents);
-        $contents = preg_replace_callback("#<!\[CDATA\[(.*?)\]\]>#si",array('ArticlesImportWordPress','parseCData'),$contents);
+        $contents = preg_replace_callback('#\[\[\+(.*?)\]\]#si', ['ArticlesImportWordPress','parseMODXPlaceholders'],$contents);
+        $contents = preg_replace_callback('#\[\[\~(.*?)\]\]#si', ['ArticlesImportWordPress','parseMODXLinks'],$contents);
+        $contents = preg_replace_callback("#<!\[CDATA\[(.*?)\]\]>#si", ['ArticlesImportWordPress','parseCData'],$contents);
         /* get rid of all the WP-specific special characters */
-        $contents = str_replace(array(
+        $contents = str_replace([
             "\xe2\x80\x98", "\xe2\x80\x99", "\xe2\x80\x9c", "\xe2\x80\x9d", "\xe2\x80\x93", "\xe2\x80\x94", "\xe2\x80\xa6"
-        ),array(
+        ], [
             "'", "'", '"', '"', '-', '--', '&#189;'
-        ),$contents);
+        ],$contents);
         $xml = simplexml_load_string($contents,'ArticlesWordPressWxr');
         return $xml;
     }
@@ -109,19 +109,19 @@ class ArticlesImportWordPress extends ArticlesImport {
     public static function parseCData($matches) {
         $contents = $matches[0];
         if (!empty($matches[1])) {
-            $contents = str_replace(array(
+            $contents = str_replace([
                 '[',
                 ']',
                 '~',
                 '>',
                 '<',
-            ),array(
+            ], [
                 '&#91;',
                 '&#93;',
                 '&#182;',
                 '&gt;',
                 '&lt;',
-            ),$matches[1]);
+            ],$matches[1]);
             $contents = '<![CDATA['.$contents.']]>';
         }
         return $contents;
@@ -137,9 +137,9 @@ class ArticlesImportWordPress extends ArticlesImport {
         } else {
             /* @TODO Finish ability to import into new blog. */
             $this->container = $this->modx->newObject('ArticlesContainer');
-            $this->container->fromArray(array(
+            $this->container->fromArray([
                 'parent' => $this->modx->getOption('parent',$this->config,0),
-            ));
+            ]);
         }
         return $this->container;
     }
@@ -164,7 +164,7 @@ class ArticlesImportWordPress extends ArticlesImport {
 
         /** @var Article $article */
         $article = $this->modx->newObject('Article');
-        $article->fromArray(array(
+        $article->fromArray([
             'parent' => $this->container->get('id'),
             'pagetitle' => $this->parseContent((string)$item->title),
             'description' => $this->parseContent((string)$item->description),
@@ -180,7 +180,7 @@ class ArticlesImportWordPress extends ArticlesImport {
             'show_in_tree' => false,
             'class_key' => 'Article',
             'context_key' => $this->container->get('context_key'),
-        ));
+        ]);
         $article->setArchiveUri();
         $article->setProperties($settings,'articles');
 
@@ -196,19 +196,19 @@ class ArticlesImportWordPress extends ArticlesImport {
     public function parseContent($string) {
         $string = (string)$string;
         $string = html_entity_decode((string)$string,ENT_COMPAT);
-        $string = str_replace(array(
-            'Ò',
-            'Ó',
-            'É',
+        $string = str_replace([
+            'ï¿½',
+            'ï¿½',
+            'ï¿½',
             '[[',
             ']]',
-        ),array(
+        ], [
             '&#147;',
             '&#148;',
             '&#189;',
             '&#91;&#91;',
             '&#93;&#93;',
-        ),$string);
+        ],$string);
         return $string;
     }
 
@@ -247,7 +247,7 @@ class ArticlesImportWordPress extends ArticlesImport {
      */
     public function matchCreator($username,$default = 0) {
         /** @var modUser $user */
-        $user = $this->modx->getObject('modUser',array('username' => $username));
+        $user = $this->modx->getObject('modUser', ['username' => $username]);
         if ($user) {
             return $user->get('id');
         }
@@ -268,14 +268,14 @@ class ArticlesImportWordPress extends ArticlesImport {
 
         /** @var quipThread $thread */
         $thread = $this->modx->newObject('quipThread');
-        $thread->fromArray(array(
+        $thread->fromArray([
             'createdon' => $article->get('publishedon'),
             'moderated' => $this->modx->getOption('commentsModerated',$settings,1),
             'moderator_group' => $this->modx->getOption('commentsModeratorGroup',$settings,'Administrator'),
             'moderators' => $this->modx->getOption('commentsModerators',$settings,''),
             'resource' => $article->get('id'),
             'idprefix' => 'qcom',
-        ));
+        ]);
         $thread->set('name',$threadKey);
         if (!$this->debug) {
             $thread->save();
@@ -284,7 +284,7 @@ class ArticlesImportWordPress extends ArticlesImport {
         /** @var SimpleXMLElement $wp */
         $wp = $item->children('wp',true);
 
-        $idMap = array();
+        $idMap = [];
         /** @var SimpleXMLElement $commentXml */
         foreach ($wp->comment as $commentXml) {
             $commentId = (int)$this->getXPath($commentXml,'wp:comment_id');
@@ -295,7 +295,7 @@ class ArticlesImportWordPress extends ArticlesImport {
 
             /** @var quipComment $comment */
             $comment = $this->modx->newObject('quipComment');
-            $comment->fromArray(array(
+            $comment->fromArray([
                 'thread' => $threadKey,
                 'parent' => array_key_exists($commentParent,$idMap) ? $idMap[$commentParent] : 0,
                 'author' => $this->matchCreator((string)$commentWp->comment_author),
@@ -308,7 +308,7 @@ class ArticlesImportWordPress extends ArticlesImport {
                 'ip' => (string)$commentWp->comment_author_IP,
                 'resource' => $article->get('id'),
                 'idprefix' => 'qcom',
-            ),'',true);
+            ],'',true);
 
             if (!$this->debug) {
                 $comment->save();
@@ -327,7 +327,7 @@ class ArticlesImportWordPress extends ArticlesImport {
      * @return array
      */
     public function importTags(Article $article,SimpleXMLElement $item) {
-        $tags = array();
+        $tags = [];
         if (empty($item->category)) return;
 
         foreach ($item->category as $category) {

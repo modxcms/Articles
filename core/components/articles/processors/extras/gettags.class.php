@@ -18,26 +18,26 @@ class ArticleExtrasGetTagsProcessor extends modObjectGetListProcessor {
             return false;
         }
 
-        $articles = $parent->getMany('Children',array('deleted' => 0));
-        $articleIDs = array();
+        $articles = $parent->getMany('Children', ['deleted' => 0]);
+        $articleIDs = [];
         foreach($articles as $article){
             $articleIDs[] = $article->id;
         }
 
-        $templateVariable = $this->modx->getObject('modTemplateVar', array('name' => 'articlestags'));
+        $templateVariable = $this->modx->getObject('modTemplateVar', ['name' => 'articlestags']);
         if(!$templateVariable){
             return false;
         }
 
         $c = $this->modx->newQuery('modTemplateVarResource');
 
-        $c->where(array(
+        $c->where([
                        'tmplvarid' => $templateVariable->id,
                        'contentid:IN' => $articleIDs
-                  ));
+        ]);
 
         $tagsObject = $this->modx->getCollection('modTemplateVarResource', $c);
-        $tags = array();
+        $tags = [];
 
         foreach($tagsObject as $tagObject){
             $addTags = explode(',',$tagObject->value);
@@ -49,9 +49,9 @@ class ArticleExtrasGetTagsProcessor extends modObjectGetListProcessor {
 
         $tags = ArticlesService::arrayUnique($tags);
         sort($tags);
-        $returnArray = array();
+        $returnArray = [];
         foreach($tags as $tag){
-            $returnArray[] = array($tag);
+            $returnArray[] = [$tag];
         }
 
         return $this->success('', $returnArray);

@@ -37,12 +37,12 @@ define('PKG_NAME_LOWER',strtolower(PKG_NAME));
 
 /* define sources */
 $root = dirname(dirname(__FILE__)).'/';
-$sources = array(
+$sources = [
     'root' => $root,
     'core' => $root.'core/components/'.PKG_NAME_LOWER.'/',
     'model' => $root.'core/components/'.PKG_NAME_LOWER.'/model/',
     'assets' => $root.'assets/components/'.PKG_NAME_LOWER.'/',
-);
+];
 
 /* load modx and configs */
 require_once dirname(__FILE__) . '/build.config.php';

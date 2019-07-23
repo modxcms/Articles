@@ -25,15 +25,15 @@
  * @package articles
  * @subpackage build
  */
-$tvs = array();
+$tvs = [];
 
 $tvs[1]= $modx->newObject('modTemplateVar');
-$tvs[1]->fromArray(array(
+$tvs[1]->fromArray([
     'id' => 1,
     'name' => 'articlestags',
     'description' => 'The default tags TV for Articles. Do not delete!',
     'caption' => 'articlestags',
     'type' => 'hidden',
-));
+]);
 
 return $tvs;

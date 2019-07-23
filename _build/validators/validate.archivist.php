@@ -44,10 +44,10 @@ if ($transport && $transport->xpdo) {
             $newer = true;
             $modx->addPackage('modx.transport',$modx->getOption('core_path').'model/');
             $c = $modx->newQuery('transport.modTransportPackage');
-            $c->where(array(
+            $c->where([
                 'package_name' => $name,
                 'version_major:>=' => $newVersionMajor,
-            ));
+            ]);
             $packages = $modx->getCollection('transport.modTransportPackage',$c);
             /** @var modTransportPackage $package */
             foreach ($packages as $package) {

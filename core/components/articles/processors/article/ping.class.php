@@ -3,7 +3,7 @@
 class ArticlePingProcessor extends modObjectProcessor {
     public $classKey = 'Article';
     public $objectType = 'article';
-    public $languageTopics = array('resource','articles:default');
+    public $languageTopics = ['resource','articles:default'];
     /** @var Article $object */
     public $object;
 

@@ -48,14 +48,14 @@ class ArticlesService {
      * @param modX $modx A reference to the modX object
      * @param array $config A configuration array
      */
-    function __construct(modX &$modx,array $config = array()) {
+    function __construct(modX &$modx,array $config = []) {
         $this->modx =& $modx;
 
         $corePath = $this->modx->getOption('articles.core_path',$config,$this->modx->getOption('core_path').'components/articles/');
         $assetsUrl = $this->modx->getOption('articles.assets_url',$config,$this->modx->getOption('assets_url').'components/articles/');
         $connectorUrl = $assetsUrl.'connector.php';
 
-        $this->config = array_merge(array(
+        $this->config = array_merge([
             'assetsUrl' => $assetsUrl,
             'cssUrl' => $assetsUrl.'css/',
             'jsUrl' => $assetsUrl.'js/',
@@ -71,7 +71,7 @@ class ArticlesService {
             'chunksPath' => $corePath.'elements/chunks/',
             'chunkSuffix' => '.chunk.tpl',
             'processorsPath' => $corePath.'processors/',
-        ),$config);
+        ],$config);
         $this->modx->lexicon->load('articles:default');
     }
 
@@ -84,10 +84,10 @@ class ArticlesService {
      * @param array $properties The properties for the Chunk
      * @return string The processed content of the Chunk
      */
-    public function getChunk($name,array $properties = array()) {
+    public function getChunk($name,array $properties = []) {
         $chunk = null;
         if (!isset($this->chunks[$name])) {
-            $chunk = $this->modx->getObject('modChunk',array('name' => $name),true);
+            $chunk = $this->modx->getObject('modChunk', ['name' => $name],true);
             if (empty($chunk)) {
                 $chunk = $this->_getTplChunk($name,$this->config['chunkSuffix']);
                 if ($chunk == false) return false;

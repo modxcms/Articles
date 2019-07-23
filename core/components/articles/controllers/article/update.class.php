@@ -50,7 +50,7 @@ class ArticleUpdateManagerController extends ResourceUpdateManagerController {
         $this->addJavascript($quipAssetsUrl.'js/widgets/comments.grid.js');
         $this->addHtml('<script type="text/javascript">
         Ext.onReady(function() {
-            Quip.config = '.$this->modx->toJSON(array()).';
+            Quip.config = '.$this->modx->toJSON([]).';
             Quip.config.connector_url = "'.$quipAssetsUrl.'connector.php";
             Quip.request = '.$this->modx->toJSON($_GET).';
         });
@@ -88,11 +88,11 @@ class ArticleUpdateManagerController extends ResourceUpdateManagerController {
         $this->loadRichTextEditor();
     }
     public function getLanguageTopics() {
-        return array('resource','articles:default','quip:default');
+        return ['resource','articles:default','quip:default'];
     }
 
 
-    public function process(array $scriptProperties = array()) {
+    public function process(array $scriptProperties = []) {
         $placeholders = parent::process($scriptProperties);
         $this->getTagsTV();
 
@@ -105,9 +105,9 @@ class ArticleUpdateManagerController extends ResourceUpdateManagerController {
 
     public function getTagsTV() {
         /** @var modTemplateVar $tv */
-        $tv = $this->modx->getObject('modTemplateVar',array(
+        $tv = $this->modx->getObject('modTemplateVar', [
             'name' => 'articlestags',
-        ));
+        ]);
         if ($tv) {
             $this->resourceArray['tags'] = $this->resource->getTVValue('articlestags');
             $this->resourceArray['tagsId'] = $tv->get('id');

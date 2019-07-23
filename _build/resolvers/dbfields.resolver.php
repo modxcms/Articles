@@ -40,16 +40,16 @@ if ($object->xpdo) {
             $manager = $modx->getManager();
 
             /** @var modSystemSetting $setting */
-            $setting = $modx->getObject('modSystemSetting',array('key' => 'articles.properties_migration'));
+            $setting = $modx->getObject('modSystemSetting', ['key' => 'articles.properties_migration']);
             if (!$setting || $setting->get('value') == false) {
                 $c = $modx->newQuery('ArticlesContainer');
-                $c->select(array(
+                $c->select([
                     'id',
                     'articles_container_settings',
-                ));
-                $c->where(array(
+                ]);
+                $c->where([
                     'class_key' => 'ArticlesContainer',
-                ));
+                ]);
                 $c->construct();
                 $sql = $c->toSql();
                 $stmt = $modx->query($sql);
@@ -57,7 +57,7 @@ if ($object->xpdo) {
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         $settings = $row['articles_container_settings'];
                         $settings = is_array($settings) ? $settings : $modx->fromJSON($settings);
-                        $settings = !empty($settings) ? $settings : array();
+                        $settings = !empty($settings) ? $settings : [];
                         /** @var modResource $resource */
                         $resource = $modx->getObject('modResource',$row['id']);
                         if ($resource) {

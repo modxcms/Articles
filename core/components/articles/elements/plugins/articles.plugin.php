@@ -40,12 +40,12 @@ switch ($modx->event->name) {
         if ($resource instanceof Article) {
             $resource->setArchiveUri();
             $resource->save();
-            $modx->cacheManager->refresh(array(
-                'db' => array(),
-                'auto_publish' => array('contexts' => array($resource->get('context_key'))),
-                'context_settings' => array('contexts' => array($resource->get('context_key'))),
-                'resource' => array('contexts' => array($resource->get('context_key'))),
-            ));
+            $modx->cacheManager->refresh([
+                'db' => [],
+                'auto_publish' => ['contexts' => [$resource->get('context_key')]],
+                'context_settings' => ['contexts' => [$resource->get('context_key')]],
+                'resource' => ['contexts' => [$resource->get('context_key')]],
+            ]);
             $resource->notifyUpdateServices();
             $resource->sendNotifications();
         }

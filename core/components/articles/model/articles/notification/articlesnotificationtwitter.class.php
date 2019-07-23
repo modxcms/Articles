@@ -48,7 +48,7 @@ class ArticlesNotificationTwitter extends ArticlesNotification {
         $accessToken = $container->decrypt($this->config['notifyTwitterAccessToken']);
         $accessTokenSecret = $container->decrypt($this->config['notifyTwitterAccessTokenSecret']);
         $connection = new TwitterOAuth($keys['consumer_key'],$keys['consumer_key_secret'],$accessToken,$accessTokenSecret);
-        $output = $connection->post('statuses/update', array('status' => $message));
+        $output = $connection->post('statuses/update', ['status' => $message]);
         return $output;
     }
 
@@ -68,9 +68,9 @@ class ArticlesNotificationTwitter extends ArticlesNotification {
 
         $tags = $this->article->getTVValue('articlestags');
         $tags = explode(',',$tags);
-        $hashTags = array();
+        $hashTags = [];
         $tagLimit = $this->modx->getOption('notifyTwitterTagLimit',$this->config,3);
-        $badTagChars = array(' ','#','$','*','@','(',')','[',']','=','!','?',';',',','.');
+        $badTagChars = [' ','#','$','*','@','(',')','[',']','=','!','?',';',',','.'];
         $i = 1;
         foreach ($tags as $tag) {
             if ($i > $tagLimit) break;
@@ -91,15 +91,15 @@ class ArticlesNotificationTwitter extends ArticlesNotification {
             $title .= '...';
         }
 
-        return str_replace(array(
+        return str_replace([
             '[[+title]]',
             '[[+url]]',
             '[[+hashtags]]',
-        ),array(
+        ], [
             $title,
             $url,
             $hashTags,
-        ),$tpl);
+        ],$tpl);
     }
 
     public function shorten($url) {
@@ -130,9 +130,9 @@ abstract class ArticlesTwitterShortener {
     /** @var ArticlesNotificationTwitter $notifier */
     public $notifier;
     /** @var array $config */
-    public $config = array();
+    public $config = [];
 
-    function __construct(ArticlesNotificationTwitter $notifier,array $settings = array()) {
+    function __construct(ArticlesNotificationTwitter $notifier,array $settings = []) {
         $this->notifier =& $notifier;
         $this->modx =& $notifier->modx;
         $this->article =& $notifier->article;
@@ -160,12 +160,12 @@ abstract class ArticlesTwitterShortener {
         if (!empty($requestUrl)) {
             if (function_exists('curl_init')) {
                 $ch = curl_init();
-                $options = array(
+                $options = [
                     CURLOPT_URL => $requestUrl,
                     CURLOPT_RETURNTRANSFER => true,
                     CURLOPT_USERAGENT => $userAgent,
                     CURLOPT_TIMEOUT => 30,
-                );
+                ];
                 if (ini_get('open_basedir') == '' && ini_get('safe_mode' == 'Off')) $options[CURLOPT_FOLLOWLOCATION] = true;
                 $options[CURLOPT_RETURNTRANSFER] = true;
                 $this->prepareCurlOptions($options);
@@ -180,14 +180,14 @@ abstract class ArticlesTwitterShortener {
         return $this->parseResponse($response,$url);
     }
 
-    protected function prepareRequestUrl($serviceUrl,array $parameters = array()) {
+    protected function prepareRequestUrl($serviceUrl,array $parameters = []) {
         $query = http_build_query($parameters);
         if (strpos($serviceUrl,'?') === false) {
             $query = '?'.$query;
         }
         return $serviceUrl.$query;
     }
-    protected function prepareCurlOptions(array $options = array()) {
+    protected function prepareCurlOptions(array $options = []) {
         return $options;
     }
 
@@ -207,13 +207,13 @@ class ArticlesShortenerBitly extends ArticlesTwitterShortener {
     }
 
     protected function getParameters($url) {
-        return array(
+        return [
             'version' => '2.0.1',
             'login' => $this->modx->getOption('bitlyUsername',$this->config,''),
             'apiKey' => $this->modx->getOption('bitlyApiKey',$this->config,''),
             'longUrl' => $url,
             'format' => 'xml'
-        );
+        ];
     }
 
     protected function parseResponse($response,$longUrl) {
@@ -234,9 +234,9 @@ class ArticlesShortenerTinyurl extends ArticlesTwitterShortener {
         return $this->modx->getOption('articles.tinyurl.api_url',null,'http://tinyurl.com/api-create.php');
     }
     protected function getParameters($url) {
-        return array(
+        return [
             'url' => $url,
-        );
+        ];
     }
 }
 
@@ -245,9 +245,9 @@ class ArticlesShortenerIsgd extends ArticlesTwitterShortener {
         return $this->modx->getOption('articles.isgd.api_url',null,'http://is.gd/api.php');
     }
     protected function getParameters($url) {
-        return array(
+        return [
             'longurl' => $url
-        );
+        ];
     }
 }
 
@@ -257,11 +257,11 @@ class ArticlesShortenerDigg extends ArticlesTwitterShortener {
     }
 
     protected function getParameters($url) {
-        return array(
+        return [
             'url' => $url,
             'appkey' => $this->modx->getOption('articles.digg.app_key',null,'http://modx.com'),
             'type' => 'xml',
-        );
+        ];
     }
 
     protected function parseResponse($response,$longUrl) {

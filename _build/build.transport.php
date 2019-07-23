@@ -33,7 +33,7 @@ define('PKG_RELEASE','pl');
 
 /* define sources */
 $root = dirname(dirname(__FILE__)).'/';
-$sources = array(
+$sources = [
     'root' => $root,
     'build' => $root .'_build/',
     'resolvers' => $root . '_build/resolvers/',
@@ -52,7 +52,7 @@ $sources = array(
     'lexicon' => $root . 'core/components/'.PKG_NAME_LOWER.'/lexicon/',
     'docs' => $root.'core/components/'.PKG_NAME_LOWER.'/docs/',
     'model' => $root.'core/components/'.PKG_NAME_LOWER.'/model/',
-);
+];
 unset($root);
 
 /* override with your own defines here (see build.config.sample.php) */
@@ -76,11 +76,11 @@ $modx->log(modX::LOG_LEVEL_INFO,'Adding file resolvers to category...');
 
 /* load system settings */
 $settings = include_once $sources['data'].'transport.settings.php';
-$attributes= array(
+$attributes= [
     xPDOTransport::UNIQUE_KEY => 'key',
     xPDOTransport::PRESERVE_KEYS => true,
     xPDOTransport::UPDATE_OBJECT => false,
-);
+];
 if (!is_array($settings)) { $modx->log(modX::LOG_LEVEL_FATAL,'Adding settings failed.'); }
 foreach ($settings as $setting) {
     $vehicle = $builder->createVehicle($setting,$attributes);
@@ -98,19 +98,19 @@ unset($success);
 /* add plugins */
 $plugins = include $sources['data'].'transport.plugins.php';
 if (!is_array($plugins)) { $modx->log(modX::LOG_LEVEL_FATAL,'Adding plugins failed.'); }
-$attributes= array(
+$attributes= [
     xPDOTransport::UNIQUE_KEY => 'name',
     xPDOTransport::PRESERVE_KEYS => false,
     xPDOTransport::UPDATE_OBJECT => true,
     xPDOTransport::RELATED_OBJECTS => true,
-    xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array (
-        'PluginEvents' => array(
+    xPDOTransport::RELATED_OBJECT_ATTRIBUTES => [
+        'PluginEvents' => [
             xPDOTransport::PRESERVE_KEYS => true,
             xPDOTransport::UPDATE_OBJECT => false,
-            xPDOTransport::UNIQUE_KEY => array('pluginid','event'),
-        ),
-    ),
-);
+            xPDOTransport::UNIQUE_KEY => ['pluginid','event'],
+        ],
+    ],
+];
 foreach ($plugins as $plugin) {
     $vehicle = $builder->createVehicle($plugin, $attributes);
     $builder->putVehicle($vehicle);
@@ -157,52 +157,52 @@ $modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($tvs).' TVs.'); flush();
 unset($tvs);
 
 /* create category vehicle */
-$attr = array(
+$attr = [
     xPDOTransport::UNIQUE_KEY => 'category',
     xPDOTransport::PRESERVE_KEYS => false,
     xPDOTransport::UPDATE_OBJECT => true,
     xPDOTransport::RELATED_OBJECTS => true,
-    xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array (
-        'Chunks' => array(
+    xPDOTransport::RELATED_OBJECT_ATTRIBUTES => [
+        'Chunks' => [
             xPDOTransport::PRESERVE_KEYS => false,
             xPDOTransport::UPDATE_OBJECT => true,
             xPDOTransport::UNIQUE_KEY => 'name',
-        ),
-        'Snippets' => array(
+        ],
+        'Snippets' => [
             xPDOTransport::PRESERVE_KEYS => false,
             xPDOTransport::UPDATE_OBJECT => true,
             xPDOTransport::UNIQUE_KEY => 'name',
-        ),
-        'Templates' => array(
+        ],
+        'Templates' => [
             xPDOTransport::PRESERVE_KEYS => false,
             xPDOTransport::UPDATE_OBJECT => true,
             xPDOTransport::UNIQUE_KEY => 'templatename',
-        ),
-        'TemplateVars' => array(
+        ],
+        'TemplateVars' => [
             xPDOTransport::PRESERVE_KEYS => false,
             xPDOTransport::UPDATE_OBJECT => true,
             xPDOTransport::UNIQUE_KEY => 'name',
-        ),
-    )
-);
+        ],
+    ]
+];
 $vehicle = $builder->createVehicle($category,$attr);
-$vehicle->resolve('file',array(
+$vehicle->resolve('file', [
     'source' => $sources['source_core'],
     'target' => "return MODX_CORE_PATH . 'components/';",
-));
-$vehicle->resolve('file',array(
+]);
+$vehicle->resolve('file', [
     'source' => $sources['source_assets'],
     'target' => "return MODX_ASSETS_PATH . 'components/';",
-));
-$vehicle->resolve('php',array(
+]);
+$vehicle->resolve('php', [
     'source' => $sources['resolvers'] . 'extpack.resolver.php',
-));
-$vehicle->resolve('php',array(
+]);
+$vehicle->resolve('php', [
     'source' => $sources['resolvers'] . 'tvs.resolver.php',
-));
-$vehicle->resolve('php',array(
+]);
+$vehicle->resolve('php', [
     'source' => $sources['resolvers'] . 'dbfields.resolver.php',
-));
+]);
 //$vehicle->resolve('php',array(
 //    'source' => $sources['resolvers'] . 'setupoptions.resolver.php',
 //));
@@ -210,14 +210,14 @@ $modx->log(modX::LOG_LEVEL_INFO,'Packaged in resolvers.'); flush();
 $builder->putVehicle($vehicle);
 
 /* now pack in the license file, readme and setup options */
-$builder->setPackageAttributes(array(
+$builder->setPackageAttributes([
     'license' => file_get_contents($sources['docs'] . 'license.txt'),
     'readme' => file_get_contents($sources['docs'] . 'readme.txt'),
     'changelog' => file_get_contents($sources['docs'] . 'changelog.txt'),
     //'setup-options' => array(
         //'source' => $sources['build'].'setup.options.php',
     //),
-));
+]);
 $modx->log(modX::LOG_LEVEL_INFO,'Added package attributes and setup options.');
 
 /* zip up package */

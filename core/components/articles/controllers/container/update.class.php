@@ -55,7 +55,7 @@ class ArticlesContainerUpdateManagerController extends ResourceUpdateManagerCont
         $this->addJavascript($quipAssetsUrl.'js/widgets/comments.grid.js');
         $this->addHtml('<script type="text/javascript">
         Ext.onReady(function() {
-            Quip.config = '.$this->modx->toJSON(array()).';
+            Quip.config = '.$this->modx->toJSON([]).';
             Quip.config.connector_url = "'.$quipAssetsUrl.'connector.php";
             Quip.request = '.$this->modx->toJSON($_GET).';
         });
@@ -96,7 +96,7 @@ class ArticlesContainerUpdateManagerController extends ResourceUpdateManagerCont
         $this->loadRichTextEditor();
     }
     public function getLanguageTopics() {
-        return array('resource','articles:default','quip:default');
+        return ['resource','articles:default','quip:default'];
     }
 
     /**

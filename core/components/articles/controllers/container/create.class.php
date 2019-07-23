@@ -75,7 +75,7 @@ class ArticlesContainerCreateManagerController extends ResourceCreateManagerCont
         $this->loadRichTextEditor();
     }
     public function getLanguageTopics() {
-        return array('resource','articles:default');
+        return ['resource','articles:default'];
     }
 
     /**
@@ -85,12 +85,12 @@ class ArticlesContainerCreateManagerController extends ResourceCreateManagerCont
      */
     public function prepareResource() {
         $settings = $this->resource->getProperties('articles');
-        if (empty($settings)) $settings = array();
+        if (empty($settings)) $settings = [];
         
         $defaultContainerTemplate = $this->modx->getOption('articles.default_container_template',$settings,false);
         if (empty($defaultContainerTemplate)) {
             /** @var modTemplate $template */
-            $template = $this->modx->getObject('modTemplate',array('templatename' => 'sample.ArticlesContainerTemplate'));
+            $template = $this->modx->getObject('modTemplate', ['templatename' => 'sample.ArticlesContainerTemplate']);
             if ($template) {
                 $defaultContainerTemplate = $template->get('id');
             }
@@ -100,7 +100,7 @@ class ArticlesContainerCreateManagerController extends ResourceCreateManagerCont
         $defaultArticleTemplate = $this->modx->getOption('articles.default_article_template',$settings,false);
         if (empty($defaultArticleTemplate)) {
             /** @var modTemplate $template */
-            $template = $this->modx->getObject('modTemplate',array('templatename' => 'sample.ArticleTemplate'));
+            $template = $this->modx->getObject('modTemplate', ['templatename' => 'sample.ArticleTemplate']);
             if ($template) {
                 $defaultArticleTemplate = $template->get('id');
             }

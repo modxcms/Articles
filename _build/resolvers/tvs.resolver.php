@@ -36,20 +36,20 @@ if ($object->xpdo) {
             $modelPath = $modx->getOption('articles.core_path',null,$modx->getOption('core_path').'components/articles/').'model/';
 
             /** @var modTemplateVar $tv */
-            $tv = $modx->getObject('modTemplateVar',array(
+            $tv = $modx->getObject('modTemplateVar', [
                 'name' => 'articlestags',
-            ));
+            ]);
             if ($tv) {
-                $templates = array('sample.ArticlesContainerTemplate','sample.ArticleTemplate');
+                $templates = ['sample.ArticlesContainerTemplate','sample.ArticleTemplate'];
                 foreach ($templates as $templateName) {
                     /** @var modTemplate $template */
-                    $template = $modx->getObject('modTemplate',array('templatename' => $templateName));
+                    $template = $modx->getObject('modTemplate', ['templatename' => $templateName]);
                     if ($template) {
                         /** @var modTemplateVarTemplate $templateVarTemplate */
-                        $templateVarTemplate = $modx->getObject('modTemplateVarTemplate',array(
+                        $templateVarTemplate = $modx->getObject('modTemplateVarTemplate', [
                             'templateid' => $template->get('id'),
                             'tmplvarid' => $tv->get('id'),
-                        ));
+                        ]);
                         if (!$templateVarTemplate) {
                             $templateVarTemplate = $modx->newObject('modTemplateVarTemplate');
                             $templateVarTemplate->set('templateid',$template->get('id'));

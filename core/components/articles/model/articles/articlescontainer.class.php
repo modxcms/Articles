@@ -109,10 +109,10 @@ class ArticlesContainer extends modResource {
      */
     public function getContextMenuText() {
         $this->xpdo->lexicon->load('articles:default');
-        return array(
+        return [
             'text_create' => $this->xpdo->lexicon('articles.container'),
             'text_create_here' => $this->xpdo->lexicon('articles.container_create_here'),
-        );
+        ];
     }
 
     /**
@@ -130,9 +130,9 @@ class ArticlesContainer extends modResource {
      * @param array $node
      * @return array
      */
-    public function prepareTreeNode(array $node = array()) {
+    public function prepareTreeNode(array $node = []) {
         $this->xpdo->lexicon->load('articles:default');
-        $menu = array();
+        $menu = [];
         $idNote = $this->xpdo->hasPermission('tree_show_resource_ids') ? ' <span dir="ltr">('.$this->id.')</span>' : '';
         // Template ID should 1st default to the container settings for articleTemplate,
         // then to system settings for articles.default_article_template.
@@ -150,16 +150,16 @@ class ArticlesContainer extends modResource {
 				}
 			}
 		}
-        $menu[] = array(
+        $menu[] = [
             'text' => '<b>'.$this->get('pagetitle').'</b>'.$idNote,
             'handler' => 'Ext.emptyFn',
-        );
+        ];
         $menu[] = '-';
-        $menu[] = array(
+        $menu[] = [
             'text' => $this->xpdo->lexicon('articles.articles_manage'),
             'handler' => 'this.editResource',
-        );
-        $menu[] = array(
+        ];
+        $menu[] = [
             'text' => $this->xpdo->lexicon('articles.articles_write_new'),
             'handler' => "function(itm,e) { 
 				var at = this.cm.activeNode.attributes;
@@ -173,41 +173,41 @@ class ArticlesContainer extends modResource {
 	                + (at.ctx ? '&context_key='+at.ctx : '')
                 );
         	}",
-        );
-        $menu[] = array(
+        ];
+        $menu[] = [
             'text' => $this->xpdo->lexicon('articles.container_duplicate'),
             'handler' => 'function(itm,e) { itm.classKey = "ArticlesContainer"; this.duplicateResource(itm,e); }',
-        );
+        ];
         $menu[] = '-';
         if ($this->get('published')) {
-            $menu[] = array(
+            $menu[] = [
                 'text' => $this->xpdo->lexicon('articles.container_unpublish'),
                 'handler' => 'this.unpublishDocument',
-            );
+            ];
         } else {
-            $menu[] = array(
+            $menu[] = [
                 'text' => $this->xpdo->lexicon('articles.container_publish'),
                 'handler' => 'this.publishDocument',
-            );
+            ];
         }
         if ($this->get('deleted')) {
-            $menu[] = array(
+            $menu[] = [
                 'text' => $this->xpdo->lexicon('articles.container_undelete'),
                 'handler' => 'this.undeleteDocument',
-            );
+            ];
         } else {
-            $menu[] = array(
+            $menu[] = [
                 'text' => $this->xpdo->lexicon('articles.container_delete'),
                 'handler' => 'this.deleteDocument',
-            );
+            ];
         }
         $menu[] = '-';
-        $menu[] = array(
+        $menu[] = [
             'text' => $this->xpdo->lexicon('articles.articles_view'),
             'handler' => 'this.preview',
-        );
+        ];
 
-        $node['menu'] = array('items' => $menu);
+        $node['menu'] = ['items' => $menu];
         $node['hasChildren'] = true;
         return $node;
     }
@@ -230,14 +230,14 @@ class ArticlesContainer extends modResource {
         if ($this->isRss()) {
             $this->set('template',0);
             /** @var modContentType $contentType */
-            $contentType = $this->xpdo->getObject('modContentType',array('mime_type' => 'application/rss+xml'));
+            $contentType = $this->xpdo->getObject('modContentType', ['mime_type' => 'application/rss+xml']);
             if ($contentType) {
                 $this->set('content_type',$contentType->get('id'));
                 $this->xpdo->response->contentType = $contentType;
             }
             $this->_content= $this->getRssCall();
             $maxIterations= intval($this->xpdo->getOption('parser_max_iterations',10));
-            $this->xpdo->parser->processElementTags('', $this->_content, false, false, '[[', ']]', array(), $maxIterations);
+            $this->xpdo->parser->processElementTags('', $this->_content, false, false, '[[', ']]', [], $maxIterations);
             $this->_processed= true;
             $this->set('cacheable',false);
         } else {
@@ -304,10 +304,10 @@ class ArticlesContainer extends modResource {
           &cache=`0`
           &tpl=`'.$this->xpdo->getOption('tplRssItem',$settings,'sample.ArticlesRssItem').'`
         ]]';
-        $content = $this->xpdo->getChunk($this->xpdo->getOption('tplRssFeed',$settings,'sample.ArticlesRss'),array(
+        $content = $this->xpdo->getChunk($this->xpdo->getOption('tplRssFeed',$settings,'sample.ArticlesRss'), [
             'content' => $content,
             'year' => date('Y'),
-        ));
+        ]);
         return $content;
     }
     /**
@@ -318,7 +318,7 @@ class ArticlesContainer extends modResource {
      */
     public function getPostListingCall($placeholderPrefix = '') {
         $settings = $this->getContainerSettings();
-        $where = array('class_key' => 'Article');
+        $where = ['class_key' => 'Article'];
         if (!empty($_REQUEST['arc_author'])) {
             $userPk = $this->xpdo->sanitizeString($_REQUEST['arc_author']);
             if (function_exists('filter_var')) {
@@ -326,7 +326,7 @@ class ArticlesContainer extends modResource {
             } else { $userPkNum = intval($userPk); }
             if ($userPkNum == 0) {
                 /** @var modUser $user */
-                $user = $this->xpdo->getObject('modUser',array('username' => $userPk));
+                $user = $this->xpdo->getObject('modUser', ['username' => $userPk]);
                 if ($user) {
                     $userPk = $user->get('id');
                 } else { $userPk = false; }
@@ -485,7 +485,7 @@ class ArticlesContainer extends modResource {
         if (!empty($settings)) {
             $settings = is_array($settings) ? $settings : $this->xpdo->fromJSON($settings);
         }
-        return !empty($settings) ? $settings : array();
+        return !empty($settings) ? $settings : [];
     }
 
     /**
@@ -529,10 +529,10 @@ class ArticlesContainer extends modResource {
         $settings = $this->getContainerSettings();
         $key = !empty($settings['notifyTwitterConsumerKey']) ? $settings['notifyTwitterConsumerKey'] : 'lqTxfNnXdujbguuosYnhmsvXy6fL6Q==';
         $secret = !empty($settings['notifyTwitterConsumerKeySecret']) ? $settings['notifyTwitterConsumerKeySecret'] : 'nczipN69mNvdau7s1offYpnM35Gi15yU4pfqu3TW4arr2ZfMprl1sZ7M';
-        return array(
+        return [
             'consumer_key' => $this->decrypt($key),
             'consumer_key_secret' => $this->decrypt($secret),
-        );
+        ];
     }
 }
 
@@ -553,7 +553,7 @@ class ArticlesContainerCreateProcessor extends modResourceCreateProcessor {
     public function beforeSave() {
         $properties = $this->getProperties();
         $settings = $this->object->getProperties('articles');
-        $notificationServices = array();
+        $notificationServices = [];
         foreach ($properties as $k => $v) {
             if (substr($k,0,8) == 'setting_') {
                 $key = substr($k,8);
@@ -609,7 +609,7 @@ class ArticlesContainerCreateProcessor extends modResourceCreateProcessor {
     public function addContainerId() {
         $saved = true;
         /** @var modSystemSetting $setting */
-        $setting = $this->modx->getObject('modSystemSetting',array('key' => 'articles.container_ids'));
+        $setting = $this->modx->getObject('modSystemSetting', ['key' => 'articles.container_ids']);
         if (!$setting) {
             $setting = $this->modx->newObject('modSystemSetting');
             $setting->set('key','articles.container_ids');
@@ -636,13 +636,13 @@ class ArticlesContainerCreateProcessor extends modResourceCreateProcessor {
     public function removeFromArchivistIds() {
         $saved = true;
         /** @var modSystemSetting $setting */
-        $setting = $this->modx->getObject('modSystemSetting',array('key' => 'archivist.archive_ids'));
+        $setting = $this->modx->getObject('modSystemSetting', ['key' => 'archivist.archive_ids']);
         if ($setting) {
             $value = $setting->get('value');
             $archiveKey = $this->object->get('id').':arc_';
             $value = is_array($value) ? $value : explode(',',$value);
             if (in_array($archiveKey,$value)) {
-                $newKeys = array();
+                $newKeys = [];
                 foreach ($value as $k => $v) {
                     if ($v == $archiveKey) continue;
                     $newKeys[] = $v;
@@ -673,7 +673,7 @@ class ArticlesContainerUpdateProcessor extends modResourceUpdateProcessor {
     public function beforeSave() {
         $properties = $this->getProperties();
         $settings = $this->object->getProperties('articles');
-        $notificationServices = array();
+        $notificationServices = [];
         foreach ($properties as $k => $v) {
             if (substr($k,0,8) == 'setting_') {
                 $key = substr($k,8);
@@ -726,7 +726,7 @@ class ArticlesContainerUpdateProcessor extends modResourceUpdateProcessor {
     public function addContainerId() {
         $saved = true;
         /** @var modSystemSetting $setting */
-        $setting = $this->modx->getObject('modSystemSetting',array('key' => 'articles.container_ids'));
+        $setting = $this->modx->getObject('modSystemSetting', ['key' => 'articles.container_ids']);
         if (!$setting) {
             $setting = $this->modx->newObject('modSystemSetting');
             $setting->set('key','articles.container_ids');
@@ -753,13 +753,13 @@ class ArticlesContainerUpdateProcessor extends modResourceUpdateProcessor {
     public function removeFromArchivistIds() {
         $saved = true;
         /** @var modSystemSetting $setting */
-        $setting = $this->modx->getObject('modSystemSetting',array('key' => 'archivist.archive_ids'));
+        $setting = $this->modx->getObject('modSystemSetting', ['key' => 'archivist.archive_ids']);
         if ($setting) {
             $value = $setting->get('value');
             $archiveKey = $this->object->get('id').':arc_';
             $value = is_array($value) ? $value : explode(',',$value);
             if (in_array($archiveKey,$value)) {
-                $newKeys = array();
+                $newKeys = [];
                 foreach ($value as $k => $v) {
                     if ($v == $archiveKey) continue;
                     $newKeys[] = $v;
@@ -780,7 +780,7 @@ class ArticlesContainerUpdateProcessor extends modResourceUpdateProcessor {
         $this->object->removeLock();
         $this->clearCache();
 
-        $returnArray = $this->object->get(array_diff(array_keys($this->object->_fields), array('content','ta','introtext','description','link_attributes','pagetitle','longtitle','menutitle','articles_container_settings','properties')));
+        $returnArray = $this->object->get(array_diff(array_keys($this->object->_fields), ['content','ta','introtext','description','link_attributes','pagetitle','longtitle','menutitle','articles_container_settings','properties']));
         foreach ($returnArray as $k => $v) {
             if (strpos($k,'tv') === 0) {
                 unset($returnArray[$k]);

@@ -1,9 +1,9 @@
 <?php
 
-$xpdo_meta_map = array (
+$xpdo_meta_map = [
   'modResource' => 
-  array (
+  [
     0 => 'ArticlesContainer',
     1 => 'Article',
-  ),
-);
+  ],
+];

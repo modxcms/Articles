@@ -31,14 +31,14 @@ abstract class ArticlesNotification {
     /** @var Article $article */
     public $article;
     /** @var array $config */
-    public $config = array();
+    public $config = [];
 
-    function __construct(Article $article,array $config = array()) {
+    function __construct(Article $article,array $config = []) {
         $this->article =& $article;
         $this->modx =& $article->xpdo;
-        $this->config = array_merge(array(
+        $this->config = array_merge([
 
-        ),$config);
+        ],$config);
     }
 
     /**

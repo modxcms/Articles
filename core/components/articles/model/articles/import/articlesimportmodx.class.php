@@ -49,10 +49,10 @@ class ArticlesImportMODX extends ArticlesImport {
     public function getQuery() {
         $c = $this->modx->newQuery('modResource');
         $c->select($this->modx->getSelectColumns('modResource','modResource'));
-        $where = array();
+        $where = [];
 
         /* parents */
-        $ids = array();
+        $ids = [];
         if (!empty($this->config['modx-parents'])) {
             $parents = is_array($this->config['modx-parents']) ? $this->config['modx-parents'] : explode(',',$this->config['modx-parents']);
             foreach ($parents as $parent) {
@@ -60,16 +60,16 @@ class ArticlesImportMODX extends ArticlesImport {
                 $parentResource = $this->modx->getObject('modResource',$parent);
                 if (!$parentResource) continue;
 
-                $children = $this->modx->getChildIds($parent,10,array(
+                $children = $this->modx->getChildIds($parent,10, [
                     'context' => $parentResource->get('context_key'),
-                ));
+                ]);
                 $ids = array_merge($ids,$children);
             }
         }
 
         /* specific resources */
-        $exclude = array();
-        $include = array();
+        $exclude = [];
+        $include = [];
         if (!empty($this->config['modx-resources'])) {
             $resources = is_array($this->config['modx-resources']) ? $this->config['modx-resources'] : explode(',',$this->config['modx-resources']);
             foreach ($resources as $resourceId) {
@@ -111,7 +111,7 @@ class ArticlesImportMODX extends ArticlesImport {
         }
 
         /* dont let them get the site start */
-        $where['id:!='] = array((int)$this->modx->getOption('site_start',null,1));
+        $where['id:!='] = [(int)$this->modx->getOption('site_start',null,1)];
 
         $where['isfolder'] = false;
         $where['class_key:!='] = 'Article';
@@ -131,10 +131,10 @@ class ArticlesImportMODX extends ArticlesImport {
         $tagsField = $this->config['modx-tagsField'];
         $isTV = true;
         if (intval($tagsField) > 0) {
-            $tagsField = array('id' => $tagsField);
+            $tagsField = ['id' => $tagsField];
         } else {
             if (strpos($tagsField,'tv.') === 0) {
-                $tagsField = array('name' => str_replace('tv.','',$tagsField));
+                $tagsField = ['name' => str_replace('tv.','',$tagsField)];
             } else {
                 $isTV = false;
             }
@@ -144,18 +144,18 @@ class ArticlesImportMODX extends ArticlesImport {
             /** @var modTemplateVar $tv */
             $tv = $this->modx->getObject('modTemplateVar',$tagsField);
             if ($tv) {
-                $c->leftJoin('modTemplateVarResource','Tags',array(
+                $c->leftJoin('modTemplateVarResource','Tags', [
                     'Tags.contentid = modResource.id',
                     'Tags.tmplvarid' => $tv->get('id'),
-                ));
-                $c->select(array(
+                ]);
+                $c->select([
                     'tags' => 'Tags.value',
-                ));
+                ]);
             }
         } else {
-            $c->select(array(
+            $c->select([
                 'tags' => $tagsField,
-            ));
+            ]);
         }
     }
 
@@ -225,9 +225,9 @@ class ArticlesImportMODX extends ArticlesImport {
         if (empty($threadFormat)) return true;
 
         $imported = true;
-        $threadFormat = str_replace(array('[[*id]]','[[+id]]'),$resource->get('id'),$threadFormat);
+        $threadFormat = str_replace(['[[*id]]','[[+id]]'],$resource->get('id'),$threadFormat);
         /** @var quipThread $thread */
-        $thread = $this->modx->getObject('quipThread',array('name' => $threadFormat));
+        $thread = $this->modx->getObject('quipThread', ['name' => $threadFormat]);
         if ($thread) {
             $newThreadName = 'article-b'.$this->container->get('id').'-'.$resource->get('id');
 

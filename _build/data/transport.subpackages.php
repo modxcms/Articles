@@ -27,26 +27,26 @@
  * @var array $sources
  * @package articles
  */
-$subpackages = array(
+$subpackages = [
     'archivist'      => 'archivist-1.2.4-pl',
     'getpage'        => 'getpage-1.2.4-pl',
     'getresources'   => 'getresources-1.6.1-pl',
     'quip'           => 'quip-2.3.3-pl',
     'taglister'      => 'taglister-1.1.7-pl',
-);
-$spAttr = array('vehicle_class' => 'xPDOTransportVehicle');
+];
+$spAttr = ['vehicle_class' => 'xPDOTransportVehicle'];
 
 foreach ($subpackages as $name => $signature) {
-    $vehicle = $builder->createVehicle(array(
+    $vehicle = $builder->createVehicle([
         'source' => $sources['subpackages'] . $signature.'.transport.zip',
         'target' => "return MODX_CORE_PATH . 'packages/';",
-    ),$spAttr);
-    $vehicle->validate('php',array(
+    ],$spAttr);
+    $vehicle->validate('php', [
         'source' => $sources['validators'].'validate.'.$name.'.php'
-    ));
-    $vehicle->resolve('php',array(
+    ]);
+    $vehicle->resolve('php', [
         'source' => $sources['resolvers'].'packages/resolve.'.$name.'.php'
-    ));
+    ]);
     $builder->putVehicle($vehicle);
 }
 return true;

@@ -26,7 +26,7 @@
 class ArticlePublishMultipleProcessor extends modObjectProcessor {
     public $classKey = 'Article';
     public $objectType = 'article';
-    public $languageTopics = array('resource','articles:default');
+    public $languageTopics = ['resource','articles:default'];
 
     public function process() {
         $ids = $this->getProperty('ids',null);
@@ -37,9 +37,9 @@ class ArticlePublishMultipleProcessor extends modObjectProcessor {
 
         foreach ($ids as $id) {
             if (empty($id)) continue;
-            $this->modx->runProcessor('resource/publish',array(
+            $this->modx->runProcessor('resource/publish', [
                 'id' => $id,
-            ));
+            ]);
         }
         return $this->success();
     }

@@ -29,12 +29,12 @@ if ($transport && $transport->xpdo) {
             $provider = 1;
 
             /* little more effort */
-            $defaultProvider = $modx->getObject('transport.modTransportProvider', array('name' => 'modx.com'));
+            $defaultProvider = $modx->getObject('transport.modTransportProvider', ['name' => 'modx.com']);
 
             if ($defaultProvider) $provider = $defaultProvider->get('id');
             else $modx->logManagerAction('package_install','transport.modTransportPackage','Unable to find modx.com provider, setting to 1');
 
-            $package->fromArray(array(
+            $package->fromArray([
                 'created' => date('Y-m-d h:i:s'),
                 'updated' => date('Y-m-d h:i:s'),
                 'installed' => strftime('%Y-%m-%d %H:%M:%S'),
@@ -48,7 +48,7 @@ if ($transport && $transport->xpdo) {
                 'version_major' => $versionSignature[0],
                 'version_minor' => !empty($versionSignature[1]) ? $versionSignature[1] : 0,
                 'version_patch' => !empty($versionSignature[2]) ? $versionSignature[2] : 0,
-            ));
+            ]);
             if (!empty($sig[2])) {
                 $r = preg_split('/([0-9]+)/',$sig[2],-1,PREG_SPLIT_DELIM_CAPTURE);
                 if (is_array($r) && !empty($r)) {
@@ -64,7 +64,7 @@ if ($transport && $transport->xpdo) {
         
         case xPDOTransport::ACTION_UNINSTALL:
             /* remove the package on uninstall */
-            $package = $modx->getObject('transport.modTransportPackage',array('signature' => $signature));
+            $package = $modx->getObject('transport.modTransportPackage', ['signature' => $signature]);
             if ($package) {
                 if ($package->uninstall()) {
                     /** @var modCacheManager $cacheManager */

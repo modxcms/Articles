@@ -26,7 +26,7 @@
 class ArticleUnDeleteMultipleProcessor extends modObjectProcessor {
     public $classKey = 'Article';
     public $objectType = 'article';
-    public $languageTopics = array('resource','articles:default');
+    public $languageTopics = ['resource','articles:default'];
 
     public function process() {
         $ids = $this->getProperty('ids',null);
@@ -37,9 +37,9 @@ class ArticleUnDeleteMultipleProcessor extends modObjectProcessor {
 
         foreach ($ids as $id) {
             if (empty($id)) continue;
-            $this->modx->runProcessor('resource/undelete',array(
+            $this->modx->runProcessor('resource/undelete', [
                 'id' => $id,
-            ));
+            ]);
         }
         return $this->success();
     }

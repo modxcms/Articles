@@ -69,11 +69,11 @@ class ArticleCreateManagerController extends ResourceCreateManagerController {
     }
 
     public function getLanguageTopics() {
-        return array('resource','articles:default');
+        return ['resource','articles:default'];
     }
 
 
-    public function process(array $scriptProperties = array()) {
+    public function process(array $scriptProperties = []) {
         $placeholders = parent::process($scriptProperties);
         $this->getDefaultContainerSettings();
         return $placeholders;
@@ -81,9 +81,9 @@ class ArticleCreateManagerController extends ResourceCreateManagerController {
 
     public function getDefaultContainerSettings() {
         /** @var ArticlesContainer $container */
-        $container = $this->modx->getObject('ArticlesContainer',array(
+        $container = $this->modx->getObject('ArticlesContainer', [
             'id' => $this->parent->get('id'),
-        ));
+        ]);
         if ($container) {
             $settings = $container->getProperties('articles');
             $this->resourceArray['template'] = $this->modx->getOption('articleTemplate',$settings,0);

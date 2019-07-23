@@ -26,7 +26,7 @@
 class ContainerImportProcessor extends modObjectProcessor {
     public $classKey = 'Article';
     public $objectType = 'article';
-    public $languageTopics = array('resource','articles:default');
+    public $languageTopics = ['resource','articles:default'];
     /** @var Article $object */
     public $object;
     /** @var ArticlesImport $service */
@@ -84,12 +84,12 @@ class ContainerImportProcessor extends modObjectProcessor {
      * Clear the site cache to properly refresh the URIs
      */
     public function clearCache() {
-        $this->modx->cacheManager->refresh(array(
-            'db' => array(),
-            'auto_publish' => array('contexts' => array($this->object->get('context_key'))),
-            'context_settings' => array('contexts' => array($this->object->get('context_key'))),
-            'resource' => array('contexts' => array($this->object->get('context_key'))),
-        ));
+        $this->modx->cacheManager->refresh([
+            'db' => [],
+            'auto_publish' => ['contexts' => [$this->object->get('context_key')]],
+            'context_settings' => ['contexts' => [$this->object->get('context_key')]],
+            'resource' => ['contexts' => [$this->object->get('context_key')]],
+        ]);
     }
 }
 return 'ContainerImportProcessor';

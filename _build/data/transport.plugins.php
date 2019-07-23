@@ -28,7 +28,7 @@
  * @package articles
  * @subpackage build
  */
-$plugins = array();
+$plugins = [];
 
 /* create the plugin object */
 $plugins[0] = $modx->newObject('modPlugin');

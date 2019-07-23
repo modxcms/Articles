@@ -28,8 +28,8 @@ class ArticlesImportBlogger extends ArticlesImport {
     /** @var ArticlesContainer $container */
     public $container;
 
-    public $hrefMap = array();
-    public $commentMap = array();
+    public $hrefMap = [];
+    public $commentMap = [];
 
     public function import() {
         /** @var SimpleXMLElement $data */
@@ -68,15 +68,15 @@ class ArticlesImportBlogger extends ArticlesImport {
                 $this->addError('blogger-file-server',$this->modx->lexicon('articles.import_blogger_file_err_nf'));
                 return false;
             }
-            $file = str_replace(array(
+            $file = str_replace([
                 '{core_path}',
                 '{base_path}',
                 '{assets_path}',
-            ),array(
+            ], [
                 $this->modx->getOption('core_path',null,MODX_CORE_PATH),
                 $this->modx->getOption('base_path',null,MODX_BASE_PATH),
                 $this->modx->getOption('assets_path',null,MODX_ASSETS_PATH),
-            ),$file);
+            ],$file);
             if (!file_exists($file)) {
                 $this->processor->addFieldError('blogger-file-server',$this->modx->lexicon('articles.import_blogger_file_err_nf'));
                 return false;
@@ -108,9 +108,9 @@ class ArticlesImportBlogger extends ArticlesImport {
         } else {
             /* @TODO Finish ability to import into new blog. */
             $this->container = $this->modx->newObject('ArticlesContainer');
-            $this->container->fromArray(array(
+            $this->container->fromArray([
                 'parent' => $this->modx->getOption('parent',$this->config,0),
-            ));
+            ]);
         }
         return $this->container;
     }
@@ -130,7 +130,7 @@ class ArticlesImportBlogger extends ArticlesImport {
             $creator = $this->matchCreator((string)$entry->author->email,1,'email');
         }
 
-        $article->fromArray(array(
+        $article->fromArray([
             'parent' => $this->container->get('id'),
             'pagetitle' => (string)$entry->title,
             'description' => '',
@@ -147,7 +147,7 @@ class ArticlesImportBlogger extends ArticlesImport {
             'show_in_tree' => false,
             'class_key' => 'Article',
             'context_key' => $this->container->get('context_key'),
-        ));
+        ]);
         $article->setProperties($settings,'articles');
 
         if (!$this->debug) {
@@ -184,7 +184,7 @@ class ArticlesImportBlogger extends ArticlesImport {
                 $lastPos = $strLength - $lastSlash;
                 $alias = substr($url,$lastPos);
                 $ext = pathinfo($alias,PATHINFO_EXTENSION);
-                $alias = str_replace(array('.',$ext),'',$alias);
+                $alias = str_replace(['.',$ext],'',$alias);
             }
         }
         if (empty($alias)) {
@@ -217,10 +217,10 @@ class ArticlesImportBlogger extends ArticlesImport {
         $c = $this->modx->newQuery('modUser');
         $c->innerJoin('modUserProfile','Profile');
         $fieldAlias = 'modUser';
-        if (!in_array($field,array('username','id'))) $fieldAlias = 'Profile';
-        $c->where(array(
+        if (!in_array($field, ['username','id'])) $fieldAlias = 'Profile';
+        $c->where([
             $fieldAlias.'.'.$field => $match,
-        ));
+        ]);
         $user = $this->modx->getObject('modUser',$c);
         if ($user) {
             return $user->get('id');
@@ -257,14 +257,14 @@ class ArticlesImportBlogger extends ArticlesImport {
 
         /** @var quipThread $thread */
         $thread = $this->modx->newObject('quipThread');
-        $thread->fromArray(array(
+        $thread->fromArray([
             'createdon' => $article->get('publishedon'),
             'moderated' => $this->modx->getOption('commentsModerated',$settings,1),
             'moderator_group' => $this->modx->getOption('commentsModeratorGroup',$settings,'Administrator'),
             'moderators' => $this->modx->getOption('commentsModerators',$settings,''),
             'resource' => $article->get('id'),
             'idprefix' => 'qcom',
-        ));
+        ]);
         $thread->set('name',$threadKey);
         if (!$this->debug) {
             $thread->save();
@@ -280,7 +280,7 @@ class ArticlesImportBlogger extends ArticlesImport {
 
         /** @var quipComment $comment */
         $comment = $this->modx->newObject('quipComment');
-        $comment->fromArray(array(
+        $comment->fromArray([
             'thread' => $threadKey,
             'parent' => 0,
             'author' => $creator,
@@ -293,7 +293,7 @@ class ArticlesImportBlogger extends ArticlesImport {
             'ip' => '',
             'resource' => $article->get('id'),
             'idprefix' => 'qcom',
-        ),'',true);
+        ],'',true);
 
         $this->commentMap[$commentId] = $comment->get('id');
 
@@ -311,7 +311,7 @@ class ArticlesImportBlogger extends ArticlesImport {
      * @return array
      */
     public function importTags(Article $article,SimpleXMLElement $entry) {
-        $tags = array();
+        $tags = [];
         if (empty($entry->category)) return;
 
         foreach ($entry->category as $category) {

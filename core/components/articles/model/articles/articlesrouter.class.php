@@ -23,13 +23,13 @@ class ArticlesRouter {
     /** @var modX $modx */
     public $modx;
     /** @var array $config */
-    public $config = array();
+    public $config = [];
     
-    function __construct(modX &$modx,array $config = array()) {
+    function __construct(modX &$modx,array $config = []) {
         $this->modx =& $modx;
-        $this->config = array_merge(array(
+        $this->config = array_merge([
 
-        ),$config);
+        ],$config);
     }
 
     /**
