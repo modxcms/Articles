@@ -313,13 +313,24 @@ Ext.extend(Articles.panel.Article,MODx.panel.Resource,{
 
         mlf.push({
             xtype: 'textarea'
+            ,fieldLabel: _('articles.article_description')
+            ,description: '<b>[[*description]]</b><br />'+_('articles.article_description_desc')
+            ,name: 'description'
+            ,id: 'modx-resource-description'
+            ,grow: true
+            ,anchor: '100%'
+            ,value: config.record.description || ''
+        },{
+            xtype: 'textarea'
             ,fieldLabel: _('articles.article_summary')
             ,description: '<b>[[*introtext]]</b><br />'+_('articles.article_summary')
             ,name: 'introtext'
             ,id: 'modx-resource-introtext'
+            ,grow: true
             ,anchor: '100%'
             ,value: config.record.introtext || ''
         });
+
 
 
         var ct = this.getContentField(config);

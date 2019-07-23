@@ -1,5 +1,9 @@
 Changelog for Articles.
 
+Articles 1.8.0
+===============================
+- Adds the description field when creating/updating an Article [issue #57]
+
 Articles 1.7.13
 ===============================
 - Fix the tag filtering with integer values [#137]
