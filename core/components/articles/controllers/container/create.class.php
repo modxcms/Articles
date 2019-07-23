@@ -19,7 +19,7 @@
  *
  * @package articles
  */
-if(!class_exists('ResourceCreateManagerController')) {
+if(!class_exists(ResourceCreateManagerController::class)) {
     require_once $modx->getOption('manager_path',null,MODX_MANAGER_PATH).'controllers/'.$modx->getOption('manager_theme',null,'default').'/resource/create.class.php';
 }
 /**
@@ -90,7 +90,7 @@ class ArticlesContainerCreateManagerController extends ResourceCreateManagerCont
         $defaultContainerTemplate = $this->modx->getOption('articles.default_container_template',$settings,false);
         if (empty($defaultContainerTemplate)) {
             /** @var modTemplate $template */
-            $template = $this->modx->getObject('modTemplate', ['templatename' => 'sample.ArticlesContainerTemplate']);
+            $template = $this->modx->getObject(modTemplate::class, ['templatename' => 'sample.ArticlesContainerTemplate']);
             if ($template) {
                 $defaultContainerTemplate = $template->get('id');
             }
@@ -100,7 +100,7 @@ class ArticlesContainerCreateManagerController extends ResourceCreateManagerCont
         $defaultArticleTemplate = $this->modx->getOption('articles.default_article_template',$settings,false);
         if (empty($defaultArticleTemplate)) {
             /** @var modTemplate $template */
-            $template = $this->modx->getObject('modTemplate', ['templatename' => 'sample.ArticleTemplate']);
+            $template = $this->modx->getObject(modTemplate::class, ['templatename' => 'sample.ArticleTemplate']);
             if ($template) {
                 $defaultArticleTemplate = $template->get('id');
             }

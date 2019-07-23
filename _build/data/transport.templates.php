@@ -27,7 +27,7 @@
  */
 $templates = [];
 
-$templates[1]= $modx->newObject('modTemplate');
+$templates[1]= $modx->newObject(modTemplate::class);
 $templates[1]->fromArray([
     'id' => 1,
     'templatename' => 'sample.ArticlesContainerTemplate',
@@ -35,7 +35,7 @@ $templates[1]->fromArray([
     'content' => file_get_contents($sources['templates'].'articlescontainertemplate.tpl'),
 ]);
 
-$templates[2]= $modx->newObject('modTemplate');
+$templates[2]= $modx->newObject(modTemplate::class);
 $templates[2]->fromArray([
     'id' => 2,
     'templatename' => 'sample.ArticleTemplate',

@@ -19,7 +19,7 @@
  *
  * @package articles
  */
-if(!class_exists('ResourceCreateManagerController')) {
+if(!class_exists(ResourceCreateManagerController::class)) {
     require_once $modx->getOption('manager_path',null,MODX_MANAGER_PATH).'controllers/'.$modx->getOption('manager_theme',null,'default').'/resource/create.class.php';
 }
 /**
@@ -81,7 +81,7 @@ class ArticleCreateManagerController extends ResourceCreateManagerController {
 
     public function getDefaultContainerSettings() {
         /** @var ArticlesContainer $container */
-        $container = $this->modx->getObject('ArticlesContainer', [
+        $container = $this->modx->getObject(ArticlesContainer::class, [
             'id' => $this->parent->get('id'),
         ]);
         if ($container) {

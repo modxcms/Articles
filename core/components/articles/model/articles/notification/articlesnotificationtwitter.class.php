@@ -41,7 +41,7 @@ class ArticlesNotificationTwitter extends ArticlesNotification {
 
     public function update($message) {
         /** @var ArticlesContainer $container */
-        $container = $this->modx->getObject('ArticlesContainer',$this->article->get('parent'));
+        $container = $this->modx->getObject(ArticlesContainer::class,$this->article->get('parent'));
         if (!$container) return false;
 
         $keys = $container->getTwitterKeys();
@@ -105,7 +105,7 @@ class ArticlesNotificationTwitter extends ArticlesNotification {
     public function shorten($url) {
         $shorteningService = $this->modx->getOption('shorteningService',$this->config,'tinyurl');
         if (!empty($shorteningService)) {
-            $className = 'ArticlesShortener'.ucfirst(strtolower($shorteningService));
+            $className = ArticlesShortener::class.ucfirst(strtolower($shorteningService));
             if (class_exists($className)) {
                 /** @var ArticlesTwitterShortener $shortener */
                 $shortener = new $className($this);

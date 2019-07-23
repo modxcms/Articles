@@ -40,7 +40,7 @@ class ArticlesContainer extends modResource {
      */
     function __construct(xPDO & $xpdo) {
         parent :: __construct($xpdo);
-        $this->set('class_key','Articles');
+        $this->set('class_key',Articles::class);
         $this->set('hide_children_in_tree',true);
         $this->salt = $xpdo->getOption('articles.twitter.salt',null,'tw1tt3rs4uth4p1ish0rribl3');
     }
@@ -92,7 +92,7 @@ class ArticlesContainer extends modResource {
         $oldAliasLength = ($useMultiByte ? mb_strlen($oldAlias,$encoding) : strlen($oldAlias)) + 1;
         $uriField = $this->xpdo->escape('uri');
 
-        $sql = 'UPDATE '.$this->xpdo->getTableName('Article').'
+        $sql = 'UPDATE '.$this->xpdo->getTableName(Article::class).'
             SET '.$uriField.' = CONCAT("'.$newAlias.'",SUBSTRING('.$uriField.','.$oldAliasLength.'))
             WHERE
                 '.$this->xpdo->escape('parent').' = '.$this->get('id').'
@@ -141,7 +141,7 @@ class ArticlesContainer extends modResource {
 		// System Default
 		$template_id = $this->getOption('articles.default_article_template'); 
 		// Attempt to override for this container
-		$container = $this->xpdo->getObject('modResource', $this->id); 
+		$container = $this->xpdo->getObject(modResource::class, $this->id);
 		if ($container) {
 			$props = $container->get('properties');
 			if ($props) {
@@ -230,7 +230,7 @@ class ArticlesContainer extends modResource {
         if ($this->isRss()) {
             $this->set('template',0);
             /** @var modContentType $contentType */
-            $contentType = $this->xpdo->getObject('modContentType', ['mime_type' => 'application/rss+xml']);
+            $contentType = $this->xpdo->getObject(modContentType::class, ['mime_type' => 'application/rss+xml']);
             if ($contentType) {
                 $this->set('content_type',$contentType->get('id'));
                 $this->xpdo->response->contentType = $contentType;
@@ -318,7 +318,7 @@ class ArticlesContainer extends modResource {
      */
     public function getPostListingCall($placeholderPrefix = '') {
         $settings = $this->getContainerSettings();
-        $where = ['class_key' => 'Article'];
+        $where = ['class_key' => Article::class];
         if (!empty($_REQUEST['arc_author'])) {
             $userPk = $this->xpdo->sanitizeString($_REQUEST['arc_author']);
             if (function_exists('filter_var')) {
@@ -326,7 +326,7 @@ class ArticlesContainer extends modResource {
             } else { $userPkNum = intval($userPk); }
             if ($userPkNum == 0) {
                 /** @var modUser $user */
-                $user = $this->xpdo->getObject('modUser', ['username' => $userPk]);
+                $user = $this->xpdo->getObject(modUser::class, ['username' => $userPk]);
                 if ($user) {
                     $userPk = $user->get('id');
                 } else { $userPk = false; }
@@ -584,7 +584,7 @@ class ArticlesContainerCreateProcessor extends modResourceCreateProcessor {
         $settings['notificationServices'] = implode(',',$notificationServices);
         $this->object->setProperties($settings,'articles');
 
-        $this->object->set('class_key','ArticlesContainer');
+        $this->object->set('class_key',ArticlesContainer::class);
         $this->object->set('cacheable',true);
         $this->object->set('isfolder',true);
         return parent::beforeSave();
@@ -609,9 +609,9 @@ class ArticlesContainerCreateProcessor extends modResourceCreateProcessor {
     public function addContainerId() {
         $saved = true;
         /** @var modSystemSetting $setting */
-        $setting = $this->modx->getObject('modSystemSetting', ['key' => 'articles.container_ids']);
+        $setting = $this->modx->getObject(modSystemSetting::class, ['key' => 'articles.container_ids']);
         if (!$setting) {
-            $setting = $this->modx->newObject('modSystemSetting');
+            $setting = $this->modx->newObject(modSystemSetting::class);
             $setting->set('key','articles.container_ids');
             $setting->set('namespace','articles');
             $setting->set('area','furls');
@@ -636,7 +636,7 @@ class ArticlesContainerCreateProcessor extends modResourceCreateProcessor {
     public function removeFromArchivistIds() {
         $saved = true;
         /** @var modSystemSetting $setting */
-        $setting = $this->modx->getObject('modSystemSetting', ['key' => 'archivist.archive_ids']);
+        $setting = $this->modx->getObject(modSystemSetting::class, ['key' => 'archivist.archive_ids']);
         if ($setting) {
             $value = $setting->get('value');
             $archiveKey = $this->object->get('id').':arc_';
@@ -726,9 +726,9 @@ class ArticlesContainerUpdateProcessor extends modResourceUpdateProcessor {
     public function addContainerId() {
         $saved = true;
         /** @var modSystemSetting $setting */
-        $setting = $this->modx->getObject('modSystemSetting', ['key' => 'articles.container_ids']);
+        $setting = $this->modx->getObject(modSystemSetting::class, ['key' => 'articles.container_ids']);
         if (!$setting) {
-            $setting = $this->modx->newObject('modSystemSetting');
+            $setting = $this->modx->newObject(modSystemSetting::class);
             $setting->set('key','articles.container_ids');
             $setting->set('namespace','articles');
             $setting->set('area','furls');
@@ -753,7 +753,7 @@ class ArticlesContainerUpdateProcessor extends modResourceUpdateProcessor {
     public function removeFromArchivistIds() {
         $saved = true;
         /** @var modSystemSetting $setting */
-        $setting = $this->modx->getObject('modSystemSetting', ['key' => 'archivist.archive_ids']);
+        $setting = $this->modx->getObject(modSystemSetting::class, ['key' => 'archivist.archive_ids']);
         if ($setting) {
             $value = $setting->get('value');
             $archiveKey = $this->object->get('id').':arc_';

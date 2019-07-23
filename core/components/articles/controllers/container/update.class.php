@@ -22,7 +22,7 @@
 /**
  * @var modX $modx
  */
-if(!class_exists('ResourceUpdateManagerController')) {
+if(!class_exists(ResourceUpdateManagerController::class)) {
     require_once $modx->getOption('manager_path',null,MODX_MANAGER_PATH).'controllers/'.$modx->getOption('manager_theme',null,'default').'/resource/update.class.php';
 }
 /**

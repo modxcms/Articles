@@ -22,17 +22,17 @@ if ($transport && $transport->xpdo) {
 
             /* add in the package as an object so it can be upgraded */
             /** @var modTransportPackage $package */
-            $package = $modx->newObject('transport.modTransportPackage');
+            $package = $modx->newObject(modTransportPackage::class);
             $package->set('signature',$signature);
 
             /* make silly assumptions */
             $provider = 1;
 
             /* little more effort */
-            $defaultProvider = $modx->getObject('transport.modTransportProvider', ['name' => 'modx.com']);
+            $defaultProvider = $modx->getObject(modTransportProvider::class, ['name' => 'modx.com']);
 
             if ($defaultProvider) $provider = $defaultProvider->get('id');
-            else $modx->logManagerAction('package_install','transport.modTransportPackage','Unable to find modx.com provider, setting to 1');
+            else $modx->logManagerAction('package_install',modTransportPackage::class,'Unable to find modx.com provider, setting to 1');
 
             $package->fromArray([
                 'created' => date('Y-m-d h:i:s'),
@@ -59,18 +59,18 @@ if ($transport && $transport->xpdo) {
                 }
             }
             $success = $package->save();
-            $modx->logManagerAction('package_install','transport.modTransportPackage',$package->get('id'));
+            $modx->logManagerAction('package_install',modTransportPackage::class,$package->get('id'));
         break;
         
         case xPDOTransport::ACTION_UNINSTALL:
             /* remove the package on uninstall */
-            $package = $modx->getObject('transport.modTransportPackage', ['signature' => $signature]);
+            $package = $modx->getObject(modTransportPackage::class, ['signature' => $signature]);
             if ($package) {
                 if ($package->uninstall()) {
                     /** @var modCacheManager $cacheManager */
                     $cacheManager= $modx->getCacheManager();
                     $cacheManager->refresh();
-                    $modx->logManagerAction('package_uninstall','transport.modTransportPackage',$package->get('id'));
+                    $modx->logManagerAction('package_uninstall',modTransportPackage::class,$package->get('id'));
                 }
             }
         break;

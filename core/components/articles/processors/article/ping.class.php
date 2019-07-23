@@ -1,7 +1,7 @@
 <?php
 
 class ArticlePingProcessor extends modObjectProcessor {
-    public $classKey = 'Article';
+    public $classKey = Article::class;
     public $objectType = 'article';
     public $languageTopics = ['resource','articles:default'];
     /** @var Article $object */
@@ -11,7 +11,7 @@ class ArticlePingProcessor extends modObjectProcessor {
         $initialized = parent::initialize();
         $id = $this->getProperty('id',null);
         if (empty($id)) { return $this->modx->lexicon('articles.articles_err_ns'); }
-        $this->object = $this->modx->getObject('Article',$id);
+        $this->object = $this->modx->getObject(Article::class,$id);
         if (empty($this->object)) return $this->modx->lexicon('articles.article_err_nf');
         return $initialized;
     }
@@ -23,4 +23,4 @@ class ArticlePingProcessor extends modObjectProcessor {
         }
     }
 }
-return 'ArticlePingProcessor';
+return ArticlePingProcessor::class;

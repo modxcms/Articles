@@ -87,7 +87,7 @@ class ArticlesService {
     public function getChunk($name,array $properties = []) {
         $chunk = null;
         if (!isset($this->chunks[$name])) {
-            $chunk = $this->modx->getObject('modChunk', ['name' => $name],true);
+            $chunk = $this->modx->getObject(modChunk::class, ['name' => $name],true);
             if (empty($chunk)) {
                 $chunk = $this->_getTplChunk($name,$this->config['chunkSuffix']);
                 if ($chunk == false) return false;
@@ -95,7 +95,7 @@ class ArticlesService {
             $this->chunks[$name] = $chunk->getContent();
         } else {
             $o = $this->chunks[$name];
-            $chunk = $this->modx->newObject('modChunk');
+            $chunk = $this->modx->newObject(modChunk::class);
             $chunk->setContent($o);
         }
         $chunk->setCacheable(false);
@@ -117,7 +117,7 @@ class ArticlesService {
         if (file_exists($f)) {
             $o = file_get_contents($f);
             /** @var modChunk $chunk */
-            $chunk = $this->modx->newObject('modChunk');
+            $chunk = $this->modx->newObject(modChunk::class);
             $chunk->set('name',$name);
             $chunk->setContent($o);
         }

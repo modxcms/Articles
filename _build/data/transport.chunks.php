@@ -27,7 +27,7 @@
  */
 $chunks = [];
 
-$chunks[1]= $modx->newObject('modChunk');
+$chunks[1]= $modx->newObject(modChunk::class);
 $chunks[1]->fromArray([
     'id' => 1,
     'name' => 'sample.ArticlesLatestPostTpl',
@@ -35,7 +35,7 @@ $chunks[1]->fromArray([
     'snippet' => file_get_contents($sources['chunks'].'articleslatestpost.chunk.tpl'),
 ]);
 
-$chunks[2]= $modx->newObject('modChunk');
+$chunks[2]= $modx->newObject(modChunk::class);
 $chunks[2]->fromArray([
     'id' => 2,
     'name' => 'sample.ArticleRowTpl',
@@ -43,7 +43,7 @@ $chunks[2]->fromArray([
     'snippet' => file_get_contents($sources['chunks'].'articlerow.chunk.tpl'),
 ]);
 
-$chunks[3]= $modx->newObject('modChunk');
+$chunks[3]= $modx->newObject(modChunk::class);
 $chunks[3]->fromArray([
     'id' => 3,
     'name' => 'sample.ArticlesRss',
@@ -51,7 +51,7 @@ $chunks[3]->fromArray([
     'snippet' => file_get_contents($sources['chunks'].'articlesrss.chunk.tpl'),
 ]);
 
-$chunks[4]= $modx->newObject('modChunk');
+$chunks[4]= $modx->newObject(modChunk::class);
 $chunks[4]->fromArray([
     'id' => 4,
     'name' => 'sample.ArticlesRssItem',
@@ -59,7 +59,7 @@ $chunks[4]->fromArray([
     'snippet' => file_get_contents($sources['chunks'].'articlesrssitem.chunk.tpl'),
 ]);
 
-$chunks[5]= $modx->newObject('modChunk');
+$chunks[5]= $modx->newObject(modChunk::class);
 $chunks[5]->fromArray([
     'id' => 5,
     'name' => 'sample.ArchiveGroupByYear',
@@ -67,7 +67,7 @@ $chunks[5]->fromArray([
     'snippet' => file_get_contents($sources['chunks'].'archivegroupbyyear.chunk.tpl'),
 ]);
 
-$chunks[6]= $modx->newObject('modChunk');
+$chunks[6]= $modx->newObject(modChunk::class);
 $chunks[6]->fromArray([
     'id' => 6,
     'name' => 'sample.ArticlesRssCategoryNode',

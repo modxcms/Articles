@@ -34,7 +34,7 @@ $subpackages = [
     'quip'           => 'quip-2.3.3-pl',
     'taglister'      => 'taglister-1.1.7-pl',
 ];
-$spAttr = ['vehicle_class' => 'xPDOTransportVehicle'];
+$spAttr = ['vehicle_class' => xPDOTransportVehicle::class];
 
 foreach ($subpackages as $name => $signature) {
     $vehicle = $builder->createVehicle([

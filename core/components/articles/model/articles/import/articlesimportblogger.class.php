@@ -104,10 +104,10 @@ class ArticlesImportBlogger extends ArticlesImport {
      */
     public function createContainer() {
         if (!empty($this->config['id'])) {
-            $this->container = $this->modx->getObject('ArticlesContainer',$this->config['id']);
+            $this->container = $this->modx->getObject(ArticlesContainer::class,$this->config['id']);
         } else {
             /* @TODO Finish ability to import into new blog. */
-            $this->container = $this->modx->newObject('ArticlesContainer');
+            $this->container = $this->modx->newObject(ArticlesContainer::class);
             $this->container->fromArray([
                 'parent' => $this->modx->getOption('parent',$this->config,0),
             ]);
@@ -123,7 +123,7 @@ class ArticlesImportBlogger extends ArticlesImport {
     public function createArticle(SimpleXMLElement $entry) {
         $settings = $this->container->getContainerSettings();
         /** @var Article $article */
-        $article = $this->modx->newObject('Article');
+        $article = $this->modx->newObject(Article::class);
 
         $creator = $this->matchCreator((string)$entry->author->name);
         if (empty($creator)) {
@@ -145,7 +145,7 @@ class ArticlesImportBlogger extends ArticlesImport {
             'content' => (string)$entry->content,
             'introtext' => '',
             'show_in_tree' => false,
-            'class_key' => 'Article',
+            'class_key' => Article::class,
             'context_key' => $this->container->get('context_key'),
         ]);
         $article->setProperties($settings,'articles');
@@ -214,14 +214,14 @@ class ArticlesImportBlogger extends ArticlesImport {
      */
     public function matchCreator($match,$default = 0,$field = 'username') {
         /** @var modUser $user */
-        $c = $this->modx->newQuery('modUser');
-        $c->innerJoin('modUserProfile','Profile');
+        $c = $this->modx->newQuery(modUser::class);
+        $c->innerJoin(modUserProfile::class,'Profile');
         $fieldAlias = 'modUser';
         if (!in_array($field, ['username','id'])) $fieldAlias = 'Profile';
         $c->where([
             $fieldAlias.'.'.$field => $match,
         ]);
-        $user = $this->modx->getObject('modUser',$c);
+        $user = $this->modx->getObject(modUser::class,$c);
         if ($user) {
             return $user->get('id');
         }
@@ -245,18 +245,18 @@ class ArticlesImportBlogger extends ArticlesImport {
         $articleId = $this->hrefMap[$url];
 
         if ($this->debug) {
-            $article = $this->modx->newObject('Article');
+            $article = $this->modx->newObject(Article::class);
             $article->set('id',1);
         } else {
             /** @var Article $article */
-            $article = $this->modx->getObject('Article',$articleId);
+            $article = $this->modx->getObject(Article::class,$articleId);
             if (empty($article)) return false;
         }
 
         $threadKey = 'article-b'.$this->container->get('id').'-'.$article->get('id');
 
         /** @var quipThread $thread */
-        $thread = $this->modx->newObject('quipThread');
+        $thread = $this->modx->newObject(quipThread::class);
         $thread->fromArray([
             'createdon' => $article->get('publishedon'),
             'moderated' => $this->modx->getOption('commentsModerated',$settings,1),
@@ -279,7 +279,7 @@ class ArticlesImportBlogger extends ArticlesImport {
         }
 
         /** @var quipComment $comment */
-        $comment = $this->modx->newObject('quipComment');
+        $comment = $this->modx->newObject(quipComment::class);
         $comment->fromArray([
             'thread' => $threadKey,
             'parent' => 0,

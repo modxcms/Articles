@@ -24,7 +24,7 @@
  * @subpackage processors
  */
 class ArticleUnDeleteMultipleProcessor extends modObjectProcessor {
-    public $classKey = 'Article';
+    public $classKey = Article::class;
     public $objectType = 'article';
     public $languageTopics = ['resource','articles:default'];
 

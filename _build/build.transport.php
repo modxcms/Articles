@@ -119,7 +119,7 @@ $modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($plugins).' plugins.'); flu
 unset($plugins,$plugin,$attributes);
 
 /* @var modCategory $category */
-$category= $modx->newObject('modCategory');
+$category= $modx->newObject(modCategory::class);
 $category->set('id',1);
 $category->set('category',PKG_NAME);
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in category.'); flush();

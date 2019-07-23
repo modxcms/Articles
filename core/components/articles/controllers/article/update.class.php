@@ -19,7 +19,7 @@
  *
  * @package articles
  */
-if(!class_exists('ResourceUpdateManagerController')) {
+if(!class_exists(ResourceUpdateManagerController::class)) {
     require_once $modx->getOption('manager_path',null,MODX_MANAGER_PATH).'controllers/'.$modx->getOption('manager_theme',null,'default').'/resource/update.class.php';
 }
 /**
@@ -105,7 +105,7 @@ class ArticleUpdateManagerController extends ResourceUpdateManagerController {
 
     public function getTagsTV() {
         /** @var modTemplateVar $tv */
-        $tv = $this->modx->getObject('modTemplateVar', [
+        $tv = $this->modx->getObject(modTemplateVar::class, [
             'name' => 'articlestags',
         ]);
         if ($tv) {

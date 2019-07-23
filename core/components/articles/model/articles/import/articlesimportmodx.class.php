@@ -30,12 +30,12 @@ class ArticlesImportMODX extends ArticlesImport {
 
     public function import() {
         $imported = false;
-        $this->container = $this->modx->getObject('ArticlesContainer',$this->config['id']);
+        $this->container = $this->modx->getObject(ArticlesContainer::class,$this->config['id']);
 
         $c = $this->getQuery();
         if ($c === false) return $imported;
 
-        $resources = $this->modx->getIterator('modResource',$c);
+        $resources = $this->modx->getIterator(modResource::class,$c);
         if (empty($resources)) {
             $this->processor->addFieldError('parents','No resources found!');
             return false;
@@ -47,8 +47,8 @@ class ArticlesImportMODX extends ArticlesImport {
     }
 
     public function getQuery() {
-        $c = $this->modx->newQuery('modResource');
-        $c->select($this->modx->getSelectColumns('modResource','modResource'));
+        $c = $this->modx->newQuery(modResource::class);
+        $c->select($this->modx->getSelectColumns(modResource::class,'modResource'));
         $where = [];
 
         /* parents */
@@ -57,7 +57,7 @@ class ArticlesImportMODX extends ArticlesImport {
             $parents = is_array($this->config['modx-parents']) ? $this->config['modx-parents'] : explode(',',$this->config['modx-parents']);
             foreach ($parents as $parent) {
                 /** @var modResource $parentResource */
-                $parentResource = $this->modx->getObject('modResource',$parent);
+                $parentResource = $this->modx->getObject(modResource::class,$parent);
                 if (!$parentResource) continue;
 
                 $children = $this->modx->getChildIds($parent,10, [
@@ -114,7 +114,7 @@ class ArticlesImportMODX extends ArticlesImport {
         $where['id:!='] = [(int)$this->modx->getOption('site_start',null,1)];
 
         $where['isfolder'] = false;
-        $where['class_key:!='] = 'Article';
+        $where['class_key:!='] = Article::class;
         $c->where($where);
 
         if (!empty($this->config['modx-tagsField'])) {
@@ -142,9 +142,9 @@ class ArticlesImportMODX extends ArticlesImport {
 
         if ($isTV) {
             /** @var modTemplateVar $tv */
-            $tv = $this->modx->getObject('modTemplateVar',$tagsField);
+            $tv = $this->modx->getObject(modTemplateVar::class,$tagsField);
             if ($tv) {
-                $c->leftJoin('modTemplateVarResource','Tags', [
+                $c->leftJoin(modTemplateVarResource::class,'Tags', [
                     'Tags.contentid = modResource.id',
                     'Tags.tmplvarid' => $tv->get('id'),
                 ]);
@@ -170,7 +170,7 @@ class ArticlesImportMODX extends ArticlesImport {
         $resource->set('richtext',true);
         $resource->set('isfolder',false);
         $resource->set('cacheable',true);
-        $resource->set('class_key','Article');
+        $resource->set('class_key',Article::class);
         $resource->set('parent',$this->container->get('id'));
         $settings = $this->container->getProperties('articles');
         $resource->setProperties($settings,'articles');
@@ -227,18 +227,18 @@ class ArticlesImportMODX extends ArticlesImport {
         $imported = true;
         $threadFormat = str_replace(['[[*id]]','[[+id]]'],$resource->get('id'),$threadFormat);
         /** @var quipThread $thread */
-        $thread = $this->modx->getObject('quipThread', ['name' => $threadFormat]);
+        $thread = $this->modx->getObject(quipThread::class, ['name' => $threadFormat]);
         if ($thread) {
             $newThreadName = 'article-b'.$this->container->get('id').'-'.$resource->get('id');
 
-            $sql = 'UPDATE '.$this->modx->getTableName('quipComment')
+            $sql = 'UPDATE '.$this->modx->getTableName(quipComment::class)
                  .' SET '.$this->modx->escape('thread').' = "'.$newThreadName.'"'
                  .' WHERE '.$this->modx->escape('thread').' = "'.$thread->get('name').'"';
             if (!$this->debug) {
                 $this->modx->exec($sql);
             }
 
-            $sql = 'UPDATE '.$this->modx->getTableName('quipThread')
+            $sql = 'UPDATE '.$this->modx->getTableName(quipThread::class)
                  .' SET '.$this->modx->escape('name').' = "'.$newThreadName.'"'
                  .' WHERE '.$this->modx->escape('name').' = "'.$thread->get('name').'"';
             if (!$this->debug) {

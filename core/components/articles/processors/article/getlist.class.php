@@ -24,7 +24,7 @@
  * @subpackage processors
  */
 class ArticleGetListProcessor extends modObjectGetListProcessor {
-    public $classKey = 'Article';
+    public $classKey = Article::class;
     public $defaultSortField = 'createdon';
     public $defaultSortDirection = 'DESC';
     public $checkListPermission = true;
@@ -41,7 +41,7 @@ class ArticleGetListProcessor extends modObjectGetListProcessor {
     public $commentsEnabled = false;
 
     public function initialize() {
-        $action = $this->modx->getObject('modAction', [
+        $action = $this->modx->getObject(modAction::class, [
             'namespace' => 'core',
             'controller' => 'resource/update',
         ]);
@@ -66,7 +66,7 @@ class ArticleGetListProcessor extends modObjectGetListProcessor {
     }
 
     public function getTagsTV() {
-        $this->tvTags = $this->modx->getObject('modTemplateVar', ['name' => 'articlestags']);
+        $this->tvTags = $this->modx->getObject(modTemplateVar::class, ['name' => 'articlestags']);
         if (!$this->tvTags && $this->getProperty('sort') == 'tags') {
             $this->setProperty('sort','createdon');
         }
@@ -76,16 +76,16 @@ class ArticleGetListProcessor extends modObjectGetListProcessor {
     public function getParentContainer() {
         $parent = $this->getProperty('parent');
         if (!empty($parent)) {
-            $this->container = $this->modx->getObject('ArticlesContainer',$parent);
+            $this->container = $this->modx->getObject(ArticlesContainer::class,$parent);
         }
         return $this->container;
     }
 
     public function prepareQueryBeforeCount(xPDOQuery $c) {
-        $c->leftJoin('modUser','CreatedBy');
+        $c->leftJoin(modUser::class,'CreatedBy');
 
         if ($this->getTagsTV()) {
-            $c->leftJoin('modTemplateVarResource','Tags', [
+            $c->leftJoin(modTemplateVarResource::class,'Tags', [
                 'Tags.tmplvarid' => $this->tvTags->get('id'),
                 'Tags.contentid = Article.id',
             ]);
@@ -136,23 +136,23 @@ class ArticleGetListProcessor extends modObjectGetListProcessor {
         }
 
         $c->where([
-            'class_key' => 'Article',
+            'class_key' => Article::class,
         ]);
         return $c;
     }
 
     public function getSortClassKey() {
-        $classKey = 'Article';
+        $classKey = Article::class;
         switch ($this->getProperty('sort')) {
             case 'tags':
-                $classKey = 'modTemplateVarResource';
+                $classKey = modTemplateVarResource::class;
                 break;
         }
         return $classKey;
     }
 
     public function prepareQueryAfterCount(xPDOQuery $c) {
-        $c->select($this->modx->getSelectColumns('Article','Article'));
+        $c->select($this->modx->getSelectColumns(Article::class,'Article'));
         $c->select([
             'createdby_username' => 'CreatedBy.username',
         ]);
@@ -162,13 +162,13 @@ class ArticleGetListProcessor extends modObjectGetListProcessor {
             ]);
         }
         if ($this->commentsEnabled) {
-            $commentsQuery = $this->modx->newQuery('quipComment');
-            $commentsQuery->innerJoin('quipThread','Thread');
+            $commentsQuery = $this->modx->newQuery(quipComment::class);
+            $commentsQuery->innerJoin(quipThread::class,'Thread');
             $commentsQuery->where([
                 'Thread.resource = Article.id',
             ]);
             $commentsQuery->select([
-                'COUNT('.$this->modx->getSelectColumns('quipComment','quipComment','', ['id']).')',
+                'COUNT('.$this->modx->getSelectColumns(quipComment::class,'quipComment','', ['id']).')',
             ]);
             $commentsQuery->construct();
             $c->select([
@@ -241,4 +241,4 @@ class ArticleGetListProcessor extends modObjectGetListProcessor {
         return $string;
     }
 }
-return 'ArticleGetListProcessor';
+return ArticleGetListProcessor::class;

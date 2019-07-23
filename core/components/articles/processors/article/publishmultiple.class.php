@@ -24,7 +24,7 @@
  * @subpackage processors
  */
 class ArticlePublishMultipleProcessor extends modObjectProcessor {
-    public $classKey = 'Article';
+    public $classKey = Article::class;
     public $objectType = 'article';
     public $languageTopics = ['resource','articles:default'];
 
@@ -44,4 +44,4 @@ class ArticlePublishMultipleProcessor extends modObjectProcessor {
         return $this->success();
     }
 }
-return 'ArticlePublishMultipleProcessor';
+return ArticlePublishMultipleProcessor::class;

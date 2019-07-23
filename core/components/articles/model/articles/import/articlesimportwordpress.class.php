@@ -133,10 +133,10 @@ class ArticlesImportWordPress extends ArticlesImport {
      */
     public function createContainer() {
         if (!empty($this->config['id'])) {
-            $this->container = $this->modx->getObject('ArticlesContainer',$this->config['id']);
+            $this->container = $this->modx->getObject(ArticlesContainer::class,$this->config['id']);
         } else {
             /* @TODO Finish ability to import into new blog. */
-            $this->container = $this->modx->newObject('ArticlesContainer');
+            $this->container = $this->modx->newObject(ArticlesContainer::class);
             $this->container->fromArray([
                 'parent' => $this->modx->getOption('parent',$this->config,0),
             ]);
@@ -163,7 +163,7 @@ class ArticlesImportWordPress extends ArticlesImport {
         }
 
         /** @var Article $article */
-        $article = $this->modx->newObject('Article');
+        $article = $this->modx->newObject(Article::class);
         $article->fromArray([
             'parent' => $this->container->get('id'),
             'pagetitle' => $this->parseContent((string)$item->title),
@@ -178,7 +178,7 @@ class ArticlesImportWordPress extends ArticlesImport {
             'content' => $this->parseContent((string)$item->children('content',true)->encoded),
             'introtext' => $this->parseContent((string)$item->children('excerpt',true)->encoded),
             'show_in_tree' => false,
-            'class_key' => 'Article',
+            'class_key' => Article::class,
             'context_key' => $this->container->get('context_key'),
         ]);
         $article->setArchiveUri();
@@ -247,7 +247,7 @@ class ArticlesImportWordPress extends ArticlesImport {
      */
     public function matchCreator($username,$default = 0) {
         /** @var modUser $user */
-        $user = $this->modx->getObject('modUser', ['username' => $username]);
+        $user = $this->modx->getObject(modUser::class, ['username' => $username]);
         if ($user) {
             return $user->get('id');
         }
@@ -267,7 +267,7 @@ class ArticlesImportWordPress extends ArticlesImport {
         $threadKey = 'article-b'.$this->container->get('id').'-'.$article->get('id');
 
         /** @var quipThread $thread */
-        $thread = $this->modx->newObject('quipThread');
+        $thread = $this->modx->newObject(quipThread::class);
         $thread->fromArray([
             'createdon' => $article->get('publishedon'),
             'moderated' => $this->modx->getOption('commentsModerated',$settings,1),
@@ -294,7 +294,7 @@ class ArticlesImportWordPress extends ArticlesImport {
             $commentWp = $commentXml->children('wp',true);
 
             /** @var quipComment $comment */
-            $comment = $this->modx->newObject('quipComment');
+            $comment = $this->modx->newObject(quipComment::class);
             $comment->fromArray([
                 'thread' => $threadKey,
                 'parent' => array_key_exists($commentParent,$idMap) ? $idMap[$commentParent] : 0,

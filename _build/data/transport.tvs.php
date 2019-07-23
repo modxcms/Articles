@@ -27,7 +27,7 @@
  */
 $tvs = [];
 
-$tvs[1]= $modx->newObject('modTemplateVar');
+$tvs[1]= $modx->newObject(modTemplateVar::class);
 $tvs[1]->fromArray([
     'id' => 1,
     'name' => 'articlestags',

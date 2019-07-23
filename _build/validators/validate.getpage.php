@@ -43,12 +43,12 @@ if ($transport && $transport->xpdo) {
              * Do not install if newer or equal versions are found */
             $newer = true;
             $modx->addPackage('modx.transport',$modx->getOption('core_path').'model/');
-            $c = $modx->newQuery('transport.modTransportPackage');
+            $c = $modx->newQuery(modTransportPackage::class);
             $c->where([
                 'package_name' => $name,
                 'version_major:>=' => $newVersionMajor,
             ]);
-            $packages = $modx->getCollection('transport.modTransportPackage',$c);
+            $packages = $modx->getCollection(modTransportPackage::class,$c);
 
             foreach ($packages as $package) {
                 if ($package->compareVersion($newVersion)) {

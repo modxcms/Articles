@@ -31,7 +31,7 @@ class Article extends modResource {
 
     function __construct(xPDO &$xpdo) {
         parent :: __construct($xpdo);
-        $this->set('class_key','Article');
+        $this->set('class_key',Article::class);
         $this->set('show_in_tree',false);
         //$this->set('richtext',true);
         $this->set('searchable',true);
@@ -202,7 +202,7 @@ class Article extends modResource {
         $url = $this->xpdo->makeUrl($this->get('id'),$this->get('context_key'),'','full');
 
         foreach ($services as $service) {
-            $className = 'ArticlesNotification'.ucfirst(strtolower($service));
+            $className = ArticlesNotification::class.ucfirst(strtolower($service));
             $classPath = $modelPath.'notification/'.strtolower($className).'.class.php';
             if (file_exists($classPath)) {
                 require_once $classPath;
@@ -251,7 +251,7 @@ class Article extends modResource {
 
     public function setArchiveUri() {
         /** @var ArticlesContainer $container */
-        $container = $this->xpdo->getObject('ArticlesContainer', ['id' => $this->get('parent')]);
+        $container = $this->xpdo->getObject(ArticlesContainer::class, ['id' => $this->get('parent')]);
         if (!$container) {
             $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Articles] Could not find Container to set Article URI from.');
             return false;
@@ -279,7 +279,7 @@ class Article extends modResource {
         $furlTemplate = str_replace('%alias', $this->get('alias'), $furlTemplate);
 
         /** @var modContentType $contentType */
-        $contentType = $this->xpdo->getObject('modContentType', '');
+        $contentType = $this->xpdo->getObject(modContentType::class, '');
         if ($contentType) {
             $extension = ltrim($contentType->getExtension(), '.');
             $furlTemplate = str_replace('%ext', $extension, $furlTemplate);
@@ -309,7 +309,7 @@ class Article extends modResource {
             $quipPath = $this->xpdo->getOption('quip.core_path',null,$this->xpdo->getOption('core_path').'components/quip/');
             $this->xpdo->addPackage('quip',$quipPath.'model/');
             /** @var quipThread $thread */
-            $thread = $this->xpdo->getObject('quipThread', [
+            $thread = $this->xpdo->getObject(quipThread::class, [
                 'name' => 'article-b'.$this->get('parent').'-'.$this->get('id'),
             ]);
             if ($thread) {
@@ -333,7 +333,7 @@ class Article extends modResource {
         $prefixDuplicate = !empty($options['prefixDuplicate']) ? true : false;
         $newName = !empty($options['newName']) ? $options['newName'] : $this->get('pagetitle');
         /** @var Article $newResource */
-        $newResource = $this->xpdo->newObject('Article');
+        $newResource = $this->xpdo->newObject(Article::class);
         $newResource->fromArray($this->toArray('', true), '', false, true);
         $newResource->set('pagetitle', $newName);
 
@@ -385,7 +385,7 @@ class Article extends modResource {
         }
 
         /* set new menuindex */
-        $childrenCount = $this->xpdo->getCount('modResource', ['parent' => $this->get('parent')]);
+        $childrenCount = $this->xpdo->getCount(modResource::class, ['parent' => $this->get('parent')]);
         $newResource->set('menuindex',$childrenCount);
 
         /* save resource */
@@ -397,7 +397,7 @@ class Article extends modResource {
         /** @var modTemplateVarResource $oldTemplateVarResource */
         foreach ($tvds as $oldTemplateVarResource) {
             /** @var modTemplateVarResource $newTemplateVarResource */
-            $newTemplateVarResource = $this->xpdo->newObject('modTemplateVarResource');
+            $newTemplateVarResource = $this->xpdo->newObject(modTemplateVarResource::class);
             $newTemplateVarResource->set('contentid',$newResource->get('id'));
             $newTemplateVarResource->set('tmplvarid',$oldTemplateVarResource->get('tmplvarid'));
             $newTemplateVarResource->set('value',$oldTemplateVarResource->get('value'));
@@ -408,7 +408,7 @@ class Article extends modResource {
         /** @var modResourceGroupResource $oldResourceGroupResource */
         foreach ($groups as $oldResourceGroupResource) {
             /** @var modResourceGroupResource $newResourceGroupResource */
-            $newResourceGroupResource = $this->xpdo->newObject('modResourceGroupResource');
+            $newResourceGroupResource = $this->xpdo->newObject(modResourceGroupResource::class);
             $newResourceGroupResource->set('document_group',$oldResourceGroupResource->get('document_group'));
             $newResourceGroupResource->set('document',$newResource->get('id'));
             $newResourceGroupResource->save();
@@ -460,7 +460,7 @@ class ArticleCreateProcessor extends modResourceCreateProcessor {
         $this->setProperty('isfolder',false);
         $this->setProperty('cacheable',true);
         $this->setProperty('clearCache',true);
-        $this->setProperty('class_key','Article');
+        $this->setProperty('class_key',Article::class);
         return parent::beforeSet();
     }
 
@@ -484,7 +484,7 @@ class ArticleCreateProcessor extends modResourceCreateProcessor {
         }
 
         /** @var ArticlesContainer $container */
-        $container = $this->modx->getObject('ArticlesContainer',$this->object->get('parent'));
+        $container = $this->modx->getObject(ArticlesContainer::class,$this->object->get('parent'));
         if ($container) {
             $settings = $container->getProperties('articles');
             $this->object->setProperties($settings,'articles');
@@ -538,20 +538,20 @@ class ArticleCreateProcessor extends modResourceCreateProcessor {
         $tags = $this->getProperty('tags',null);
         if ($tags !== null) {
             /** @var modTemplateVar $tv */
-            $tv = $this->modx->getObject('modTemplateVar', [
+            $tv = $this->modx->getObject(modTemplateVar::class, [
                 'name' => 'articlestags',
             ]);
             if ($tv) {
                 $defaultValue = $tv->processBindings($tv->get('default_text'),$this->object->get('id'));
                 if (strcmp($tags,$defaultValue) != 0) {
                     /* update the existing record */
-                    $tvc = $this->modx->getObject('modTemplateVarResource', [
+                    $tvc = $this->modx->getObject(modTemplateVarResource::class, [
                         'tmplvarid' => $tv->get('id'),
                         'contentid' => $this->object->get('id'),
                     ]);
                     if ($tvc == null) {
                         /** @var modTemplateVarResource $tvc add a new record */
-                        $tvc = $this->modx->newObject('modTemplateVarResource');
+                        $tvc = $this->modx->newObject(modTemplateVarResource::class);
                         $tvc->set('tmplvarid',$tv->get('id'));
                         $tvc->set('contentid',$this->object->get('id'));
                     }
@@ -560,7 +560,7 @@ class ArticleCreateProcessor extends modResourceCreateProcessor {
 
                 /* if equal to default value, erase TVR record */
                 } else {
-                    $tvc = $this->modx->getObject('modTemplateVarResource', [
+                    $tvc = $this->modx->getObject(modTemplateVarResource::class, [
                         'tmplvarid' => $tv->get('id'),
                         'contentid' => $this->object->get('id'),
                     ]);
@@ -604,7 +604,7 @@ class ArticleUpdateProcessor extends modResourceUpdateProcessor {
      */
     public function beforeSave() {
         $afterSave = parent::beforeSave();
-        $container = $this->modx->getObject('ArticlesContainer',$this->object->get('parent'));
+        $container = $this->modx->getObject(ArticlesContainer::class,$this->object->get('parent'));
 
         if ($this->object->get('published') && ($this->object->isDirty('alias') || $this->object->isDirty('published'))) {
             if (!$this->setArchiveUri()) {
@@ -642,20 +642,20 @@ class ArticleUpdateProcessor extends modResourceUpdateProcessor {
         $tags = $this->getProperty('tags',null);
         if ($tags !== null) {
             /** @var modTemplateVar $tv */
-            $tv = $this->modx->getObject('modTemplateVar', [
+            $tv = $this->modx->getObject(modTemplateVar::class, [
                 'name' => 'articlestags',
             ]);
             if ($tv) {
                 $defaultValue = $tv->processBindings($tv->get('default_text'),$this->object->get('id'));
                 if (strcmp($tags,$defaultValue) != 0) {
                     /* update the existing record */
-                    $tvc = $this->modx->getObject('modTemplateVarResource', [
+                    $tvc = $this->modx->getObject(modTemplateVarResource::class, [
                         'tmplvarid' => $tv->get('id'),
                         'contentid' => $this->object->get('id'),
                     ]);
                     if ($tvc == null) {
                         /** @var modTemplateVarResource $tvc add a new record */
-                        $tvc = $this->modx->newObject('modTemplateVarResource');
+                        $tvc = $this->modx->newObject(modTemplateVarResource::class);
                         $tvc->set('tmplvarid',$tv->get('id'));
                         $tvc->set('contentid',$this->object->get('id'));
                     }
@@ -664,7 +664,7 @@ class ArticleUpdateProcessor extends modResourceUpdateProcessor {
 
                 /* if equal to default value, erase TVR record */
                 } else {
-                    $tvc = $this->modx->getObject('modTemplateVarResource', [
+                    $tvc = $this->modx->getObject(modTemplateVarResource::class, [
                         'tmplvarid' => $tv->get('id'),
                         'contentid' => $this->object->get('id'),
                     ]);

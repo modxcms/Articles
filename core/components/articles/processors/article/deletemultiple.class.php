@@ -24,7 +24,7 @@
  * @subpackage processors
  */
 class ArticleDeleteMultipleProcessor extends modObjectProcessor {
-    public $classKey = 'Article';
+    public $classKey = Article::class;
     public $objectType = 'article';
     public $languageTopics = ['resource','articles:default'];
 
@@ -44,4 +44,4 @@ class ArticleDeleteMultipleProcessor extends modObjectProcessor {
         return $this->success();
     }
 }
-return 'ArticleDeleteMultipleProcessor';
+return ArticleDeleteMultipleProcessor::class;

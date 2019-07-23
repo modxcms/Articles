@@ -31,7 +31,7 @@
 $plugins = [];
 
 /* create the plugin object */
-$plugins[0] = $modx->newObject('modPlugin');
+$plugins[0] = $modx->newObject(modPlugin::class);
 $plugins[0]->set('id',1);
 $plugins[0]->set('name','ArticlesPlugin');
 $plugins[0]->set('description','Handles FURLs for Articles.');

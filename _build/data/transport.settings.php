@@ -25,7 +25,7 @@
  * @subpackage build
  */
 $settings = [];
-$settings['articles.container_ids']= $modx->newObject('modSystemSetting');
+$settings['articles.container_ids']= $modx->newObject(modSystemSetting::class);
 $settings['articles.container_ids']->fromArray([
     'key' => 'articles.container_ids',
     'value' => '',
@@ -33,7 +33,7 @@ $settings['articles.container_ids']->fromArray([
     'namespace' => 'articles',
     'area' => 'furls',
 ],'',true,true);
-$settings['articles.default_container_template']= $modx->newObject('modSystemSetting');
+$settings['articles.default_container_template']= $modx->newObject(modSystemSetting::class);
 $settings['articles.default_container_template']->fromArray([
     'key' => 'articles.default_container_template',
     'value' => 0,
@@ -41,7 +41,7 @@ $settings['articles.default_container_template']->fromArray([
     'namespace' => 'articles',
     'area' => 'site',
 ],'',true,true);
-$settings['articles.default_article_template']= $modx->newObject('modSystemSetting');
+$settings['articles.default_article_template']= $modx->newObject(modSystemSetting::class);
 $settings['articles.default_article_template']->fromArray([
     'key' => 'articles.default_article_template',
     'value' => 0,
@@ -49,7 +49,7 @@ $settings['articles.default_article_template']->fromArray([
     'namespace' => 'articles',
     'area' => 'site',
 ],'',true,true);
-$settings['articles.default_article_sort_field']= $modx->newObject('modSystemSetting');
+$settings['articles.default_article_sort_field']= $modx->newObject(modSystemSetting::class);
 $settings['articles.default_article_sort_field']->fromArray([
     'key' => 'articles.default_article_sort_field',
     'value' => 'createdon',
@@ -57,7 +57,7 @@ $settings['articles.default_article_sort_field']->fromArray([
     'namespace' => 'articles',
     'area' => 'site',
 ],'',true,true);
-$settings['articles.article_show_longtitle']= $modx->newObject('modSystemSetting');
+$settings['articles.article_show_longtitle']= $modx->newObject(modSystemSetting::class);
 $settings['articles.article_show_longtitle']->fromArray([
     'key' => 'articles.article_show_longtitle',
     'value' => false,
@@ -65,7 +65,7 @@ $settings['articles.article_show_longtitle']->fromArray([
     'namespace' => 'articles',
     'area' => 'site',
 ],'',true,true);
-$settings['articles.mgr_date_format']= $modx->newObject('modSystemSetting');
+$settings['articles.mgr_date_format']= $modx->newObject(modSystemSetting::class);
 $settings['articles.mgr_date_format']->fromArray([
     'key' => 'articles.mgr_date_format',
     'value' => '%b %d',
@@ -73,7 +73,7 @@ $settings['articles.mgr_date_format']->fromArray([
     'namespace' => 'articles',
     'area' => 'site',
 ],'',true,true);
-$settings['articles.mgr_time_format']= $modx->newObject('modSystemSetting');
+$settings['articles.mgr_time_format']= $modx->newObject(modSystemSetting::class);
 $settings['articles.mgr_time_format']->fromArray([
     'key' => 'articles.mgr_time_format',
     'value' => '%H:%I %p',

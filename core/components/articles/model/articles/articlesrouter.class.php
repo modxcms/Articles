@@ -74,7 +74,7 @@ class ArticlesRouter {
         }
         if (!$resourceId) return false;
 
-        $articlesContainer = $this->modx->getObject('ArticlesContainer', $resourceId);
+        $articlesContainer = $this->modx->getObject(ArticlesContainer::class, $resourceId);
         if ($articlesContainer instanceof ArticlesContainer && $articlesContainer->isRSS()) {
             $this->modx->sendForward($resourceId);
             return true;
