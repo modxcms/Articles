@@ -2,6 +2,8 @@ Changelog for Articles.
 
 Articles 1.8.0
 ===============================
+- Partly support for MODX 3
+- Fixed the hardcoded character limit for the alias field [issue #150]
 - Adds the description field when creating/updating an Article [issue #57]
 
 Articles 1.7.13
