@@ -162,6 +162,9 @@ Ext.extend(Articles.panel.Container,MODx.panel.Resource,{
 
     ,getMainLeftFields: function(config) {
         config = config || {record:{}};
+
+        var aliasLength = ~~MODx.config['friendly_alias_max_length'] || 0;
+
         return [{
             xtype: 'textfield'
             ,fieldLabel: _('articles.container_title')+'<span class="required">*</span>'
@@ -190,7 +193,7 @@ Ext.extend(Articles.panel.Container,MODx.panel.Resource,{
             ,description: '<b>[[*alias]]</b><br />'+_('articles.container_alias_desc')
             ,name: 'alias'
             ,id: 'modx-resource-alias'
-            ,maxLength: 100
+            ,maxLength: (aliasLength > 255 || aliasLength === 0) ? 255 : aliasLength
             ,anchor: '100%'
             ,value: config.record.alias || ''
         },{

@@ -363,6 +363,9 @@ Ext.extend(Articles.panel.Article,MODx.panel.Resource,{
 
     ,getMainRightFields: function(config) {
         config = config || {};
+
+        var aliasLength = ~~MODx.config['friendly_alias_max_length'] || 0;
+
         return [{
             xtype: 'fieldset'
             ,title: _('articles.publishing_information')
@@ -455,7 +458,7 @@ Ext.extend(Articles.panel.Article,MODx.panel.Resource,{
                 ,description: '<b>[[*alias]]</b><br />'+_('articles.article_alias_help')
                 ,name: 'alias'
                 ,id: 'modx-resource-alias'
-                ,maxLength: 100
+                ,maxLength: (aliasLength > 255 || aliasLength === 0) ? 255 : aliasLength
                 ,anchor: '100%'
                 ,value: config.record.alias || ''
 
