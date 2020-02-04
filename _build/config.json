@@ -81,12 +81,12 @@
             "key": "mgr_date_format"
             ,"type": "textfield"
             ,"area": "site"
-            ,"value": "%b %d"
+            ,"value": "M d"
         },{
             "key": "mgr_time_format"
             ,"type": "textfield"
             ,"area": "site"
-            ,"value": "%H:%I %p"
+            ,"value": "H:i:s"
         },{
             "key": "container_ids"
             ,"type": "textfield"
