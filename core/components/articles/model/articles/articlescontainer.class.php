@@ -19,9 +19,16 @@
  *
  * @package articles
  */
-require_once MODX_CORE_PATH.'model/modx/modprocessor.class.php';
-require_once MODX_CORE_PATH.'model/modx/processors/resource/create.class.php';
-require_once MODX_CORE_PATH.'model/modx/processors/resource/update.class.php';
+
+/**
+ * Detect if we are running MODX 2.x or 3.x and include the required files if we are on 2.x
+ */
+if (!class_exists('\MODX\Revolution\modX')) {
+    require_once MODX_CORE_PATH.'model/modx/modprocessor.class.php';
+    require_once MODX_CORE_PATH.'model/modx/processors/resource/create.class.php';
+    require_once MODX_CORE_PATH.'model/modx/processors/resource/update.class.php';
+}
+
 /**
  * @package articles
  */
