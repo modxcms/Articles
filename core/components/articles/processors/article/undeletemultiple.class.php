@@ -44,4 +44,4 @@ class ArticleUnDeleteMultipleProcessor extends modObjectProcessor {
         return $this->success();
     }
 }
-return 'ArticleUnDeleteMultipleProcessor';
+return ArticleUnDeleteMultipleProcessor::class;
