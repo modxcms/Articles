@@ -294,7 +294,7 @@ class Article extends modResource {
 
         $furlTemplate = str_replace('%id', $this->get('id'), $furlTemplate);
 
-        $uri = rtrim($containerUri,'/') .'/'. rtrim($furlTemplate);
+        $uri = rtrim($containerUri,$this->xpdo->getOption('container_suffix', null, '/')) .'/'. rtrim($furlTemplate);
 
         $this->set('uri',$uri);
         $this->set('uri_override',true);
