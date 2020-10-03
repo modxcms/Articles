@@ -52,6 +52,9 @@ class ArticlesRouter {
         /* get resource to redirect to */
         $resourceId = false;
         $prefix = 'arc_';
+        $startPageResId = false;
+        $startPagePrefix = '';
+        $startPageId = $this->modx->getOption('site_start');
         foreach ($containerIds as $archive) {
 	        if (empty($archive)) continue;
             $archive = explode(':',$archive);
@@ -71,6 +74,12 @@ class ArticlesRouter {
                 $resourceId = $archiveId;
                 if (isset($archive[1])) $prefix = $archive[1];
             }
+        }
+        if (!$resourceId) {
+            if ($startPageResId) {
+                $resourceId = $startPageResId;
+                $prefix = $startPagePrefix;
+            } else return false;
         }
         if (!$resourceId) return false;
 

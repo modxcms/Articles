@@ -19,9 +19,16 @@
  *
  * @package articles
  */
-require_once MODX_CORE_PATH.'model/modx/modprocessor.class.php';
-require_once MODX_CORE_PATH.'model/modx/processors/resource/create.class.php';
-require_once MODX_CORE_PATH.'model/modx/processors/resource/update.class.php';
+
+/**
+ * Detect if we are running MODX 2.x or 3.x and include the required files if we are on 2.x
+ */
+if (!class_exists('\MODX\Revolution\modX')) {
+    require_once MODX_CORE_PATH.'model/modx/modprocessor.class.php';
+    require_once MODX_CORE_PATH.'model/modx/processors/resource/create.class.php';
+    require_once MODX_CORE_PATH.'model/modx/processors/resource/update.class.php';
+}
+
 /**
  * @package articles
  */
@@ -268,11 +275,13 @@ class ArticlesContainer extends modResource {
         $feedAppendage = $this->xpdo->getOption('rssAlias',$settings,'feed.rss,rss');
         $feedAppendage = explode(',',$feedAppendage);
         $fullUri = $this->xpdo->context->getOption('base_url',null,MODX_BASE_URL).$this->get('uri');
+        $fullUri = rtrim($fullUri, $this->xpdo->getOption('container_suffix', null, '/'));
 
         $hasQuery = strpos($_SERVER['REQUEST_URI'],'?');
         $requestUri = !empty($hasQuery) ? substr($_SERVER['REQUEST_URI'],0,$hasQuery) : $_SERVER['REQUEST_URI'];
         if (strpos($requestUri,$fullUri) === 0 && strlen($fullUri) != strlen($requestUri)) {
             $appendage = rtrim(str_replace($fullUri,'',$requestUri),'/');
+            $appendage = ltrim($appendage, '.');
             if (in_array($appendage,$feedAppendage)) {
                 $isRss = true;
             }

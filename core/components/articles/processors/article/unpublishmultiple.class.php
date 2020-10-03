@@ -44,4 +44,4 @@ class ArticleUnPublishMultipleProcessor extends modObjectProcessor {
         return $this->success();
     }
 }
-return 'ArticleUnPublishMultipleProcessor';
+return ArticleUnPublishMultipleProcessor::class;

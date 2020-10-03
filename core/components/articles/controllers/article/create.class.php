@@ -19,7 +19,11 @@
  *
  * @package articles
  */
-if(!class_exists(ResourceCreateManagerController::class)) {
+
+/**
+ * Detect if we are running MODX 2.x or 3.x and include the required files if we are on 2.x
+ */
+if (!class_exists('\MODX\Revolution\modX')) {
     require_once $modx->getOption('manager_path',null,MODX_MANAGER_PATH).'controllers/'.$modx->getOption('manager_theme',null,'default').'/resource/create.class.php';
 }
 /**
@@ -34,7 +38,7 @@ class ArticleCreateManagerController extends ResourceCreateManagerController {
         $mgrUrl = $this->modx->getOption('manager_url',null,MODX_MANAGER_URL);
         $this->addJavascript($mgrUrl.'assets/modext/util/datetime.js');
         $this->addJavascript($mgrUrl.'assets/modext/widgets/element/modx.panel.tv.renders.js');
-        $this->addJavascript($mgrUrl.'assets/modext/widgets/resource/modx.grid.resource.security.js');
+        $this->addJavascript($mgrUrl.'assets/modext/widgets/resource/modx.grid.resource.security.local.js');
         $this->addJavascript($mgrUrl.'assets/modext/widgets/resource/modx.panel.resource.tv.js');
         $this->addJavascript($mgrUrl.'assets/modext/widgets/resource/modx.panel.resource.js');
         $this->addJavascript($mgrUrl.'assets/modext/sections/resource/create.js');

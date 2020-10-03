@@ -209,7 +209,7 @@ class ArticlesImportMODX extends ArticlesImport {
         if (empty($containerUri)) {
             $containerUri = $this->container->get('alias');
         }
-        $uri = rtrim($containerUri,'/').'/'.$year.'/'.$month.'/'.$day.'/'.$resource->get('alias');
+        $uri = rtrim($containerUri,$this->modx->getOption('container_suffix', null, '/')).'/'.$year.'/'.$month.'/'.$day.'/'.$resource->get('alias');
 
         $resource->set('uri',rtrim($uri,'/').'/');
         $resource->set('uri_override',true);

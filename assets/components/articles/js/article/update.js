@@ -10,18 +10,30 @@ Articles.page.UpdateArticle = function(config) {
     Articles.page.UpdateArticle.superclass.constructor.call(this,config);
 };
 Ext.extend(Articles.page.UpdateArticle,MODx.page.UpdateResource,{
-	doesButtonExist: function(btnArray, lexiconKey) {
-		var exists = false, _k = 0;
-		btnArray.map(function(item) {
-			if(lexiconKey == item.text) exists = _k;
-			_k++;
+	doesButtonExist: function(btnArray, lexiconKey, handler) {
+	    handler = handler || null;
+		var exists = false;
+
+		btnArray.forEach(function(item) {
+			if (typeof item === 'object') {
+                if (typeof item.menu !== "undefined") {
+                    exists = Articles.page.UpdateArticle.prototype.doesButtonExist(item.menu.items, lexiconKey, handler);
+                }
+			    if (lexiconKey.toString() === item.text.replace(/<[^>]+>/g, '').trim()) {
+                    exists = true;
+
+                    if (handler !== null) {
+                        item.handler = handler;
+                    }
+                }
+            }
 		});
 		return exists;
 	}
     ,getButtons: function(cfg) {
 		var btns = MODx.page.UpdateResource.prototype.getButtons(cfg); //[];
 
-        if (cfg.canSave == 1 && this.doesButtonExist(btns, _('save') === false)) {
+        if (cfg.canSave == 1 && !this.doesButtonExist(btns, _('save'))) {
             btns.push({
                 process: (MODx.config.connector_url) ? 'resource/update' : 'update'
                 ,text: _('save')
@@ -58,33 +70,32 @@ Ext.extend(Articles.page.UpdateArticle,MODx.page.UpdateResource,{
 		    btns.push('-');
 	    }
 
-		var _view = {
-			process: 'preview'
-			,text: _('view')
-			,handler: this.preview
-			,scope: this
-		}, _idx = this.doesButtonExist(btns, _('view'));
+	    var _preview = function() {
+            window.open(cfg.preview_url);
+            return false;
+        };
 
-		if(!_idx) {
-			btns.push(_view);
-			btns.push('-');
-		} else {
-			btns.splice(_idx,1, _view);
-		}
+	    if (!this.doesButtonExist(btns, _('view'), _preview)) {
+            btns.push({
+                process: 'preview'
+                ,text: _('view')
+                ,handler: _preview
+                ,scope: this
+            });
+            btns.push('-');
+        }
 
-		var _cnl = {
-			process: 'cancel'
-			,text: _('cancel')
-			,handler: this.cancel
-			,scope: this
-		}, _idx = this.doesButtonExist(btns, _('cancel'));
+		if (!this.doesButtonExist(btns, _('cancel'))) {
+		    console.log(btns, _('cancel'));
+		    btns.push({
+                process: 'cancel'
+                ,text: _('cancel')
+                ,handler: this.cancel
+                ,scope: this
+            });
 
-		if(!_idx) {
-			btns.push(_cnl);
-			btns.push('-');
-		} else {
-			btns.splice(_idx,1, _cnl);
-		}
+            btns.push('-');
+        }
 
 		if(!this.doesButtonExist(btns, _('help_ex'))) {
 	        btns.push({
@@ -92,13 +103,13 @@ Ext.extend(Articles.page.UpdateArticle,MODx.page.UpdateResource,{
 	            ,handler: MODx.loadHelpPane
 	        });
 		}
-
-		// remove duplicate spacings
-		for(var i=0; i<=(btns.length - 1); i++) {
-			var item = btns[i];
-			if(item != '-') continue;
-			if(btns[i+1] == '-' || (btns[i+1] && btns[i+1].hidden == true)) btns.splice(i,1);
-		}
+        //
+		// // remove duplicate spacings
+		// for(var i=0; i<=(btns.length - 1); i++) {
+		// 	var item = btns[i];
+		// 	if(item != '-') continue;
+		// 	if(btns[i+1] == '-' || (btns[i+1] && btns[i+1].hidden == true)) btns.splice(i,1);
+		// }
 
 		return btns;
     }
