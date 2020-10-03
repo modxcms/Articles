@@ -2,6 +2,7 @@ Changelog for Articles.
 
 Articles 1.8.0
 ===============================
+- Fixes invalid markup in sample templates [#52]
 - Partly support for MODX 3
 - Fixes the container suffix being added to the uri when using a custom container suffix [issue #70]
 - Fixes the RSS feed not working when the container suffix was appended to the resource [issue #106]
