@@ -279,6 +279,43 @@ Ext.extend(Articles.panel.Container,MODx.panel.Resource,{
             ,id: 'modx-resource-published'
             ,inputValue: 1
             ,checked: parseInt(config.record.published)
+        },
+        ,{
+            xtype: 'xdatetime'
+            ,fieldLabel: _('resource_publishedon')
+            ,description: '<b>[[*publishedon]]</b><br />'+_('resource_publishedon_help')
+            ,name: 'publishedon'
+            ,id: 'modx-resource-publishedon'
+            ,allowBlank: true
+            ,dateFormat: MODx.config.manager_date_format
+            ,timeFormat: MODx.config.manager_time_format
+            ,dateWidth: 120
+            ,timeWidth: 120
+            ,value: config.record.publishedon
+        },{
+            xtype: MODx.config.publish_document ? 'xdatetime' : 'hidden'
+            ,fieldLabel: _('resource_publishdate')
+            ,description: '<b>[[*pub_date]]</b><br />'+_('resource_publishdate_help')
+            ,name: 'pub_date'
+            ,id: 'modx-resource-pub-date'
+            ,allowBlank: true
+            ,dateFormat: MODx.config.manager_date_format
+            ,timeFormat: MODx.config.manager_time_format
+            ,dateWidth: 120
+            ,timeWidth: 120
+            ,value: config.record.pub_date
+        },{
+            xtype: MODx.config.publish_document ? 'xdatetime' : 'hidden'
+            ,fieldLabel: _('resource_unpublishdate')
+            ,description: '<b>[[*unpub_date]]</b><br />'+_('resource_unpublishdate_help')
+            ,name: 'unpub_date'
+            ,id: 'modx-resource-unpub-date'
+            ,allowBlank: true
+            ,dateFormat: MODx.config.manager_date_format
+            ,timeFormat: MODx.config.manager_time_format
+            ,dateWidth: 120
+            ,timeWidth: 120
+            ,value: config.record.unpub_date
         }]
     }
 });
