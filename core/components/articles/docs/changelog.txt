@@ -8,6 +8,7 @@ Articles 1.8.0
 - Fixes the RSS feed not working when the container suffix was appended to the resource [issue #106]
 - Fixed the hardcoded character limit for the alias field [issue #150]
 - Adds the description field when creating/updating an Article [issue #57]
+- Adds publishing fields to Article container forms
 
 Articles 1.7.13
 ===============================
