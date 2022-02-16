@@ -7,12 +7,19 @@
  * @var array $options
  * @package articles
  */
+if (!class_exists('\modTransportPackage')) {
+    class_alias(\MODX\Revolution\Transport\modTransportPackage::class, \modTransportPackage::class);
+}
 $success= true;
 if ($transport && $transport->xpdo) {
     $signature = 'archivist-1.2.4-pl';
     $modx =& $transport->xpdo;
-    $modx->addPackage('modx.transport',$modx->getOption('core_path').'model/');
-    
+    if (class_exists('\MODX\Revolution\modX')) {
+        $modx->addPackage('Revolution\Transport', MODX_CORE_PATH . 'src/');
+    } else {
+        $modx->addPackage('modx.transport',$modx->getOption('core_path').'model/');
+    }
+
     switch ($options[xPDOTransport::PACKAGE_ACTION]) {
         case xPDOTransport::ACTION_INSTALL:
         case xPDOTransport::ACTION_UPGRADE:
