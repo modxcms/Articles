@@ -47,7 +47,7 @@ class ArticlesContainer extends modResource {
      */
     function __construct(xPDO & $xpdo) {
         parent :: __construct($xpdo);
-        $this->set('class_key',Articles::class);
+        $this->set('class_key',Article::class);
         $this->set('hide_children_in_tree',true);
         $this->salt = $xpdo->getOption('articles.twitter.salt',null,'tw1tt3rs4uth4p1ish0rribl3');
     }
