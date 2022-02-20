@@ -37,7 +37,6 @@ $sources = [
     'root' => $root,
     'build' => $root .'_build/',
     'resolvers' => $root . '_build/resolvers/',
-    'validators' => $root . '_build/validators/',
     'subpackages' => $root . '_build/subpackages/',
     'data' => $root . '_build/data/',
     'events' => $root . '_build/data/events/',
@@ -193,6 +192,9 @@ $vehicle->resolve('file', [
 $vehicle->resolve('file', [
     'source' => $sources['source_assets'],
     'target' => "return MODX_ASSETS_PATH . 'components/';",
+]);
+$vehicle->resolve('php', [
+    'source' => $sources['resolvers'] . 'dependencies.resolver.php',
 ]);
 $vehicle->resolve('php', [
     'source' => $sources['resolvers'] . 'extpack.resolver.php',
