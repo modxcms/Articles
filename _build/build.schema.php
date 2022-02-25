@@ -85,16 +85,21 @@ $generator->mapHeader= <<<EOD
  */
 EOD;
 
-$generator->parseSchema(
-    $sources['core'] . 'schema/' . PKG_NAME_LOWER . '.mysql.schema.xml',
-    $sources['core'] . '/src/',
-    [
-        'compile'         => null,
-        'update'          => 0,
-        'regenerate'      => 1,
-        'namespacePrefix' => 'Articles\\'
-    ]
-);
+
+/* WARNING
+ * parseSchema trashes the model files in the mysql directory. So, don't use for now - edit them manually.
+ */
+
+//$generator->parseSchema(
+//    $sources['core'] . 'schema/' . PKG_NAME_LOWER . '.mysql.schema.xml',
+//    $sources['core'] . '/src/',
+//    [
+//        'compile'         => null,
+//        'update'          => 0,
+//        'regenerate'      => 1,
+//        'namespacePrefix' => 'Articles\\'
+//    ]
+//);
 
 $mtime= microtime();
 $mtime= explode(" ", $mtime);
