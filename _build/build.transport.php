@@ -19,6 +19,12 @@
  *
  * @package articles
  */
+
+use MODX\Revolution\modCategory;
+use MODX\Revolution\modX;
+use MODX\Revolution\Transport\modPackageBuilder;
+use xPDO\Transport\xPDOTransport;
+
 $mtime = microtime();
 $mtime = explode(' ', $mtime);
 $mtime = $mtime[1] + $mtime[0];
@@ -28,8 +34,8 @@ set_time_limit(0);
 /* define package */
 define('PKG_NAME','Articles');
 define('PKG_NAME_LOWER',strtolower(PKG_NAME));
-define('PKG_VERSION','1.7.13');
-define('PKG_RELEASE','pl');
+define('PKG_VERSION','2.0.0');
+define('PKG_RELEASE','alpha1');
 
 /* define sources */
 $root = dirname(dirname(__FILE__)).'/';
@@ -50,13 +56,12 @@ $sources = [
     'templates' => $root.'core/components/'.PKG_NAME_LOWER.'/elements/templates/',
     'lexicon' => $root . 'core/components/'.PKG_NAME_LOWER.'/lexicon/',
     'docs' => $root.'core/components/'.PKG_NAME_LOWER.'/docs/',
-    'model' => $root.'core/components/'.PKG_NAME_LOWER.'/model/',
+    'model' => $root.'core/components/'.PKG_NAME_LOWER.'/Model/',
 ];
 unset($root);
 
 /* override with your own defines here (see build.config.sample.php) */
 require_once $sources['build'] . '/build.config.php';
-require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
 require_once $sources['build'] . '/includes/functions.php';
 
 $modx= new modX();
@@ -65,7 +70,7 @@ echo '<pre>'; /* used for nice formatting of log messages */
 $modx->setLogLevel(modX::LOG_LEVEL_INFO);
 $modx->setLogTarget('ECHO');
 
-$modx->loadClass('transport.modPackageBuilder','',false, true);
+//$modx->loadClass('transport.modPackageBuilder','',false, true);
 $builder = new modPackageBuilder($modx);
 $builder->createPackage(PKG_NAME_LOWER,PKG_VERSION,PKG_RELEASE);
 $builder->registerNamespace(PKG_NAME_LOWER,false,true,'{core_path}components/'.PKG_NAME_LOWER.'/','{assets_path}components/'.PKG_NAME_LOWER.'/');

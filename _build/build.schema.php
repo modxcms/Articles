@@ -19,6 +19,9 @@
  *
  * @package articles
  */
+
+use MODX\Revolution\modX;
+
 /**
  * Build Schema script
  *
@@ -40,17 +43,17 @@ $root = dirname(dirname(__FILE__)).'/';
 $sources = [
     'root' => $root,
     'core' => $root.'core/components/'.PKG_NAME_LOWER.'/',
-    'model' => $root.'core/components/'.PKG_NAME_LOWER.'/model/',
+    'model' => $root.'core/components/'.PKG_NAME_LOWER.'/Model/',
     'assets' => $root.'assets/components/'.PKG_NAME_LOWER.'/',
 ];
 
 /* load modx and configs */
 require_once dirname(__FILE__) . '/build.config.php';
-include_once MODX_CORE_PATH . 'model/modx/modx.class.php';
+
 $modx= new modX();
 $modx->initialize('mgr');
-$modx->loadClass('transport.modPackageBuilder','',false, true);
-echo '<pre>'; /* used for nice formatting of log messages */
+
+echo '<pre>';
 $modx->setLogLevel(modX::LOG_LEVEL_INFO);
 $modx->setLogTarget('ECHO');
 
@@ -80,7 +83,7 @@ $generator->mapHeader= <<<EOD
  * [+phpdoc-package+]
  */
 EOD;
-$generator->parseSchema($sources['model'] . 'schema/'.PKG_NAME_LOWER.'.mysql.schema.xml', $sources['model']);
+$generator->parseSchema($sources['core'] . 'schema/'.PKG_NAME_LOWER.'.mysql.schema.xml', $sources['model']);
 
 
 $mtime= microtime();
