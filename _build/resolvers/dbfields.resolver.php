@@ -70,7 +70,7 @@ if ($object->xpdo) {
 
             // Look for old class names in the database and update them
             $oldClassKeys = ['Article', 'ArticlesContainer'];
-            $found = $this->modx->getCollection(modResource::class, [
+            $found = $modx->getCollection(modResource::class, [
                 'class_key:IN' => $oldClassKeys
             ]);
             foreach ($found as $resource) {
