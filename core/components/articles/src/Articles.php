@@ -19,12 +19,18 @@
  *
  * @package articles
  */
+
+namespace Articles;
+
+use MODX\Revolution\modChunk;
+use MODX\Revolution\modX;
+
 /**
  * The base service class for Articles.
  *
  * @package articles
  */
-class ArticlesService {
+class Articles {
     /**
      * A reference to the modX instance
      * @var modX $modx
@@ -43,7 +49,7 @@ class ArticlesService {
     public $chunks;
 
     /**
-     * Create an instance of ArticlesService.
+     * Create an instance of Articles.
      *
      * @param modX $modx A reference to the modX object
      * @param array $config A configuration array
@@ -64,7 +70,8 @@ class ArticlesService {
             'connectorUrl' => $connectorUrl,
 
             'corePath' => $corePath,
-            'modelPath' => $corePath.'model/',
+            'srcPath' => $corePath.'src/',
+            'modelPath' => $corePath.'src/Model/',
             'elementsPath' => $corePath.'elements/',
             'snippetsPath' => $corePath.'elements/snippets/',
             'tvsPath' => $corePath.'elements/tvs/',
@@ -84,7 +91,8 @@ class ArticlesService {
      * @param array $properties The properties for the Chunk
      * @return string The processed content of the Chunk
      */
-    public function getChunk($name,array $properties = []) {
+    public function getChunk($name, array $properties = [])
+    {
         $chunk = null;
         if (!isset($this->chunks[$name])) {
             $chunk = $this->modx->getObject(modChunk::class, ['name' => $name],true);
@@ -111,7 +119,8 @@ class ArticlesService {
      * @return modChunk/boolean Returns the modChunk object if found, otherwise
      * false.
      */
-    private function _getTplChunk($name,$suffix = '.chunk.tpl') {
+    private function _getTplChunk($name, $suffix = '.chunk.tpl')
+    {
         $chunk = false;
         $f = $this->config['chunksPath'].strtolower($name).$suffix;
         if (file_exists($f)) {
@@ -124,7 +133,8 @@ class ArticlesService {
         return $chunk;
     }
 
-    public static function arrayUnique($arr){
+    public static function arrayUnique($arr)
+    {
         return array_keys(array_flip($arr));
     }
 

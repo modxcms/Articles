@@ -19,7 +19,13 @@
  *
  * @package articles
  */
-require_once (dirname(__FILE__).'/articlesupdateservice.class.php');
+
+namespace Articles\Model\Update;
+
+use Exception;
+use MODX\Revolution\modX;
+use SimpleXMLElement;
+
 /**
  * @package articles
  * @subpackage updateservices

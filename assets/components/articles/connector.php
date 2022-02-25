@@ -23,14 +23,18 @@
  * Articles Connector
  *
  * @package articles
+ * @var \MODX\Revolution\modX $modx
+ *
  */
+
+use Articles\Articles;
+
 require_once dirname(dirname(dirname(dirname(__FILE__)))).'/config.core.php';
 require_once MODX_CORE_PATH.'config/'.MODX_CONFIG_KEY.'.inc.php';
 require_once MODX_CONNECTORS_PATH.'index.php';
 
 $corePath = $modx->getOption('articles.core_path',null,$modx->getOption('core_path').'components/articles/');
-require_once $corePath.'model/articles/articlesservice.class.php';
-$modx->articles = new ArticlesService($modx);
+$modx->articles = new Articles($modx);
 
 $modx->lexicon->load('articles:default');
 

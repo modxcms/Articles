@@ -217,7 +217,7 @@ Ext.extend(Articles.grid.ContainerArticles,MODx.grid.Grid,{
         if (panel && panel.record) {
             tpl = '&template=' + panel.record.articles_container_settings.articleTemplate
         }
-        MODx.loadPage(createPage, 'class_key=Article&parent='+MODx.request.id+'&context_key='+MODx.ctx+tpl);
+        MODx.loadPage(createPage, 'class_key=Articles\\Model\\Article&parent='+MODx.request.id+'&context_key='+MODx.ctx+tpl);
     }
     ,viewArticle: function(btn,e) {
         window.open(this.menu.record.data.preview_url);

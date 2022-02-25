@@ -2,6 +2,9 @@
     background-image: url(../images/cup.png) !important;
 }
 
+.articles-grid {
+    margin: 0 16px;
+}
 
 .articles-grid-date {
   color:#a0a0a0;

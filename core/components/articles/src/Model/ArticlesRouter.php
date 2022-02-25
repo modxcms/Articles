@@ -19,6 +19,11 @@
  *
  * @package articles
  */
+
+namespace Articles\Model;
+
+use MODX\Revolution\modX;
+
 class ArticlesRouter {
     /** @var modX $modx */
     public $modx;

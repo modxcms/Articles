@@ -85,7 +85,7 @@
   </div>
   <div id="footer-bottom">
    <p class="bottom-left">
-&nbsp; &copy; 2010-2012 Articles. all rights reserved.
+&nbsp; &copy; 2010-2022 Articles. all rights reserved.
       &nbsp; &nbsp; powered by <a href="http://modx.com/">modx revolution</a>
       &nbsp; &nbsp; <a href="http://www.bluewebtemplates.com/" title="Website Templates">website templates</a> by <a href="http://www.styleshout.com/">styleshout</a>
       </p>

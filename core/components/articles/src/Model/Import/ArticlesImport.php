@@ -19,6 +19,9 @@
  *
  * @package articles
  */
+
+use Articles\Articles;
+
 /**
  * @abstract
  * @package articles
@@ -27,7 +30,7 @@
 abstract class ArticlesImport {
     /** @var modX $xpdo */
     public $modx;
-    /** @var ArticlesService $articles */
+    /** @var Articles $articles */
     public $articles;
     /** @var array $config */
     public $config = [];
@@ -36,7 +39,7 @@ abstract class ArticlesImport {
     /** @var ContainerImportProcessor $processor */
     public $processor;
 
-    function __construct(ArticlesService $articles,ContainerImportProcessor $processor,array $config = []) {
+    function __construct(Articles $articles,ContainerImportProcessor $processor,array $config = []) {
         $this->articles =& $articles;
         $this->processor =& $processor;
         $this->modx =& $articles->modx;

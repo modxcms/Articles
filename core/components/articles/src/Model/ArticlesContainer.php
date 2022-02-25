@@ -1,33 +1,12 @@
 <?php
-/**
- * Articles
- *
- * Copyright 2011-12 by Shaun McCormick <shaun+articles@modx.com>
- *
- * Articles is free software; you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- *
- * Articles is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * Articles; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place, Suite 330, Boston, MA 02111-1307 USA
- *
- * @package articles
- */
 
-/**
- * Detect if we are running MODX 2.x or 3.x and include the required files if we are on 2.x
- */
-if (!class_exists('\MODX\Revolution\modX')) {
-    require_once MODX_CORE_PATH.'model/modx/modprocessor.class.php';
-    require_once MODX_CORE_PATH.'model/modx/processors/resource/create.class.php';
-    require_once MODX_CORE_PATH.'model/modx/processors/resource/update.class.php';
-}
+namespace Articles\Model;
+
+use MODX\Revolution\modContentType;
+use MODX\Revolution\modResource;
+use MODX\Revolution\modUser;
+use MODX\Revolution\modX;
+use xPDO\xPDO;
 
 /**
  * @package articles
@@ -35,7 +14,7 @@ if (!class_exists('\MODX\Revolution\modX')) {
 class ArticlesContainer extends modResource {
     /** @var modX $xpdo */
     public $xpdo;
-    public $allowListingInClassKeyDropdown = false;
+    public $allowListingInClassKeyDropdown = true;
     public $showInContextMenu = true;
     public $allowChildrenResources = false;
     public $oldAlias = null;
@@ -47,7 +26,7 @@ class ArticlesContainer extends modResource {
      */
     function __construct(xPDO & $xpdo) {
         parent :: __construct($xpdo);
-        $this->set('class_key',Article::class);
+        $this->set('class_key',ArticlesContainer::class);
         $this->set('hide_children_in_tree',true);
         $this->salt = $xpdo->getOption('articles.twitter.salt',null,'tw1tt3rs4uth4p1ish0rribl3');
     }
@@ -93,7 +72,8 @@ class ArticlesContainer extends modResource {
      * @param string $oldAlias
      * @return bool
      */
-    public function updateChildrenURIs($newAlias,$oldAlias) {
+    public function updateChildrenURIs(string $newAlias, string $oldAlias): bool
+    {
         $useMultiByte = $this->getOption('use_multibyte',null,false) && function_exists('mb_strlen');
         $encoding = $this->getOption('modx_charset',null,'UTF-8');
         $oldAliasLength = ($useMultiByte ? mb_strlen($oldAlias,$encoding) : strlen($oldAlias)) + 1;
@@ -104,8 +84,10 @@ class ArticlesContainer extends modResource {
             WHERE
                 '.$this->xpdo->escape('parent').' = '.$this->get('id').'
             AND SUBSTRING('.$uriField.',1,'.$oldAliasLength.') = "'.$oldAlias.'/"';
+
         $this->xpdo->log(xPDO::LOG_LEVEL_DEBUG,$sql);
         $this->xpdo->exec($sql);
+
         return true;
     }
 
@@ -174,7 +156,7 @@ class ArticlesContainer extends modResource {
 	
 	            Ext.getCmp('modx-resource-tree').loadAction(
 	                'a='+MODx.action['resource/create']
-	                + '&class_key='+((itm.classKey) ? itm.classKey : 'Article')
+	                + '&class_key='+((itm.classKey) ? itm.classKey : 'Articles\\Model\\Article')
 	                + '&parent='+p
 	                + '&template=".$template_id."'
 	                + (at.ctx ? '&context_key='+at.ctx : '')
@@ -254,7 +236,7 @@ class ArticlesContainer extends modResource {
             $this->getTagListerCall();
             $this->getLatestPostsCall();
             $settings = $this->getContainerSettings();
-            if ($this->getOption('commentsEnabled',$settings,true)) {
+            if ($this->getOption('commentsEnabled',$settings,false)) {
                 $this->getLatestCommentsCall();
                 $this->xpdo->setPlaceholder('comments_enabled',1);
             } else {
@@ -298,7 +280,7 @@ class ArticlesContainer extends modResource {
         $content = '[[!getArchives?
           &pageVarKey=`page`
           &parents=`'.$this->get('id').'`
-          &where=`{"class_key":"Article","searchable":1}`
+          &where=`{"class_key":"Articles\\Model\\Article","searchable":1}`
           &limit=`'.$this->xpdo->getOption('rssItems',$settings,10).'`
           &showHidden=`1`
           &includeContent=`1`
@@ -457,7 +439,7 @@ class ArticlesContainer extends modResource {
             &limit=`'.$this->xpdo->getOption('latestPostsLimit',$settings,5).'`
             &offset=`'.$this->xpdo->getOption('latestPostsOffset',$settings,0).'`
             &sortby=`publishedon`
-            &where=`{"class_key":"Article"}`
+            &where=`{"class_key":"Articles\Model\Article"}`
           '.$this->xpdo->getOption('otherLatestPosts',$settings,'').'
         ]]';
         $this->xpdo->setPlaceholder($placeholderPrefix.'latest_posts',$output);
@@ -545,262 +527,4 @@ class ArticlesContainer extends modResource {
     }
 }
 
-/**
- * Overrides the modResourceCreateProcessor to provide custom processor functionality for the Articles type
- *
- * @package articles
- */
-class ArticlesContainerCreateProcessor extends modResourceCreateProcessor {
-    /** @var ArticlesContainer $object */
-    public $object;
-    /**
-     * Override modResourceCreateProcessor::afterSave to provide custom functionality, saving the container settings to a
-     * custom field in the manager
-     * {@inheritDoc}
-     * @return boolean
-     */
-    public function beforeSave() {
-        $properties = $this->getProperties();
-        $settings = $this->object->getProperties('articles');
-        $notificationServices = [];
-        foreach ($properties as $k => $v) {
-            if (substr($k,0,8) == 'setting_') {
-                $key = substr($k,8);
-                if ($v === 'false') $v = 0;
-                if ($v === 'true') $v = 1;
 
-                switch ($key) {
-                    case 'notifyTwitter':
-                        if ($v) $notificationServices[] = 'twitter';
-                        break;
-                    case 'notifyTwitterConsumerKey':
-                        if (!empty($v)) {
-                            $v = $this->object->encrypt($v);
-                        }
-                        break;
-                    case 'notifyTwitterConsumerKeySecret':
-                        if (!empty($v)) {
-                            $v = $this->object->encrypt($v);
-                        }
-                        break;
-                    case 'notifyFacebook':
-                        if ($v) $notificationServices[] = 'facebook';
-                        break;
-                }
-                $settings[$key] = $v;
-            }
-        }
-        $settings['notificationServices'] = implode(',',$notificationServices);
-        $this->object->setProperties($settings,'articles');
-
-        $this->object->set('class_key',ArticlesContainer::class);
-        $this->object->set('cacheable',true);
-        $this->object->set('isfolder',true);
-        return parent::beforeSave();
-    }
-
-    /**
-     * Override modResourceCreateProcessor::afterSave to provide custom functionality
-     * {@inheritDoc}
-     * @return boolean
-     */
-    public function afterSave() {
-        $this->addContainerId();
-        $this->removeFromArchivistIds();
-        $this->setProperty('clearCache',true);
-        return parent::afterSave();
-    }
-
-    /**
-     * Add the Container ID to the articles system setting for managing container IDs for FURL redirection.
-     * @return boolean
-     */
-    public function addContainerId() {
-        $saved = true;
-        /** @var modSystemSetting $setting */
-        $setting = $this->modx->getObject(modSystemSetting::class, ['key' => 'articles.container_ids']);
-        if (!$setting) {
-            $setting = $this->modx->newObject(modSystemSetting::class);
-            $setting->set('key','articles.container_ids');
-            $setting->set('namespace','articles');
-            $setting->set('area','furls');
-            $setting->set('xtype','textfield');
-        }
-        $value = $setting->get('value');
-        $archiveKey = $this->object->get('id').':arc_';
-        $value = is_array($value) ? $value : explode(',',$value);
-        if (!in_array($archiveKey,$value)) {
-            $value[] = $archiveKey;
-            $value = array_unique($value);
-            $setting->set('value',implode(',',$value));
-            $saved = $setting->save();
-        }
-        return $saved;
-    }
-
-    /**
-     * Remove from Archivist IDs on prior versions of Archivist, to prevent conflicts
-     * @return boolean
-     */
-    public function removeFromArchivistIds() {
-        $saved = true;
-        /** @var modSystemSetting $setting */
-        $setting = $this->modx->getObject(modSystemSetting::class, ['key' => 'archivist.archive_ids']);
-        if ($setting) {
-            $value = $setting->get('value');
-            $archiveKey = $this->object->get('id').':arc_';
-            $value = is_array($value) ? $value : explode(',',$value);
-            if (in_array($archiveKey,$value)) {
-                $newKeys = [];
-                foreach ($value as $k => $v) {
-                    if ($v == $archiveKey) continue;
-                    $newKeys[] = $v;
-                }
-                $newKeys = array_unique($newKeys);
-                $setting->set('value',implode(',',$newKeys));
-                $saved = $setting->save();
-            }
-        }
-        return $saved;
-    }
-}
-
-/**
- * Overrides the modResourceUpdateProcessor to provide custom processor functionality for the Articles type
- *
- * @package articles
- */
-class ArticlesContainerUpdateProcessor extends modResourceUpdateProcessor {
-    /** @var ArticlesContainer $object */
-    public $object;
-    /**
-     * Override modResourceUpdateProcessor::beforeSave to provide custom functionality, saving settings for the container
-     * to a custom field in the DB
-     * {@inheritDoc}
-     * @return boolean
-     */
-    public function beforeSave() {
-        $properties = $this->getProperties();
-        $settings = $this->object->getProperties('articles');
-        $notificationServices = [];
-        foreach ($properties as $k => $v) {
-            if (substr($k,0,8) == 'setting_') {
-                $key = substr($k,8);
-                if ($v === 'false') $v = 0;
-                if ($v === 'true') $v = 1;
-
-                switch ($key) {
-                    case 'notifyTwitter':
-                        if ($v) $notificationServices[] = 'twitter';
-                        break;
-                    case 'notifyTwitterConsumerKey':
-                        if (!empty($v)) {
-                            $v = $this->object->encrypt($v);
-                        }
-                        break;
-                    case 'notifyTwitterConsumerKeySecret':
-                        if (!empty($v)) {
-                            $v = $this->object->encrypt($v);
-                        }
-                        break;
-                    case 'notifyFacebook':
-                        if ($v) $notificationServices[] = 'facebook';
-                        break;
-                }
-                $settings[$key] = $v;
-            }
-        }
-        $settings['notificationServices'] = implode(',',$notificationServices);
-        $this->object->setProperties($settings,'articles');
-        return parent::beforeSave();
-    }
-
-    /**
-     * Override modResourceUpdateProcessor::afterSave to provide custom functionality
-     * {@inheritDoc}
-     * @return boolean
-     */
-    public function afterSave() {
-        $this->addContainerId();
-        $this->removeFromArchivistIds();
-        $this->setProperty('clearCache',true);
-        //$this->object->set('isfolder',true);
-        return parent::afterSave();
-    }
-
-    /**
-     * Add the Container ID to the articles system setting for managing IDs for FURL redirection.
-     * @return boolean
-     */
-    public function addContainerId() {
-        $saved = true;
-        /** @var modSystemSetting $setting */
-        $setting = $this->modx->getObject(modSystemSetting::class, ['key' => 'articles.container_ids']);
-        if (!$setting) {
-            $setting = $this->modx->newObject(modSystemSetting::class);
-            $setting->set('key','articles.container_ids');
-            $setting->set('namespace','articles');
-            $setting->set('area','furls');
-            $setting->set('xtype','textfield');
-        }
-        $value = $setting->get('value');
-        $archiveKey = $this->object->get('id').':arc_';
-        $value = is_array($value) ? $value : explode(',',$value);
-        if (!in_array($archiveKey,$value)) {
-            $value[] = $archiveKey;
-            $value = array_unique($value);
-            $setting->set('value',implode(',',$value));
-            $saved = $setting->save();
-        }
-        return $saved;
-    }
-
-    /**
-     * Remove from Archivist IDs on prior versions of Archivist, to prevent conflicts
-     * @return boolean
-     */
-    public function removeFromArchivistIds() {
-        $saved = true;
-        /** @var modSystemSetting $setting */
-        $setting = $this->modx->getObject(modSystemSetting::class, ['key' => 'archivist.archive_ids']);
-        if ($setting) {
-            $value = $setting->get('value');
-            $archiveKey = $this->object->get('id').':arc_';
-            $value = is_array($value) ? $value : explode(',',$value);
-            if (in_array($archiveKey,$value)) {
-                $newKeys = [];
-                foreach ($value as $k => $v) {
-                    if ($v == $archiveKey) continue;
-                    $newKeys[] = $v;
-                }
-                $newKeys = array_unique($newKeys);
-                $setting->set('value',implode(',',$newKeys));
-                $saved = $setting->save();
-            }
-        }
-        return $saved;
-    }
-
-    /**
-     * Override cleanup to send only back needed params
-     * @return array|string
-     */
-    public function cleanup() {
-        $this->object->removeLock();
-        $this->clearCache();
-
-        $returnArray = $this->object->get(array_diff(array_keys($this->object->_fields), ['content','ta','introtext','description','link_attributes','pagetitle','longtitle','menutitle','articles_container_settings','properties']));
-        foreach ($returnArray as $k => $v) {
-            if (strpos($k,'tv') === 0) {
-                unset($returnArray[$k]);
-            }
-            if (strpos($k,'setting_') === 0) {
-                unset($returnArray[$k]);
-            }
-        }
-        $returnArray['class_key'] = $this->object->get('class_key');
-        $this->workingContext->prepare(true);
-        $returnArray['preview_url'] = $this->modx->makeUrl($this->object->get('id'), $this->object->get('context_key'), '', 'full');
-        return $this->success('',$returnArray);
-    }
-}

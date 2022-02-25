@@ -19,13 +19,17 @@
  *
  * @package articles
  */
+
+namespace Articles\Model\Update;
+
+use Articles\Model\Article;
+use MODX\Revolution\modX;
+
 /**
- * Base abstract class for notification senders
- *
  * @package articles
- * @subpackage notifications
+ * @subpackage updateservices
  */
-abstract class ArticlesNotification {
+abstract class ArticlesUpdateService {
     /** @var modX $xpdo */
     public $modx;
     /** @var Article $article */
@@ -45,7 +49,6 @@ abstract class ArticlesNotification {
      * @abstract
      * @param string $title The title of the Article
      * @param string $url The full URL of the Article
-     * @return boolean
      */
-    abstract public function send($title,$url);
+    abstract public function notify($title,$url);
 }

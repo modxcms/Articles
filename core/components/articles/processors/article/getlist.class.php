@@ -19,6 +19,13 @@
  *
  * @package articles
  */
+
+use Articles\Model\Article;
+use Articles\Model\ArticlesContainer;
+use MODX\Revolution\modTemplateVar;
+use MODX\Revolution\modTemplateVarResource;
+use MODX\Revolution\modUser;
+
 /**
  * @package articles
  * @subpackage processors
@@ -41,7 +48,10 @@ class ArticleGetListProcessor extends modObjectGetListProcessor {
     public $commentsEnabled = false;
 
     public function initialize() {
-        $action = $this->modx->getObject(modAction::class, [
+
+        // @todo: we need an alternative to modAction as it no longer exists!
+
+        $action = $this->modx->getObject('modAction', [
             'namespace' => 'core',
             'controller' => 'resource/update',
         ]);
@@ -81,7 +91,7 @@ class ArticleGetListProcessor extends modObjectGetListProcessor {
         return $this->container;
     }
 
-    public function prepareQueryBeforeCount(xPDOQuery $c) {
+    public function prepareQueryBeforeCount(\xPDO\Om\xPDOQuery $c) {
         $c->leftJoin(modUser::class,'CreatedBy');
 
         if ($this->getTagsTV()) {
@@ -151,7 +161,7 @@ class ArticleGetListProcessor extends modObjectGetListProcessor {
         return $classKey;
     }
 
-    public function prepareQueryAfterCount(xPDOQuery $c) {
+    public function prepareQueryAfterCount(\xPDO\Om\xPDOQuery $c) {
         $c->select($this->modx->getSelectColumns(Article::class,'Article'));
         $c->select([
             'createdby_username' => 'CreatedBy.username',
@@ -179,10 +189,10 @@ class ArticleGetListProcessor extends modObjectGetListProcessor {
     }
 
     /**
-     * @param xPDOObject|Article $object
+     * @param \xPDO\Om\xPDOObject|Article $object
      * @return array
      */
-    public function prepareRow(xPDOObject $object) {
+    public function prepareRow(\xPDO\Om\xPDOObject $object) {
         $resourceArray = parent::prepareRow($object);
 
         if (!empty($resourceArray['publishedon'])) {

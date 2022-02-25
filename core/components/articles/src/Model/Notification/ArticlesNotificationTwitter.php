@@ -19,8 +19,14 @@
  *
  * @package articles
  */
-require_once (dirname(__FILE__).'/articlesnotification.class.php');
-require_once (dirname(__FILE__).'/lib.twitteroauth.php');
+
+namespace Articles\Model\Notification;
+
+use Articles\Model\Article;
+use Articles\Model\ArticlesContainer;
+use MODX\Revolution\modX;
+use SimpleXMLElement;
+
 /**
  * Posts titles, URLs and tags for new Articles to Twitter
  * @package articles

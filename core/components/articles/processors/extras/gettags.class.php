@@ -1,4 +1,9 @@
 <?php
+
+use Articles\Articles;
+use MODX\Revolution\modTemplateVar;
+use MODX\Revolution\modTemplateVarResource;
+
 /**
  * @package articles
  * @subpackage processors
@@ -47,7 +52,7 @@ class ArticleExtrasGetTagsProcessor extends modObjectGetListProcessor {
             $tags = array_merge($tags, $addTags);
         }
 
-        $tags = ArticlesService::arrayUnique($tags);
+        $tags = Articles::arrayUnique($tags);
         sort($tags);
         $returnArray = [];
         foreach($tags as $tag){
