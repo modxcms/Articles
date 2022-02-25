@@ -19,8 +19,10 @@ if ($object->xpdo) {
         case xPDOTransport::ACTION_UPGRADE:
             /** @var modX $modx */
             $modx =& $object->xpdo;
-            $modelPath = $modx->getOption('articles.core_path',null,$modx->getOption('core_path').'components/articles/').'model/';
-            $modx->addPackage('articles',$modelPath);
+//            $modelPath = $modx->getOption('articles.core_path',null,$modx->getOption('core_path').'components/articles/').'model/';
+//            $modx->addPackage('articles',$modelPath);
+
+            $articles = $modx->services->get('articles');
 
             /** @var xPDOManager $manager */
             $manager = $modx->getManager();
@@ -64,6 +66,24 @@ if ($object->xpdo) {
                 }
                 $setting->set('value',true);
                 $setting->save();
+            }
+
+            // Look for old class names in the database and update them
+            $oldClassKeys = ['Article', 'ArticlesContainer'];
+            $found = $this->modx->getCollection(modResource::class, [
+                'class_key:IN' => $oldClassKeys
+            ]);
+            foreach ($found as $resource) {
+                switch ($resource->get('class_key')) {
+                    case 'Article':
+                        $resource->set('class_key', Article::class);
+                        $resource->save();
+                        break;
+                    case 'ArticlesContainer':
+                        $resource->set('class_key', ArticlesContainer::class);
+                        $resource->save();
+                        break;
+                }
             }
             break;
     }
