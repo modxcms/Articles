@@ -1,11 +1,15 @@
 <?php
+
+use xPDO\Transport\xPDOTransport;
+use MODX\Revolution\Transport\modTransportProvider;
+use MODX\Revolution\Transport\modTransportPackage;
+
 /**
  * Installs required dependencies packages
  *
  * @var xPDOTransport $transport
  * @var array $options
  */
-
 $modx = $transport->xpdo;
 
 $success = true;

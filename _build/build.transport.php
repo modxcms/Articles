@@ -43,7 +43,6 @@ $sources = [
     'root' => $root,
     'build' => $root .'_build/',
     'resolvers' => $root . '_build/resolvers/',
-    'subpackages' => $root . '_build/subpackages/',
     'data' => $root . '_build/data/',
     'events' => $root . '_build/data/events/',
     'permissions' => $root . '_build/data/permissions/',
@@ -63,6 +62,8 @@ unset($root);
 /* override with your own defines here (see build.config.sample.php) */
 require_once $sources['build'] . '/build.config.php';
 require_once $sources['build'] . '/includes/functions.php';
+
+require_once MODX_CORE_PATH . 'vendor/autoload.php';
 
 $modx= new modX();
 $modx->initialize('mgr');
@@ -94,10 +95,10 @@ $modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($settings).' system setting
 unset($settings,$setting,$attributes);
 
 /* add subpackages */
-$success = include $sources['data'].'transport.subpackages.php';
-if (!$success) { $modx->log(modX::LOG_LEVEL_FATAL,'Adding subpackages failed.'); }
-$modx->log(modX::LOG_LEVEL_INFO,'Added in subpackages.'); flush();
-unset($success);
+//$success = include $sources['data'].'transport.subpackages.php';
+//if (!$success) { $modx->log(modX::LOG_LEVEL_FATAL,'Adding subpackages failed.'); }
+//$modx->log(modX::LOG_LEVEL_INFO,'Added in subpackages.'); flush();
+//unset($success);
 
 /* add plugins */
 $plugins = include $sources['data'].'transport.plugins.php';
