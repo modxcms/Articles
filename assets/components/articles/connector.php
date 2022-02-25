@@ -39,7 +39,7 @@ $modx->articles = new Articles($modx);
 $modx->lexicon->load('articles:default');
 
 /* handle request */
-$path = $modx->getOption('processorsPath',$modx->articles->config,$corePath.'processors/');
+$path = $modx->getOption('processorsPath', $modx->articles->config,$corePath . 'src/Processors/');
 $modx->request->handleRequest([
     'processors_path' => $path,
     'location' => '',

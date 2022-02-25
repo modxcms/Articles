@@ -1,6 +1,11 @@
 <?php
 
-class ArticlePingProcessor extends modObjectProcessor {
+namespace Articles\Processors\Article;
+
+use Articles\Model\Article;
+use MODX\Revolution\Processors\ModelProcessor;
+
+class Ping extends ModelProcessor {
     public $classKey = Article::class;
     public $objectType = 'article';
     public $languageTopics = ['resource','articles:default'];
@@ -23,4 +28,4 @@ class ArticlePingProcessor extends modObjectProcessor {
         }
     }
 }
-return ArticlePingProcessor::class;
+return Ping::class;

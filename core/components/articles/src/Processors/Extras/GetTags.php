@@ -8,7 +8,7 @@ use MODX\Revolution\modTemplateVarResource;
  * @package articles
  * @subpackage processors
  */
-class ArticleExtrasGetTagsProcessor extends modObjectGetListProcessor {
+class GetTags extends modObjectGetListProcessor {
     public $checkListPermission = true;
 
 
@@ -63,4 +63,4 @@ class ArticleExtrasGetTagsProcessor extends modObjectGetListProcessor {
     }
 
 }
-return ArticleExtrasGetTagsProcessor::class;
+return GetTags::class;

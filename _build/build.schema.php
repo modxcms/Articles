@@ -43,12 +43,13 @@ $root = dirname(dirname(__FILE__)).'/';
 $sources = [
     'root' => $root,
     'core' => $root.'core/components/'.PKG_NAME_LOWER.'/',
-    'model' => $root.'core/components/'.PKG_NAME_LOWER.'/Model/',
+    'model' => $root.'core/components/'.PKG_NAME_LOWER.'/src/Model/',
     'assets' => $root.'assets/components/'.PKG_NAME_LOWER.'/',
 ];
 
 /* load modx and configs */
 require_once dirname(__FILE__) . '/build.config.php';
+require_once MODX_CORE_PATH . 'vendor/autoload.php';
 
 $modx= new modX();
 $modx->initialize('mgr');
@@ -83,8 +84,17 @@ $generator->mapHeader= <<<EOD
  * [+phpdoc-package+]
  */
 EOD;
-$generator->parseSchema($sources['core'] . 'schema/'.PKG_NAME_LOWER.'.mysql.schema.xml', $sources['model']);
 
+$generator->parseSchema(
+    $sources['core'] . 'schema/' . PKG_NAME_LOWER . '.mysql.schema.xml',
+    $sources['core'] . '/src/',
+    [
+        'compile'         => null,
+        'update'          => 0,
+        'regenerate'      => 1,
+        'namespacePrefix' => 'Articles\\'
+    ]
+);
 
 $mtime= microtime();
 $mtime= explode(" ", $mtime);

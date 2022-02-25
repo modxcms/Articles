@@ -9,7 +9,7 @@ Articles.window.ArticlesImport = function(config) {
         // ,width: '75%'
         ,width: 600
         ,url: Articles.connector_url
-        ,action: 'container/import'
+        ,action: 'Articles\\Processors\\Container\\Import'
         ,fileUpload: true
         ,fields: [{
             xtype: 'hidden'

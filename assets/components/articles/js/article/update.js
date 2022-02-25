@@ -554,7 +554,7 @@ Ext.extend(Articles.panel.Article,MODx.panel.Resource,{
             MODx.Ajax.request({
                 url: Articles.connector_url
                 ,params: {
-                    action: 'extras/gettags'
+                    action: 'Articles\\Processors\\Extras\\GetTags'
                     ,container: this.config.record['parent']
                 }
                 ,listeners: {

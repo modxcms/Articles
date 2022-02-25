@@ -18,7 +18,7 @@ Articles.combo.Tag = function(config, getStore) {
         ,forceSelection: false
         ,pageSize: 20
         ,url: Articles.connector_url
-        ,baseParams: {action: 'extras/gettags'}
+        ,baseParams: {action: 'Articles\\Processors\\Extras\\GetTags'}
     });
     Ext.applyIf(config,{
         store: new Ext.data.JsonStore({

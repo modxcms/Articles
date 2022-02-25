@@ -427,4 +427,3 @@ class Article extends modResource {
         return $newResource;
     }
 }
-

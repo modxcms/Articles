@@ -11,7 +11,7 @@ Articles.grid.ContainerArticles = function(config) {
         ,title: _('articles.articles')
         ,url: Articles.connector_url
         ,baseParams: {
-            action: 'article/getlist'
+            action: 'Articles\\Processors\\Article\\GetList'
             ,'parent': config.resource
         }
         ,saveParams: {
@@ -164,7 +164,7 @@ Ext.extend(Articles.grid.ContainerArticles,MODx.grid.Grid,{
     }
     ,clearFilter: function() {
     	this.getStore().baseParams = {
-            action: 'article/getList'
+            action: 'Articles\\Processors\\Article\\GetList'
             ,'parent': this.config.resource
     	};
         Ext.getCmp('articles-article-search').reset();
@@ -287,7 +287,7 @@ Ext.extend(Articles.grid.ContainerArticles,MODx.grid.Grid,{
             ,text: _('articles.article_delete_multiple_confirm')
             ,url: this.config.url
             ,params: {
-                action: 'article/deleteMultiple'
+                action: 'Articles\\Processors\\Article\\DeleteMultiple'
                 ,ids: cs
             }
             ,listeners: {
@@ -307,7 +307,7 @@ Ext.extend(Articles.grid.ContainerArticles,MODx.grid.Grid,{
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
-                action: 'article/undeleteMultiple'
+                action: 'Articles\\Processors\\Article\\UnDeleteMultiple'
                 ,ids: cs
             }
             ,listeners: {
@@ -340,7 +340,7 @@ Ext.extend(Articles.grid.ContainerArticles,MODx.grid.Grid,{
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
-                action: 'article/publishMultiple'
+                action: 'Articles\\Processors\\Article\\PublishMultiple'
                 ,ids: cs
             }
             ,listeners: {
@@ -360,7 +360,7 @@ Ext.extend(Articles.grid.ContainerArticles,MODx.grid.Grid,{
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
-                action: 'article/unpublishMultiple'
+                action: 'Articles\\Processors\\Article\\UnPublishMultiple'
                 ,ids: cs
             }
             ,listeners: {
