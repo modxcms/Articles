@@ -30,7 +30,7 @@ class GetList extends GetListProcessor {
     /** @var ArticlesContainer $container */
     public $container;
     /** @var boolean $commentsEnabled */
-    public $commentsEnabled = false;
+    public $commentsEnabled = true;
 
     public function initialize() {
 
