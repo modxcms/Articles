@@ -1,6 +1,10 @@
 <?php
 
+namespace Articles\Processors\Extras;
+
 use Articles\Articles;
+use MODX\Revolution\modResource;
+use MODX\Revolution\Processors\Model\GetListProcessor;
 use MODX\Revolution\modTemplateVar;
 use MODX\Revolution\modTemplateVarResource;
 
@@ -8,7 +12,7 @@ use MODX\Revolution\modTemplateVarResource;
  * @package articles
  * @subpackage processors
  */
-class GetTags extends modObjectGetListProcessor {
+class GetTags extends GetListProcessor {
     public $checkListPermission = true;
 
 

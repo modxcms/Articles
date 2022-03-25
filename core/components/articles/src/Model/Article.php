@@ -24,7 +24,7 @@ class Article extends modResource {
         parent :: __construct($xpdo);
         $this->set('class_key',self::class);
         $this->set('show_in_tree',false);
-        //$this->set('richtext',true);
+        $this->set('richtext',true);
         $this->set('searchable',true);
     }
     public static function getControllerPath(xPDO &$modx) {
@@ -34,7 +34,7 @@ class Article extends modResource {
     public function getContent(array $options = []) {
         if ($this->xpdo instanceof modX) {
             $settings = $this->getContainerSettings();
-            if ($this->xpdo->getOption('commentsEnabled',$settings,true)) {
+            if ($this->xpdo->getOption('commentsEnabled',$settings,false)) {
                 $this->getCommentsCall($settings);
                 $this->getCommentsReplyCall($settings);
                 $this->getCommentsCountCall($settings);
