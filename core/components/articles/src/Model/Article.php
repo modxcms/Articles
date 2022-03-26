@@ -34,7 +34,7 @@ class Article extends modResource {
     public function getContent(array $options = []) {
         if ($this->xpdo instanceof modX) {
             $settings = $this->getContainerSettings();
-            if ($this->xpdo->getOption('commentsEnabled',$settings,false)) {
+            if ($this->xpdo->getOption('commentsEnabled',$settings,true)) {
                 $this->getCommentsCall($settings);
                 $this->getCommentsReplyCall($settings);
                 $this->getCommentsCountCall($settings);

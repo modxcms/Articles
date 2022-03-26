@@ -236,7 +236,7 @@ class ArticlesContainer extends modResource {
             $this->getTagListerCall();
             $this->getLatestPostsCall();
             $settings = $this->getContainerSettings();
-            if ($this->getOption('commentsEnabled',$settings,false)) {
+            if ($this->getOption('commentsEnabled',$settings,true)) {
                 $this->getLatestCommentsCall();
                 $this->xpdo->setPlaceholder('comments_enabled',1);
             } else {
