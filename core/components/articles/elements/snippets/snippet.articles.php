@@ -27,15 +27,19 @@
  *
  * @package articles
  */
+
+use Articles\Model\ArticlesContainer;
+
 $modx->lexicon->load('articles:frontend');
 
-$container = $modx->getOption('container',$scriptProperties,0);
-if (empty($container)) return '';
-/** @var ArticlesContainer $container */
-$container = $modx->getObject(ArticlesContainer::class,$container);
+$container = $modx->getOption('container', $scriptProperties,0);
 if (empty($container)) return '';
 
-$placeholderPrefix = $modx->getOption('placeholderPrefix',$scriptProperties,'');
+/** @var ArticlesContainer $container */
+$container = $modx->getObject(ArticlesContainer::class, $container);
+if (empty($container)) return '';
+
+$placeholderPrefix = $modx->getOption('placeholderPrefix', $scriptProperties,'');
 
 $container->getPostListingCall($placeholderPrefix);
 $container->getArchivistCall($placeholderPrefix);

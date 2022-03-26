@@ -1,11 +1,15 @@
 <?php
+
+use xPDO\Transport\xPDOTransport;
+use MODX\Revolution\Transport\modTransportProvider;
+use MODX\Revolution\Transport\modTransportPackage;
+
 /**
  * Installs required dependencies packages
  *
  * @var xPDOTransport $transport
  * @var array $options
  */
-
 $modx = $transport->xpdo;
 
 $success = true;
@@ -18,9 +22,9 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
          */
         $packages = [
             'archivist' => '1.2.4',
-            'getpage' => '1.2.3',
+            'getpage' => '1.2.4',
             'getresources' => '1.7.0',
-            'quip' => '2.3.5',
+            'quip' => '2.3.3',
             'taglister' => '1.1.7',
         ];
 

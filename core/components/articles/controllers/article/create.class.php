@@ -20,12 +20,8 @@
  * @package articles
  */
 
-/**
- * Detect if we are running MODX 2.x or 3.x and include the required files if we are on 2.x
- */
-if (!class_exists('\MODX\Revolution\modX')) {
-    require_once $modx->getOption('manager_path',null,MODX_MANAGER_PATH).'controllers/'.$modx->getOption('manager_theme',null,'default').'/resource/create.class.php';
-}
+use Articles\Model\ArticlesContainer;
+
 /**
  * @package articles
  */

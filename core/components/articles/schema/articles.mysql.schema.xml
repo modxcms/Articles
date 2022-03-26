@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="Articles\Model" baseClass="xPDO\Om\xPDOObject" platform="mysql" defaultEngine="InnoDB" version="3.0">
+    <object class="ArticlesContainer" extends="MODX\Revolution\modResource">
+        <composite alias="Article" class="Articles\Model\Article" local="id" foreign="parent" cardinality="many" owner="local" />
+    </object>
+    <object class="Article" extends="MODX\Revolution\modResource">
+        <aggregate alias="Container" class="Articles\Model\ArticlesContainer" local="parent" foreign="id" cardinality="one" owner="foreign" />
+    </object>
+</model>

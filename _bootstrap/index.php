@@ -1,13 +1,29 @@
 <?php
 
 /**
- * Use this to quickly bootstrap the git version of Articles into MODX 2.x for development and testing.
+ * Use this to quickly bootstrap the git version of Articles into MODX 3.x for development and testing.
  *
  * This is a modified version of the bootstrap script written by Mark Hamstra ( modmore.com ) for Commerce_ModuleSkeleton
  * https://github.com/modmore/Commerce_ModuleSkeleton/blob/master/_bootstrap/index.php
  *
  * plus it incorporates sections of the current Articles build script and dependencies.
  */
+
+use MODX\Revolution\modX;
+use MODX\Revolution\modCategory;
+use MODX\Revolution\modChunk;
+use MODX\Revolution\modNamespace;
+use MODX\Revolution\modPlugin;
+use MODX\Revolution\modPluginEvent;
+use MODX\Revolution\modSnippet;
+use MODX\Revolution\modSystemSetting;
+use MODX\Revolution\modTemplate;
+use MODX\Revolution\modTemplateVar;
+use MODX\Revolution\modTemplateVarTemplate;
+use MODX\Revolution\Transport\modTransportPackage;
+use MODX\Revolution\Transport\modTransportProvider;
+
+use Articles\Articles;
 
 require_once __DIR__ . '/../_build/includes/functions.php';
 
@@ -32,7 +48,7 @@ $sources = [
     'templates' => $root.'core/components/'.PKG_NAME_LOWER.'/elements/templates/',
     'lexicon' => $root . 'core/components/'.PKG_NAME_LOWER.'/lexicon/',
     'docs' => $root.'core/components/'.PKG_NAME_LOWER.'/docs/',
-    'model' => $root.'core/components/'.PKG_NAME_LOWER.'/model/',
+    'model' => $root.'core/components/'.PKG_NAME_LOWER.'/Model/',
 ];
 unset($root);
 
@@ -43,21 +59,17 @@ if (!file_exists($sources['root'] . '/config.core.php')) {
 }
 
 echo "<pre>";
-/* Boot up MODX */
-echo "Loading modX...\n";
+echo "Loading MODX...\n";
 require_once $sources['root'] . '/config.core.php';
 require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
 $modx = new modX();
 echo "Initializing manager...\n";
 $modx->initialize('mgr');
-$modx->getService('error','error.modError', '', '');
+//$modx->getService('error','error.modError', '', '');
 $modx->setLogTarget('HTML');
 
-$articles = $modx->getService('articles','ArticlesService',
-    $sources['root'].'/core/components/articles/model/articles/', [
-        'articles.core_path' => $sources['root'].'/core/components/articles/',
-]);
-
+$articles = $modx->services->get('articles');
+if (!($articles instanceof Articles)) die(0);
 
 /* Namespace */
 if (!createObject(modNamespace::class, [

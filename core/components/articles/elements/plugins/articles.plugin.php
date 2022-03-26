@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Articles
  *
@@ -17,23 +18,32 @@
  * Articles; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
  *
+ * @var \MODX\Revolution\modX $modx
+ * @var array $scriptProperties
  * @package articles
  */
-/**
- * @var modX $modx
- * @var array $scriptProperties
- */
+
+use Articles\Model\Article;
+use Articles\Model\ArticlesRouter;
+
+if (!$modx->services->has('articles')) {
+    return;
+}
+
+$articles = $modx->services->get('articles');
+if (!($articles instanceof Articles\Articles)) return '';
+
 switch ($modx->event->name) {
     case 'OnManagerPageInit':
         $cssFile = $modx->getOption('articles.assets_url',null,$modx->getOption('assets_url').'components/articles/').'css/mgr.css';
         $modx->regClientCSS($cssFile);
         break;
+
     case 'OnPageNotFound':
-        $corePath = $modx->getOption('articles.core_path',null,$modx->getOption('core_path').'components/articles/');
-        require_once $corePath.'model/articles/articlesrouter.class.php';
         $router = new ArticlesRouter($modx);
         $router->route();
         return;
+
     case 'OnDocPublished':
         /** @var Article $resource */
         $resource =& $scriptProperties['resource'];

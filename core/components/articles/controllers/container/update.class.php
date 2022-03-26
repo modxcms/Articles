@@ -19,18 +19,12 @@
  *
  * @package articles
  */
-/**
- * @var modX $modx
- */
+
+use Articles\Model\ArticlesContainer;
 
 /**
- * Detect if we are running MODX 2.x or 3.x and include the required files if we are on 2.x
- */
-if (!class_exists('\MODX\Revolution\modX')) {
-    require_once $modx->getOption('manager_path',null,MODX_MANAGER_PATH).'controllers/'.$modx->getOption('manager_theme',null,'default').'/resource/update.class.php';
-}
-/**
  * @package articles
+ * @var modX $modx
  */
 class ArticlesContainerUpdateManagerController extends ResourceUpdateManagerController {
     /** @var ArticlesContainer $resource */

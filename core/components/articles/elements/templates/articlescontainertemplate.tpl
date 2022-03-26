@@ -53,11 +53,11 @@
   </ul>
 </div>
 
-[[+comments_enabled:is=`1`:then=`
+[[!+comments_enabled:is=`1`:then=`
 <div class="sidemenu">
   <h3>Latest Comments</h3>
   <ul>
-  [[+latest_comments]]
+  [[!+latest_comments]]
   </ul>
 </div>
 `]]
@@ -76,16 +76,16 @@
   <div id="footer-content">
     <div class="grid_4">
 <h3>Tags</h3>
-[[+tags]]
+[[!+tags]]
     </div>
     <div class="grid_4">
   <h3>Archives</h3>
-  [[+archives]]
+  [[!+archives]]
     </div>
   </div>
   <div id="footer-bottom">
    <p class="bottom-left">
-&nbsp; &copy; 2010-2012 Articles. all rights reserved.
+&nbsp; &copy; 2010-2022 Articles. all rights reserved.
       &nbsp; &nbsp; powered by <a href="http://modx.com/">modx revolution</a>
       &nbsp; &nbsp; <a href="http://www.bluewebtemplates.com/" title="Website Templates">website templates</a> by <a href="http://www.styleshout.com/">styleshout</a>
       </p>

@@ -19,6 +19,11 @@
  *
  * @package articles
  */
+
+use Articles\Articles;
+use Articles\Model\ArticlesContainer;
+use Articles\Model\Notification\TwitterOAuth;
+
 require_once dirname(dirname(dirname(dirname(__FILE__)))).'/config.core.php';
 require_once MODX_CORE_PATH.'config/'.MODX_CONFIG_KEY.'.inc.php';
 require_once MODX_CONNECTORS_PATH.'index.php';
@@ -32,11 +37,11 @@ require_once MODX_CONNECTORS_PATH.'index.php';
  * @subpackage twitter
  */
 $corePath = $modx->getOption('articles.core_path',null,$modx->getOption('core_path').'components/articles/');
-require_once $corePath.'model/articles/articlesservice.class.php';
-$articles = new ArticlesService($modx);
+require_once $corePath.'Model/Articles.php';
+$articles = new Articles($modx);
 $modx->lexicon->load('articles:default');
 
-$oAuthPath = $corePath.'model/articles/notification/lib.twitteroauth.php';
+$oAuthPath = $corePath.'Model/Notification/OAuthLib/lib.oauth.php';
 require_once $oAuthPath;
 
 if (empty($_REQUEST['container'])) die('No container!');
