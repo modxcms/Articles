@@ -1,5 +1,5 @@
 --------------------
-Articles - 1.8.1-pl
+Articles - 1.8.0-pl
 --------------------
 
 Now compatible with MODX 3!
