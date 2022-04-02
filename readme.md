@@ -20,7 +20,7 @@ When installing Articles, the package manager will attempt to also download and 
 
 At the time of writing, MODX 3.0.0-pl has just been released and there has been a lot of refactoring work done to make Articles compatible. However, due to incompatible class keys and the way custom resources classes function (Articles makes use of these) in MODX, the developers have had to split Articles into two versions. 
 
-Before upgrading to MODX 3 with Articles installed, you'll need to update Articles to at least version 1.8.1-pl. This will ensure an older incompatible version of Articles doesn't cause any errors during the upgrade process.
+Before upgrading to MODX 3 with Articles installed, you'll need to update Articles to at least version 1.8.0-pl. This will ensure an older incompatible version of Articles doesn't cause any errors during the upgrade process.
 
 Once upgraded to MODX 3.0, articles won't yet be fully usable. Go to the package manager, and you'll see a new version of Articles (2.0.0-alpha1 at time of writing) will be available. Download and install this to start using Articles with MODX 3! 
 

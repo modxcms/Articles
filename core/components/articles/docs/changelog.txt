@@ -5,16 +5,7 @@ Articles 2.0.0-alpha1 :: 2nd April, 2022
 - Complete refactor for MODX 3.0!
   Thanks to Joshua Lückers, Murray Wood and a sponsorship from modmore.
 
-Articles 1.8.1-pl :: 2nd April, 2022
-===============================
-- Removed old GPM config.json [2bdf82f]
-- Added class_alias \modTransportPackage::class for transition between MODX 2.x and 3.x [c566270]
-- Fix wrong class key [ce45222]
-- Download dependencies on install, instead of shipping as part of the package. [115c298]
-- Added a _bootstrap/index.php script to get up and running with the dev version quickly. [57074b7]
-- Confirmed upgrade from MODX 2.x to 3.x works now, and fixed articles grid baseParam. [323669b]
-
-Articles 1.8.0
+Articles 1.8.0 :: 2nd April, 2022
 ===============================
 - Fixes invalid markup in sample templates [#52]
 - Partly support for MODX 3
@@ -23,6 +14,12 @@ Articles 1.8.0
 - Fixed the hardcoded character limit for the alias field [issue #150]
 - Adds the description field when creating/updating an Article [issue #57]
 - Adds publishing fields to Article container forms
+- Removed old GPM config.json [2bdf82f]
+- Added class_alias \modTransportPackage::class for transition between MODX 2.x and 3.x [c566270]
+- Fix wrong class key [ce45222]
+- Download dependencies on install, instead of shipping as part of the package. [115c298]
+- Added a _bootstrap/index.php script to get up and running with the dev version quickly. [57074b7]
+- Confirmed upgrade from MODX 2.x to 3.x works now, and fixed articles grid baseParam. [323669b]
 
 Articles 1.7.13
 ===============================
