@@ -8,7 +8,7 @@ Articles.window.ArticlesImport = function(config) {
         // ,height: 150
         // ,width: '75%'
         ,width: 600
-        ,url: Articles.connector_url
+        ,url: MODx.config.connector_url
         ,action: 'Articles\\Processors\\Container\\Import'
         ,fileUpload: true
         ,fields: [{

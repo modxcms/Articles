@@ -30,7 +30,7 @@ class GetList extends GetListProcessor {
     /** @var ArticlesContainer $container */
     public $container;
     /** @var boolean $commentsEnabled */
-    public $commentsEnabled = true;
+    public $commentsEnabled = false;
 
     public function initialize() {
 
@@ -50,7 +50,7 @@ class GetList extends GetListProcessor {
 
         if ($this->getParentContainer()) {
             $settings = $this->container->getContainerSettings();
-            if ($this->modx->getOption('commentsEnabled',$settings,true)) {
+            if ($this->modx->getOption('commentsEnabled',$settings,false)) {
                 $quipCorePath = $this->modx->getOption('quip.core_path',null,$this->modx->getOption('core_path',null,MODX_CORE_PATH).'components/quip/');
                 if ($this->modx->addPackage('quip',$quipCorePath.'model/')) {
                     $this->commentsEnabled = true;

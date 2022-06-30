@@ -3,3 +3,4 @@ config.core.php
 .idea
 nbproject
 .DS_Store
+_packages

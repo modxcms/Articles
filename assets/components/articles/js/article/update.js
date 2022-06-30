@@ -217,7 +217,6 @@ Ext.extend(Articles.panel.Article,MODx.panel.Resource,{
             ,defaults: {
                 border: false
                 ,msgTarget: 'under'
-                ,width: 400
             }
             ,items: this.getMainFields(config)
         });
@@ -552,7 +551,7 @@ Ext.extend(Articles.panel.Article,MODx.panel.Resource,{
             }
 
             MODx.Ajax.request({
-                url: Articles.connector_url
+                url: MODx.config.connector_url
                 ,params: {
                     action: 'Articles\\Processors\\Extras\\GetTags'
                     ,container: this.config.record['parent']

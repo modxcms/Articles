@@ -24,7 +24,6 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
             'archivist' => '1.2.4',
             'getpage' => '1.2.4',
             'getresources' => '1.7.0',
-            'quip' => '2.3.3',
             'taglister' => '1.1.7',
         ];
 

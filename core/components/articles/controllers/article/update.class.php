@@ -29,8 +29,15 @@ use MODX\Revolution\modTemplateVar;
 class ArticleUpdateManagerController extends ResourceUpdateManagerController {
     /** @var Article $resource */
     public $resource;
-    
+    /** @var boolean $commentsEnabled */
+    public $commentsEnabled = false;
     public function loadCustomCssJs() {
+        if ($this->modx->getOption('commentsEnabled',$settings,false)) {
+            $quipCorePath = $this->modx->getOption('quip.core_path',null,$this->modx->getOption('core_path',null,MODX_CORE_PATH).'components/quip/');
+            if ($this->modx->addPackage('quip',$quipCorePath.'model/')) {
+                $this->commentsEnabled = true;
+            }
+        }
         $managerUrl = $this->context->getOption('manager_url', MODX_MANAGER_URL, $this->modx->_userConfig);
         $articlesAssetsUrl = $this->modx->getOption('articles.assets_url',null,$this->modx->getOption('assets_url',null,MODX_ASSETS_URL).'components/articles/');
         $quipAssetsUrl = $this->modx->getOption('quip.assets_url',null,$this->modx->getOption('assets_url',null,MODX_ASSETS_URL).'components/quip/');
@@ -46,16 +53,18 @@ class ArticleUpdateManagerController extends ResourceUpdateManagerController {
         $this->addJavascript($articlesJsUrl.'extras/combo.js');
         $this->addJavascript($articlesJsUrl.'extras/tagfield.js');
 
-        $this->addCss($quipAssetsUrl.'css/mgr.css');
-        $this->addJavascript($quipAssetsUrl.'js/quip.js');
-        $this->addJavascript($quipAssetsUrl.'js/widgets/comments.grid.js');
-        $this->addHtml('<script type="text/javascript">
-        Ext.onReady(function() {
-            Quip.config = '.$this->modx->toJSON([]).';
-            Quip.config.connector_url = "'.$quipAssetsUrl.'connector.php";
-            Quip.request = '.$this->modx->toJSON($_GET).';
-        });
-        </script>');
+        if($this->commentsEnabled) {
+            $this->addCss($quipAssetsUrl.'css/mgr.css');
+            $this->addJavascript($quipAssetsUrl.'js/quip.js');
+            $this->addJavascript($quipAssetsUrl.'js/widgets/comments.grid.js');
+            $this->addHtml('<script type="text/javascript">
+            Ext.onReady(function() {
+                Quip.config = '.$this->modx->toJSON([]).';
+                Quip.config.connector_url = "'.$quipAssetsUrl.'connector.php";
+                Quip.request = '.$this->modx->toJSON($_GET).';
+            });
+            </script>');
+        }
         $this->addLastJavascript($articlesJsUrl.'article/update.js');
         $this->addHtml('
         <script type="text/javascript">
@@ -98,7 +107,7 @@ class ArticleUpdateManagerController extends ResourceUpdateManagerController {
         $this->getTagsTV();
 
         $settings = $this->resource->getContainerSettings();
-        $this->resourceArray['commentsEnabled'] = $this->modx->getOption('commentsEnabled',$settings,true);
+        $this->resourceArray['commentsEnabled'] = $this->commentsEnabled;
         //$this->resourceArray['richtext'] = $this->modx->getOption('articlesRichtext',$settings,1);
 
         return $placeholders;

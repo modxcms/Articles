@@ -17,7 +17,7 @@ Articles.combo.Tag = function(config, getStore) {
         ,editable: true
         ,forceSelection: false
         ,pageSize: 20
-        ,url: Articles.connector_url
+        ,url: MODx.config.connector_url
         ,baseParams: {action: 'Articles\\Processors\\Extras\\GetTags'}
     });
     Ext.applyIf(config,{

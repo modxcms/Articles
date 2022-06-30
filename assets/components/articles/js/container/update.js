@@ -55,7 +55,6 @@ Ext.extend(Articles.panel.Container,MODx.panel.Resource,{
             ,defaults: {
                 border: false
                 ,msgTarget: 'side'
-                ,width: 400
             }
             ,items: this.getMainFields(config)
         });
@@ -85,29 +84,32 @@ Ext.extend(Articles.panel.Container,MODx.panel.Resource,{
             ,autoHeight: true
             ,items: this.getBlogSettings(config)
         });
-        it.push({
-            title: _('articles.comments')
-            ,id: 'articles-tab-comments'
-            ,autoHeight: true
-            ,items: [{
-                html: _('articles.comments.intro_msg')
-                ,border: false
-                ,bodyCssClass: 'panel-desc'
-            },{
-                xtype: 'panel'
-                ,bodyCssClass: 'main-wrapper'
+        
+        if(config.commentsEnabled) { 
+            it.push({
+                title: _('articles.comments')
+                ,id: 'articles-tab-comments'
                 ,autoHeight: true
-                ,border: false
                 ,items: [{
-                    xtype: 'quip-grid-comments'
-                    ,cls: 'quip-thread-grid'
-                    ,family: 'b'+config.record.id
-                    ,preventRender: true
-                    ,width: '98%'
-                    ,bodyStyle: 'padding: 0'
+                    html: _('articles.comments.intro_msg')
+                    ,border: false
+                    ,bodyCssClass: 'panel-desc'
+                },{
+                    xtype: 'panel'
+                    ,bodyCssClass: 'main-wrapper'
+                    ,autoHeight: true
+                    ,border: false
+                    ,items: [{
+                        xtype: 'quip-grid-comments'
+                        ,cls: 'quip-thread-grid'
+                        ,family: 'b'+config.record.id
+                        ,preventRender: true
+                        ,width: '98%'
+                        ,bodyStyle: 'padding: 0'
+                    }]
                 }]
-            }]
-        });
+            });
+        }
         if (config.show_tvs && MODx.config.tvs_below_content != 1) {
             it.push(this.getTemplateVariablesPanel(config));
         }

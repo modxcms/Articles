@@ -9,7 +9,7 @@ Articles.grid.ContainerArticles = function(config) {
     Ext.applyIf(config,{
         id: 'articles-grid-container-articles'
         ,title: _('articles.articles')
-        ,url: Articles.connector_url
+        ,url: MODx.config.connector_url
         ,baseParams: {
             action: 'Articles\\Processors\\Article\\GetList'
             ,'parent': config.resource

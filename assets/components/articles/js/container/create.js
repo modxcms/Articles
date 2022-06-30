@@ -35,7 +35,6 @@ Ext.extend(Articles.panel.Container,MODx.panel.Resource,{
             ,defaults: {
                 border: false
                 ,msgTarget: 'side'
-                ,width: 400
             }
             ,items: this.getMainFields(config)
         });

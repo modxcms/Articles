@@ -859,7 +859,7 @@ Articles.panel.ContainerAdvancedSettings = function(config) {
                 ,fieldLabel: _('articles.setting.commentsEnabled')
                 ,description: MODx.expandHelp ? '' : _('articles.setting.commentsEnabled_desc')
                 ,anchor: '30%'
-                ,value: 1
+                ,value: 0
                 ,listeners: oc
             },{
                 xtype: MODx.expandHelp ? 'label' : 'hidden'
