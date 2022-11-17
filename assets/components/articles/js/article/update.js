@@ -341,35 +341,12 @@ Ext.extend(Articles.panel.Article,MODx.panel.Resource,{
             ,value: config.record.introtext || ''
         });
 
-
-
         var ct = this.getContentField(config);
         if (ct) {
             mlf.push(ct);
         }
         return mlf;
     }
-
-    ,getContentField: function(config) {
-        return [{
-            id: 'modx-content-above'
-            ,border: false
-        },{
-            xtype: 'textarea'
-            ,fieldLabel: _('articles.article_content')
-            ,name: 'ta'
-            ,id: 'ta'
-            ,anchor: '100%'
-            ,height: 400
-            ,grow: false
-            ,value: (config.record.content || config.record.ta) || ''
-            ,itemCls: 'contentblocks_replacement'
-        },{
-            id: 'modx-content-below'
-            ,border: false
-        }];
-    }
-
 
     ,getMainRightFields: function(config) {
         config = config || {};
