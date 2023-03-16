@@ -1,5 +1,10 @@
 Changelog for Articles.
 
+Articles 1.8.1 :: 16th March, 2023
+===============================
+- Fix to allow custom manager themes to work with Articles
+
+
 Articles 1.8.0 :: 2nd April, 2022
 ===============================
 - Fixes invalid markup in sample templates [#52]
