@@ -24,18 +24,37 @@
  * Detect if we are running MODX 2.x or 3.x and include the required files if we are on 2.x
  */
 if (!class_exists('\MODX\Revolution\modX')) {
-    require_once $modx->getOption('manager_path',null,MODX_MANAGER_PATH).'controllers/'.$modx->getOption('manager_theme',null,'default').'/resource/create.class.php';
+    $createPath = $modx->getOption(
+        'manager_path',
+        null,
+        MODX_MANAGER_PATH
+    ).'controllers/'.$modx->getOption(
+        'manager_theme',
+        null,
+        'default'
+    ).'/resource/create.class.php';
+
+    if (file_exists($createPath)) {
+        require_once $createPath;
+    } else {
+        require_once $modx->getOption(
+            'manager_path',
+            null,
+            MODX_MANAGER_PATH
+        ).'controllers/default/resource/create.class.php';
+    }
 }
 /**
  * @package articles
  */
-class ArticleCreateManagerController extends ResourceCreateManagerController {
-
-    public function loadCustomCssJs() {
-        $articlesAssetsUrl = $this->modx->getOption('articles.assets_url',null,$this->modx->getOption('assets_url',null,MODX_ASSETS_URL).'components/articles/');
+class ArticleCreateManagerController extends ResourceCreateManagerController
+{
+    public function loadCustomCssJs()
+    {
+        $articlesAssetsUrl = $this->modx->getOption('articles.assets_url', null, $this->modx->getOption('assets_url', null, MODX_ASSETS_URL).'components/articles/');
         $connectorUrl = $articlesAssetsUrl.'connector.php';
         $articlesJsUrl = $articlesAssetsUrl.'js/';
-        $mgrUrl = $this->modx->getOption('manager_url',null,MODX_MANAGER_URL);
+        $mgrUrl = $this->modx->getOption('manager_url', null, MODX_MANAGER_URL);
         $this->addJavascript($mgrUrl.'assets/modext/util/datetime.js');
         $this->addJavascript($mgrUrl.'assets/modext/widgets/element/modx.panel.tv.renders.js');
         $this->addJavascript($mgrUrl.'assets/modext/widgets/resource/modx.grid.resource.security.local.js');
@@ -72,27 +91,30 @@ class ArticleCreateManagerController extends ResourceCreateManagerController {
         }
     }
 
-    public function getLanguageTopics() {
+    public function getLanguageTopics()
+    {
         return ['resource','articles:default'];
     }
 
 
-    public function process(array $scriptProperties = []) {
+    public function process(array $scriptProperties = [])
+    {
         $placeholders = parent::process($scriptProperties);
         $this->getDefaultContainerSettings();
         return $placeholders;
     }
 
-    public function getDefaultContainerSettings() {
+    public function getDefaultContainerSettings()
+    {
         /** @var ArticlesContainer $container */
         $container = $this->modx->getObject(ArticlesContainer::class, [
             'id' => $this->parent->get('id'),
         ]);
         if ($container) {
             $settings = $container->getProperties('articles');
-            $this->resourceArray['template'] = $this->modx->getOption('articleTemplate',$settings,0);
-            $this->resourceArray['richtext'] = $this->modx->getOption('articlesRichtext',$settings,1);
-            $this->resourceArray['published'] = $this->modx->getOption('articlesPublished',$settings,$this->modx->getOption('publish_default', null, 0));
+            $this->resourceArray['template'] = $this->modx->getOption('articleTemplate', $settings, 0);
+            $this->resourceArray['richtext'] = $this->modx->getOption('articlesRichtext', $settings, 1);
+            $this->resourceArray['published'] = $this->modx->getOption('articlesPublished', $settings, $this->modx->getOption('publish_default', null, 0));
         }
     }
 }
