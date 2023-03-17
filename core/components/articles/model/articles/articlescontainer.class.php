@@ -280,7 +280,7 @@ class ArticlesContainer extends modResource {
         $hasQuery = strpos($_SERVER['REQUEST_URI'],'?');
         $requestUri = !empty($hasQuery) ? substr($_SERVER['REQUEST_URI'],0,$hasQuery) : $_SERVER['REQUEST_URI'];
         if (strpos($requestUri,$fullUri) === 0 && strlen($fullUri) != strlen($requestUri)) {
-            $appendage = rtrim(str_replace($fullUri,'',$requestUri),'/');
+            $appendage = trim(str_replace($fullUri,'',$requestUri),'/');
             $appendage = ltrim($appendage, '.');
             if (in_array($appendage,$feedAppendage)) {
                 $isRss = true;
