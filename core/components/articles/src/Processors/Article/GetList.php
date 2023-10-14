@@ -231,7 +231,8 @@ class GetList extends GetListProcessor {
 
     public function ellipsis($string,$length = 300) {
 	    if (mb_strlen($string) > $length) {
-		    $string = mb_substr($string,0,$length,$this->modx->config['charset']).'...';
+            $encoding = $this->modx->getOption('modx_charset',null,'UTF-8');
+            $string = mb_substr($string,0,$length,$encoding).'...';
 	    }
         return $string;
     }
