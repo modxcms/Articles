@@ -1,5 +1,17 @@
 Changelog for Articles.
 
+Articles 2.0.0-pl :: 25 June, 2024
+===============================
+- Fix Articles Import
+- Fix Ellipsis in Get List Processor
+- Fix modAction error message
+- Fix stability with Content Blocks
+
+Articles 2.0.0-beta :: 30 June, 2022
+===============================
+- Cleaned up the manager interface
+- Removed Quip as a requirement -- If you are having issues uninstall Quip as it is non-functional in MODX 3 at the time of release
+
 Articles 2.0.0-alpha1 :: 2nd April, 2022
 ===============================
 - Complete refactor for MODX 3.0!

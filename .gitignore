@@ -4,3 +4,7 @@ config.core.php
 nbproject
 .DS_Store
 _packages
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore
