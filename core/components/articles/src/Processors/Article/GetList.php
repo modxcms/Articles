@@ -35,17 +35,17 @@ class GetList extends GetListProcessor {
     public function initialize() {
 
         // @todo: we need an alternative to modAction as it no longer exists!
+        $this->editAction = 'resource/update';
+        if ($this->modx->getVersionData()['version'] < 3) {
+            $action = $this->modx->getObject('modAction', [
+                'namespace' => 'core',
+                'controller' => 'resource/update',
+            ]);
+            if ($action) {
+                $this->editAction = $action->get('id');
+            }
+        }
 
-        $action = $this->modx->getObject('modAction', [
-            'namespace' => 'core',
-            'controller' => 'resource/update',
-        ]);
-        if ($action) {
-            $this->editAction = $action->get('id');
-        }
-        else {
-            $this->editAction = 'resource/update';
-        }
         $this->defaultSortField = $this->modx->getOption('articles.default_article_sort_field',null,'createdon');
 
         if ($this->getParentContainer()) {

@@ -32,6 +32,7 @@ class ArticlesContainerUpdateManagerController extends ResourceUpdateManagerCont
     /** @var boolean $commentsEnabled */
     public $commentsEnabled = false;
     public function loadCustomCssJs() {
+        $settings = $this->resource->getContainerSettings();
         if ($this->modx->getOption('commentsEnabled',$settings,false)) {
             $quipCorePath = $this->modx->getOption('quip.core_path',null,$this->modx->getOption('core_path',null,MODX_CORE_PATH).'components/quip/');
             if ($this->modx->addPackage('quip',$quipCorePath.'model/')) {
@@ -67,7 +68,7 @@ class ArticlesContainerUpdateManagerController extends ResourceUpdateManagerCont
             });
             </script>');
         }
-        $settings = $this->resource->getContainerSettings();
+
         $this->resourceArray['articles_container_settings'] = $settings;
         
         $this->addHtml('
