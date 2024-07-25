@@ -57,12 +57,12 @@ class Import extends ModelProcessor {
     public function getImportService() {
         $serviceName = $this->getProperty('service','WordPress');
 
-        $modelPath = $this->modx->getOption('articles.core_path',null,$this->modx->getOption('core_path').'components/articles/').'model/articles/';
-        $servicePath = $modelPath.'import/articlesimport'.strtolower($serviceName).'.class.php';
+        $modelPath = $this->modx->getOption('articles.core_path',null,$this->modx->getOption('core_path').'components/articles/') . 'src/Model/';
+        $servicePath = $modelPath . 'Import/ArticlesImport' . ucfirst(strtolower($serviceName)) . '.php';
         if (file_exists($servicePath)) {
             require_once $servicePath;
             $className = ArticlesImport::class.$serviceName;
-            $this->service = new $className($this->modx->articles,$this,$this->getProperties());
+            $this->service = new $className(new \Articles\Articles($this->modx),$this,$this->getProperties());
         }
 
         return $this->service;

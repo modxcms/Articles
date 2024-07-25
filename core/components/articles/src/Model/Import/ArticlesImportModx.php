@@ -7,7 +7,7 @@ use Articles\Model\ArticlesContainer;
 use MODX\Revolution\modTemplateVar;
 use MODX\Revolution\modTemplateVarResource;
 use MODX\Revolution\modX;
-use MODX\Revolution\mysql\modResource;
+use MODX\Revolution\modResource;
 use quipThread;
 use xPDO\Om\xPDOQuery;
 
