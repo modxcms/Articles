@@ -18,11 +18,7 @@ class ArticleExtrasGetTagsProcessor extends modObjectGetListProcessor {
             return false;
         }
 
-        $articles = $parent->getMany('Children', ['deleted' => 0]);
-        $articleIDs = [];
-        foreach($articles as $article){
-            $articleIDs[] = $article->id;
-        }
+        $articleIDs = $this->modx->getChildIds($parent->id,6,array('context' => $parent->get('context_key')));
 
         $templateVariable = $this->modx->getObject(modTemplateVar::class, ['name' => 'articlestags']);
         if(!$templateVariable){
@@ -58,4 +54,4 @@ class ArticleExtrasGetTagsProcessor extends modObjectGetListProcessor {
     }
 
 }
-return ArticleExtrasGetTagsProcessor::class;
+return 'ArticleExtrasGetTagsProcessor';
