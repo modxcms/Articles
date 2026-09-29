@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>Articles - [[*pagetitle]]</title>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <link rel="stylesheet" type="text/css" href="[[++articles.assets_url:default=`[[++base_url]]assets/components/articles/`]]themes/default/style.css" />
 <base href="[[++site_url]]" />
 </head>

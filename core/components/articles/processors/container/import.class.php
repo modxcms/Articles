@@ -24,9 +24,9 @@
  * @subpackage processors
  */
 class ContainerImportProcessor extends modObjectProcessor {
-    public $classKey = 'Article';
+    public $classKey = Article::class;
     public $objectType = 'article';
-    public $languageTopics = array('resource','articles:default');
+    public $languageTopics = ['resource','articles:default'];
     /** @var Article $object */
     public $object;
     /** @var ArticlesImport $service */
@@ -36,7 +36,7 @@ class ContainerImportProcessor extends modObjectProcessor {
         $initialized = parent::initialize();
         $id = $this->getProperty('id',null);
         if (empty($id)) { return $this->modx->lexicon('articles.container_err_ns'); }
-        $this->object = $this->modx->getObject('ArticlesContainer',$id);
+        $this->object = $this->modx->getObject(ArticlesContainer::class,$id);
         if (empty($this->object)) return $this->modx->lexicon('articles.container_err_nf');
         return $initialized;
     }
@@ -73,7 +73,7 @@ class ContainerImportProcessor extends modObjectProcessor {
         $servicePath = $modelPath.'import/articlesimport'.strtolower($serviceName).'.class.php';
         if (file_exists($servicePath)) {
             require_once $servicePath;
-            $className = 'ArticlesImport'.$serviceName;
+            $className = ArticlesImport::class.$serviceName;
             $this->service = new $className($this->modx->articles,$this,$this->getProperties());
         }
 
@@ -84,12 +84,12 @@ class ContainerImportProcessor extends modObjectProcessor {
      * Clear the site cache to properly refresh the URIs
      */
     public function clearCache() {
-        $this->modx->cacheManager->refresh(array(
-            'db' => array(),
-            'auto_publish' => array('contexts' => array($this->object->get('context_key'))),
-            'context_settings' => array('contexts' => array($this->object->get('context_key'))),
-            'resource' => array('contexts' => array($this->object->get('context_key'))),
-        ));
+        $this->modx->cacheManager->refresh([
+            'db' => [],
+            'auto_publish' => ['contexts' => [$this->object->get('context_key')]],
+            'context_settings' => ['contexts' => [$this->object->get('context_key')]],
+            'resource' => ['contexts' => [$this->object->get('context_key')]],
+        ]);
     }
 }
-return 'ContainerImportProcessor';
+return ContainerImportProcessor::class;

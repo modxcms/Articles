@@ -30,19 +30,19 @@ abstract class ArticlesImport {
     /** @var ArticlesService $articles */
     public $articles;
     /** @var array $config */
-    public $config = array();
+    public $config = [];
     /** @var boolean $debug */
     public $debug = false;
     /** @var ContainerImportProcessor $processor */
     public $processor;
 
-    function __construct(ArticlesService $articles,ContainerImportProcessor $processor,array $config = array()) {
+    function __construct(ArticlesService $articles,ContainerImportProcessor $processor,array $config = []) {
         $this->articles =& $articles;
         $this->processor =& $processor;
         $this->modx =& $articles->modx;
-        $this->config = array_merge(array(
+        $this->config = array_merge([
 
-        ),$config);
+        ],$config);
         if (!empty($this->config['id'])) {
             $this->config['id'] = trim(trim($this->config['id'],'#'));
         }

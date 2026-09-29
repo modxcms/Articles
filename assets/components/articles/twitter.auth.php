@@ -41,7 +41,7 @@ require_once $oAuthPath;
 
 if (empty($_REQUEST['container'])) die('No container!');
 /** @var ArticlesContainer $container */
-$container = $modx->getObject('ArticlesContainer',$_REQUEST['container']);
+$container = $modx->getObject(ArticlesContainer::class,$_REQUEST['container']);
 if (empty($container)) die('Container not found!');
 
 $keys = $container->getTwitterKeys();

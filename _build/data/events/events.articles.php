@@ -26,34 +26,34 @@
  * @package articles
  * @subpackage build
  */
-$events = array();
+$events = [];
 
-$events['OnPageNotFound']= $modx->newObject('modPluginEvent');
-$events['OnPageNotFound']->fromArray(array(
+$events['OnPageNotFound']= $modx->newObject(modPluginEvent::class);
+$events['OnPageNotFound']->fromArray([
     'event' => 'OnPageNotFound',
     'priority' => 0,
     'propertyset' => 0,
-),'',true,true);
+],'',true,true);
 
-$events['OnManagerPageInit']= $modx->newObject('modPluginEvent');
-$events['OnManagerPageInit']->fromArray(array(
+$events['OnManagerPageInit']= $modx->newObject(modPluginEvent::class);
+$events['OnManagerPageInit']->fromArray([
     'event' => 'OnManagerPageInit',
     'priority' => 0,
     'propertyset' => 0,
-),'',true,true);
+],'',true,true);
 
-$events['OnDocPublished']= $modx->newObject('modPluginEvent');
-$events['OnDocPublished']->fromArray(array(
+$events['OnDocPublished']= $modx->newObject(modPluginEvent::class);
+$events['OnDocPublished']->fromArray([
     'event' => 'OnDocPublished',
     'priority' => 0,
     'propertyset' => 0,
-),'',true,true);
+],'',true,true);
 
-$events['OnDocUnPublished']= $modx->newObject('modPluginEvent');
-$events['OnDocUnPublished']->fromArray(array(
+$events['OnDocUnPublished']= $modx->newObject(modPluginEvent::class);
+$events['OnDocUnPublished']->fromArray([
     'event' => 'OnDocUnPublished',
     'priority' => 0,
     'propertyset' => 0,
-),'',true,true);
+],'',true,true);
 
 return $events;

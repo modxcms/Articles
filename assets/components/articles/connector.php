@@ -36,7 +36,7 @@ $modx->lexicon->load('articles:default');
 
 /* handle request */
 $path = $modx->getOption('processorsPath',$modx->articles->config,$corePath.'processors/');
-$modx->request->handleRequest(array(
+$modx->request->handleRequest([
     'processors_path' => $path,
     'location' => '',
-));
+]);

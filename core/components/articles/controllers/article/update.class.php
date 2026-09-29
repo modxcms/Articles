@@ -19,25 +19,49 @@
  *
  * @package articles
  */
-if(!class_exists('ResourceUpdateManagerController')) {
-    require_once $modx->getOption('manager_path',null,MODX_MANAGER_PATH).'controllers/'.$modx->getOption('manager_theme',null,'default').'/resource/update.class.php';
+
+/**
+ * Detect if we are running MODX 2.x or 3.x and include the required files if we are on 2.x
+ */
+if (!class_exists('\MODX\Revolution\modX')) {
+    $updatePath = $modx->getOption(
+        'manager_path',
+        null,
+        MODX_MANAGER_PATH
+    ).'controllers/'.$modx->getOption(
+        'manager_theme',
+        null,
+        'default'
+    ).'/resource/update.class.php';
+
+    if (file_exists($updatePath)) {
+        require_once $updatePath;
+    } else {
+        require_once $modx->getOption(
+            'manager_path',
+            null,
+            MODX_MANAGER_PATH
+        ).'controllers/default/resource/update.class.php';
+    }
 }
 /**
  * @package articles
  */
-class ArticleUpdateManagerController extends ResourceUpdateManagerController {
+class ArticleUpdateManagerController extends ResourceUpdateManagerController
+{
     /** @var Article $resource */
     public $resource;
     
-    public function loadCustomCssJs() {
+    public function loadCustomCssJs()
+    {
         $managerUrl = $this->context->getOption('manager_url', MODX_MANAGER_URL, $this->modx->_userConfig);
-        $articlesAssetsUrl = $this->modx->getOption('articles.assets_url',null,$this->modx->getOption('assets_url',null,MODX_ASSETS_URL).'components/articles/');
-        $quipAssetsUrl = $this->modx->getOption('quip.assets_url',null,$this->modx->getOption('assets_url',null,MODX_ASSETS_URL).'components/quip/');
+        $articlesAssetsUrl = $this->modx->getOption('articles.assets_url', null, $this->modx->getOption('assets_url', null, MODX_ASSETS_URL).'components/articles/');
+        $quipAssetsUrl = $this->modx->getOption('quip.assets_url', null, $this->modx->getOption('assets_url', null, MODX_ASSETS_URL).'components/quip/');
         $connectorUrl = $articlesAssetsUrl.'connector.php';
         $articlesJsUrl = $articlesAssetsUrl.'js/';
         $this->addJavascript($managerUrl.'assets/modext/util/datetime.js');
         $this->addJavascript($managerUrl.'assets/modext/widgets/element/modx.panel.tv.renders.js');
-        $this->addJavascript($managerUrl.'assets/modext/widgets/resource/modx.grid.resource.security.js');
+        $this->addJavascript($managerUrl.'assets/modext/widgets/resource/modx.grid.resource.security.local.js');
         $this->addJavascript($managerUrl.'assets/modext/widgets/resource/modx.panel.resource.tv.js');
         $this->addJavascript($managerUrl.'assets/modext/widgets/resource/modx.panel.resource.js');
         $this->addJavascript($managerUrl.'assets/modext/sections/resource/update.js');
@@ -50,7 +74,7 @@ class ArticleUpdateManagerController extends ResourceUpdateManagerController {
         $this->addJavascript($quipAssetsUrl.'js/widgets/comments.grid.js');
         $this->addHtml('<script type="text/javascript">
         Ext.onReady(function() {
-            Quip.config = '.$this->modx->toJSON(array()).';
+            Quip.config = '.$this->modx->toJSON([]).';
             Quip.config.connector_url = "'.$quipAssetsUrl.'connector.php";
             Quip.request = '.$this->modx->toJSON($_GET).';
         });
@@ -87,27 +111,30 @@ class ArticleUpdateManagerController extends ResourceUpdateManagerController {
         /* load RTE */
         $this->loadRichTextEditor();
     }
-    public function getLanguageTopics() {
-        return array('resource','articles:default','quip:default');
+    public function getLanguageTopics()
+    {
+        return ['resource','articles:default','quip:default'];
     }
 
 
-    public function process(array $scriptProperties = array()) {
+    public function process(array $scriptProperties = [])
+    {
         $placeholders = parent::process($scriptProperties);
         $this->getTagsTV();
 
         $settings = $this->resource->getContainerSettings();
-        $this->resourceArray['commentsEnabled'] = $this->modx->getOption('commentsEnabled',$settings,true);
+        $this->resourceArray['commentsEnabled'] = $this->modx->getOption('commentsEnabled', $settings, true);
         //$this->resourceArray['richtext'] = $this->modx->getOption('articlesRichtext',$settings,1);
 
         return $placeholders;
     }
 
-    public function getTagsTV() {
+    public function getTagsTV()
+    {
         /** @var modTemplateVar $tv */
-        $tv = $this->modx->getObject('modTemplateVar',array(
+        $tv = $this->modx->getObject(modTemplateVar::class, [
             'name' => 'articlestags',
-        ));
+        ]);
         if ($tv) {
             $this->resourceArray['tags'] = $this->resource->getTVValue('articlestags');
             $this->resourceArray['tagsId'] = $tv->get('id');

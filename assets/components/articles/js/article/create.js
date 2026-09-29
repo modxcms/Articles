@@ -98,10 +98,20 @@ Ext.extend(Articles.panel.Article,MODx.panel.Resource,{
 
         mlf.push({
             xtype: 'textarea'
+            ,fieldLabel: _('articles.article_description')
+            ,description: '<b>[[*description]]</b><br />'+_('articles.article_description_desc')
+            ,name: 'description'
+            ,id: 'modx-resource-description'
+            ,grow: true
+            ,anchor: '100%'
+            ,value: config.record.description || ''
+        },{
+            xtype: 'textarea'
             ,fieldLabel: _('articles.article_summary')
             ,description: '<b>[[*introtext]]</b><br />'+_('articles.article_summary')
             ,name: 'introtext'
             ,id: 'modx-resource-introtext'
+            ,grow: true
             ,anchor: '100%'
             ,value: config.record.introtext || ''
         });
@@ -136,6 +146,9 @@ Ext.extend(Articles.panel.Article,MODx.panel.Resource,{
 
     ,getMainRightFields: function(config) {
         config = config || {};
+
+        var aliasLength = ~~MODx.config['friendly_alias_max_length'] || 0;
+
 		config.record.richtext = (config.record.richtext !== undefined ? parseInt(config.record.richtext) : 1); // don't ask me why
         return [{
             xtype: 'fieldset'
@@ -231,7 +244,7 @@ Ext.extend(Articles.panel.Article,MODx.panel.Resource,{
                 ,description: '<b>[[*alias]]</b><br />'+_('articles.article_alias_help')
                 ,name: 'alias'
                 ,id: 'modx-resource-alias'
-                ,maxLength: 100
+                ,maxLength: (aliasLength > 255 || aliasLength === 0) ? 255 : aliasLength
                 ,anchor: '100%'
                 ,value: config.record.alias || ''
 

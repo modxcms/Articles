@@ -73,7 +73,7 @@ class TwitterOAuth {
    * @returns a key/value array containing oauth_token and oauth_token_secret
    */
   function getRequestToken($oauth_callback = NULL) {
-    $parameters = array();
+    $parameters = [];
     if (!empty($oauth_callback)) {
       $parameters['oauth_callback'] = $oauth_callback;
     } 
@@ -109,7 +109,7 @@ class TwitterOAuth {
    *                "screen_name" => "abraham")
    */
   function getAccessToken($oauth_verifier = FALSE) {
-    $parameters = array();
+    $parameters = [];
     if (!empty($oauth_verifier)) {
       $parameters['oauth_verifier'] = $oauth_verifier;
     }
@@ -129,7 +129,7 @@ class TwitterOAuth {
    *                "x_auth_expires" => "0")
    */  
   function getXAuthToken($username, $password) {
-    $parameters = array();
+    $parameters = [];
     $parameters['x_auth_username'] = $username;
     $parameters['x_auth_password'] = $password;
     $parameters['x_auth_mode'] = 'client_auth';
@@ -142,7 +142,7 @@ class TwitterOAuth {
   /**
    * GET wrapper for oAuthRequest.
    */
-  function get($url, $parameters = array()) {
+  function get($url, $parameters = []) {
     $response = $this->oAuthRequest($url, 'GET', $parameters);
     if ($this->format === 'json' && $this->decode_json) {
       return json_decode($response);
@@ -153,7 +153,7 @@ class TwitterOAuth {
   /**
    * POST wrapper for oAuthRequest.
    */
-  function post($url, $parameters = array()) {
+  function post($url, $parameters = []) {
     $response = $this->oAuthRequest($url, 'POST', $parameters);
     if ($this->format === 'json' && $this->decode_json) {
       return json_decode($response);
@@ -164,7 +164,7 @@ class TwitterOAuth {
   /**
    * DELETE wrapper for oAuthReqeust.
    */
-  function delete($url, $parameters = array()) {
+  function delete($url, $parameters = []) {
     $response = $this->oAuthRequest($url, 'DELETE', $parameters);
     if ($this->format === 'json' && $this->decode_json) {
       return json_decode($response);
@@ -195,16 +195,16 @@ class TwitterOAuth {
    * @return API results
    */
   function http($url, $method, $postfields = NULL) {
-    $this->http_info = array();
+    $this->http_info = [];
     $ci = curl_init();
     /* Curl settings */
     curl_setopt($ci, CURLOPT_USERAGENT, $this->useragent);
     curl_setopt($ci, CURLOPT_CONNECTTIMEOUT, $this->connecttimeout);
     curl_setopt($ci, CURLOPT_TIMEOUT, $this->timeout);
     curl_setopt($ci, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ci, CURLOPT_HTTPHEADER, array('Expect:'));
+    curl_setopt($ci, CURLOPT_HTTPHEADER, ['Expect:']);
     curl_setopt($ci, CURLOPT_SSL_VERIFYPEER, $this->ssl_verifypeer);
-    curl_setopt($ci, CURLOPT_HEADERFUNCTION, array($this, 'getHeader'));
+    curl_setopt($ci, CURLOPT_HEADERFUNCTION, [$this, 'getHeader']);
     curl_setopt($ci, CURLOPT_HEADER, FALSE);
 
     switch ($method) {

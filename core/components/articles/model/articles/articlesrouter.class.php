@@ -23,13 +23,13 @@ class ArticlesRouter {
     /** @var modX $modx */
     public $modx;
     /** @var array $config */
-    public $config = array();
+    public $config = [];
     
-    function __construct(modX &$modx,array $config = array()) {
+    function __construct(modX &$modx,array $config = []) {
         $this->modx =& $modx;
-        $this->config = array_merge(array(
+        $this->config = array_merge([
 
-        ),$config);
+        ],$config);
     }
 
     /**
@@ -52,6 +52,9 @@ class ArticlesRouter {
         /* get resource to redirect to */
         $resourceId = false;
         $prefix = 'arc_';
+        $startPageResId = false;
+        $startPagePrefix = '';
+        $startPageId = $this->modx->getOption('site_start');
         foreach ($containerIds as $archive) {
 	        if (empty($archive)) continue;
             $archive = explode(':',$archive);
@@ -72,7 +75,19 @@ class ArticlesRouter {
                 if (isset($archive[1])) $prefix = $archive[1];
             }
         }
+        if (!$resourceId) {
+            if ($startPageResId) {
+                $resourceId = $startPageResId;
+                $prefix = $startPagePrefix;
+            } else return false;
+        }
         if (!$resourceId) return false;
+
+        $articlesContainer = $this->modx->getObject(ArticlesContainer::class, $resourceId);
+        if ($articlesContainer instanceof ArticlesContainer && $articlesContainer->isRSS()) {
+            $this->modx->sendForward($resourceId);
+            return true;
+        }
 
         /* figure out archiving */
         $params = explode('/', $search);
@@ -80,7 +95,7 @@ class ArticlesRouter {
 
         /* tag handling! */
         if ($params[0] == 'tags') {
-            $_REQUEST[$prefix.'author'] = $_GET['tag'] = urldecode($params[1]);
+            $_REQUEST[$prefix.'tag'] = $_GET['tag'] = urldecode($params[1]);
         /* author based */
         } else if ($params[0] == 'user' || $params[0] == 'author') {
             $_REQUEST[$prefix.'author'] = $_GET[$prefix.'author'] = urldecode($params[1]);

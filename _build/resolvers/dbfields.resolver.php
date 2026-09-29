@@ -40,16 +40,16 @@ if ($object->xpdo) {
             $manager = $modx->getManager();
 
             /** @var modSystemSetting $setting */
-            $setting = $modx->getObject('modSystemSetting',array('key' => 'articles.properties_migration'));
+            $setting = $modx->getObject(modSystemSetting::class, ['key' => 'articles.properties_migration']);
             if (!$setting || $setting->get('value') == false) {
-                $c = $modx->newQuery('ArticlesContainer');
-                $c->select(array(
+                $c = $modx->newQuery(ArticlesContainer::class);
+                $c->select([
                     'id',
                     'articles_container_settings',
-                ));
-                $c->where(array(
-                    'class_key' => 'ArticlesContainer',
-                ));
+                ]);
+                $c->where([
+                    'class_key' => ArticlesContainer::class,
+                ]);
                 $c->construct();
                 $sql = $c->toSql();
                 $stmt = $modx->query($sql);
@@ -57,9 +57,9 @@ if ($object->xpdo) {
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         $settings = $row['articles_container_settings'];
                         $settings = is_array($settings) ? $settings : $modx->fromJSON($settings);
-                        $settings = !empty($settings) ? $settings : array();
+                        $settings = !empty($settings) ? $settings : [];
                         /** @var modResource $resource */
-                        $resource = $modx->getObject('modResource',$row['id']);
+                        $resource = $modx->getObject(modResource::class,$row['id']);
                         if ($resource) {
                             $resource->setProperties($settings,'articles');
                             $resource->save();
@@ -67,10 +67,10 @@ if ($object->xpdo) {
                     }
                     $stmt->closeCursor();
                 }
-                $manager->removeField('Article','articles_container');
-                $manager->removeField('Article','articles_container_settings');
+                $manager->removeField(Article::class,'articles_container');
+                $manager->removeField(Article::class,'articles_container_settings');
                 if (!$setting) {
-                    $setting = $modx->newObject('modSystemSetting');
+                    $setting = $modx->newObject(modSystemSetting::class);
                     $setting->set('key','articles.properties_migration');
                     $setting->set('xtype','combo-boolean');
                     $setting->set('namespace','articles');

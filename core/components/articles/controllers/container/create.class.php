@@ -19,26 +19,50 @@
  *
  * @package articles
  */
-if(!class_exists('ResourceCreateManagerController')) {
-    require_once $modx->getOption('manager_path',null,MODX_MANAGER_PATH).'controllers/'.$modx->getOption('manager_theme',null,'default').'/resource/create.class.php';
+
+/**
+ * Detect if we are running MODX 2.x or 3.x and include the required files if we are on 2.x
+ */
+if (!class_exists('\MODX\Revolution\modX')) {
+    $createPath = $modx->getOption(
+        'manager_path',
+        null,
+        MODX_MANAGER_PATH
+    ).'controllers/'.$modx->getOption(
+        'manager_theme',
+        null,
+        'default'
+    ).'/resource/create.class.php';
+
+    if (file_exists($createPath)) {
+        require_once $createPath;
+    } else {
+        require_once $modx->getOption(
+            'manager_path',
+            null,
+            MODX_MANAGER_PATH
+        ).'controllers/default/resource/create.class.php';
+    }
 }
 /**
  * @package articles
  */
-class ArticlesContainerCreateManagerController extends ResourceCreateManagerController {
+class ArticlesContainerCreateManagerController extends ResourceCreateManagerController
+{
     /** @var ArticlesContainer $resource */
     public $resource;
-    public function loadCustomCssJs() {
+    public function loadCustomCssJs()
+    {
         $this->prepareResource();
         $managerUrl = $this->context->getOption('manager_url', MODX_MANAGER_URL, $this->modx->_userConfig);
-        $articlesAssetsUrl = $this->modx->getOption('articles.assets_url',null,$this->modx->getOption('assets_url',null,MODX_ASSETS_URL).'components/articles/');
+        $articlesAssetsUrl = $this->modx->getOption('articles.assets_url', null, $this->modx->getOption('assets_url', null, MODX_ASSETS_URL).'components/articles/');
         $connectorUrl = $articlesAssetsUrl.'connector.php';
         $articlesJsUrl = $articlesAssetsUrl.'js/';
         $this->resourceArray['articles_container_settings'] = $this->resource->getContainerSettings();
         $this->resourceArray['isfolder'] = true;
         $this->addJavascript($managerUrl.'assets/modext/util/datetime.js');
         $this->addJavascript($managerUrl.'assets/modext/widgets/element/modx.panel.tv.renders.js');
-        $this->addJavascript($managerUrl.'assets/modext/widgets/resource/modx.grid.resource.security.js');
+        $this->addJavascript($managerUrl.'assets/modext/widgets/resource/modx.grid.resource.security.local.js');
         $this->addJavascript($managerUrl.'assets/modext/widgets/resource/modx.panel.resource.tv.js');
         $this->addJavascript($managerUrl.'assets/modext/widgets/resource/modx.panel.resource.js');
         $this->addJavascript($managerUrl.'assets/modext/sections/resource/create.js');
@@ -74,8 +98,9 @@ class ArticlesContainerCreateManagerController extends ResourceCreateManagerCont
         /* load RTE */
         $this->loadRichTextEditor();
     }
-    public function getLanguageTopics() {
-        return array('resource','articles:default');
+    public function getLanguageTopics()
+    {
+        return ['resource','articles:default'];
     }
 
     /**
@@ -83,24 +108,27 @@ class ArticlesContainerCreateManagerController extends ResourceCreateManagerCont
      *
      * @return void
      */
-    public function prepareResource() {
+    public function prepareResource()
+    {
         $settings = $this->resource->getProperties('articles');
-        if (empty($settings)) $settings = array();
+        if (empty($settings)) {
+            $settings = [];
+        }
         
-        $defaultContainerTemplate = $this->modx->getOption('articles.default_container_template',$settings,false);
+        $defaultContainerTemplate = $this->modx->getOption('articles.default_container_template', $settings, false);
         if (empty($defaultContainerTemplate)) {
             /** @var modTemplate $template */
-            $template = $this->modx->getObject('modTemplate',array('templatename' => 'sample.ArticlesContainerTemplate'));
+            $template = $this->modx->getObject(modTemplate::class, ['templatename' => 'sample.ArticlesContainerTemplate']);
             if ($template) {
                 $defaultContainerTemplate = $template->get('id');
             }
         }
         $this->resourceArray['template'] = $defaultContainerTemplate;
 
-        $defaultArticleTemplate = $this->modx->getOption('articles.default_article_template',$settings,false);
+        $defaultArticleTemplate = $this->modx->getOption('articles.default_article_template', $settings, false);
         if (empty($defaultArticleTemplate)) {
             /** @var modTemplate $template */
-            $template = $this->modx->getObject('modTemplate',array('templatename' => 'sample.ArticleTemplate'));
+            $template = $this->modx->getObject(modTemplate::class, ['templatename' => 'sample.ArticleTemplate']);
             if ($template) {
                 $defaultArticleTemplate = $template->get('id');
             }
@@ -116,7 +144,8 @@ class ArticlesContainerCreateManagerController extends ResourceCreateManagerCont
      *
      * @return string
      */
-    public function getPageTitle() {
+    public function getPageTitle()
+    {
         return $this->modx->lexicon('articles.container_new');
     }
 }

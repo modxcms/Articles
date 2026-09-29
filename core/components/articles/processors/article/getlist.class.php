@@ -24,12 +24,12 @@
  * @subpackage processors
  */
 class ArticleGetListProcessor extends modObjectGetListProcessor {
-    public $classKey = 'Article';
+    public $classKey = Article::class;
     public $defaultSortField = 'createdon';
     public $defaultSortDirection = 'DESC';
     public $checkListPermission = true;
     public $objectType = 'article';
-    public $languageTopics = array('resource','articles:default');
+    public $languageTopics = ['resource','articles:default'];
 
     /** @var int|string $editAction */
     public $editAction;
@@ -41,10 +41,10 @@ class ArticleGetListProcessor extends modObjectGetListProcessor {
     public $commentsEnabled = false;
 
     public function initialize() {
-        $action = $this->modx->getObject('modAction',array(
+        $action = $this->modx->getObject(modAction::class, [
             'namespace' => 'core',
             'controller' => 'resource/update',
-        ));
+        ]);
         if ($action) {
             $this->editAction = $action->get('id');
         }
@@ -66,7 +66,7 @@ class ArticleGetListProcessor extends modObjectGetListProcessor {
     }
 
     public function getTagsTV() {
-        $this->tvTags = $this->modx->getObject('modTemplateVar',array('name' => 'articlestags'));
+        $this->tvTags = $this->modx->getObject(modTemplateVar::class, ['name' => 'articlestags']);
         if (!$this->tvTags && $this->getProperty('sort') == 'tags') {
             $this->setProperty('sort','createdon');
         }
@@ -76,34 +76,34 @@ class ArticleGetListProcessor extends modObjectGetListProcessor {
     public function getParentContainer() {
         $parent = $this->getProperty('parent');
         if (!empty($parent)) {
-            $this->container = $this->modx->getObject('ArticlesContainer',$parent);
+            $this->container = $this->modx->getObject(ArticlesContainer::class,$parent);
         }
         return $this->container;
     }
 
     public function prepareQueryBeforeCount(xPDOQuery $c) {
-        $c->leftJoin('modUser','CreatedBy');
+        $c->leftJoin(modUser::class,'CreatedBy');
 
         if ($this->getTagsTV()) {
-            $c->leftJoin('modTemplateVarResource','Tags',array(
+            $c->leftJoin(modTemplateVarResource::class,'Tags', [
                 'Tags.tmplvarid' => $this->tvTags->get('id'),
                 'Tags.contentid = Article.id',
-            ));
+            ]);
         }
 
         $parent = $this->getProperty('parent',null);
         if (!empty($parent)) {
-            $c->where(array(
+            $c->where([
                 'parent' => $parent,
-            ));
+            ]);
         }
         $query = $this->getProperty('query',null);
         if (!empty($query)) {
-            $queryWhere = array(
+            $queryWhere = [
                 'pagetitle:LIKE' => '%'.$query.'%',
                 'OR:description:LIKE' => '%'.$query.'%',
                 'OR:introtext:LIKE' => '%'.$query.'%',
-            );
+            ];
             if ($this->tvTags) {
                 $queryWhere['OR:Tags.value:LIKE'] = '%'.$query.'%';
             }
@@ -112,68 +112,68 @@ class ArticleGetListProcessor extends modObjectGetListProcessor {
         $filter = $this->getProperty('filter','');
         switch ($filter) {
             case 'published':
-                $c->where(array(
+                $c->where([
                     'published' => 1,
                     'deleted' => 0,
-                ));
+                ]);
                 break;
             case 'unpublished':
-                $c->where(array(
+                $c->where([
                     'published' => 0,
                     'deleted' => 0,
-                ));
+                ]);
                 break;
             case 'deleted':
-                $c->where(array(
+                $c->where([
                     'deleted' => 1,
-                ));
+                ]);
                 break;
             default:
-                $c->where(array(
+                $c->where([
                     'deleted' => 0,
-                ));
+                ]);
                 break;
         }
 
-        $c->where(array(
-            'class_key' => 'Article',
-        ));
+        $c->where([
+            'class_key' => Article::class,
+        ]);
         return $c;
     }
 
     public function getSortClassKey() {
-        $classKey = 'Article';
+        $classKey = Article::class;
         switch ($this->getProperty('sort')) {
             case 'tags':
-                $classKey = 'modTemplateVarResource';
+                $classKey = modTemplateVarResource::class;
                 break;
         }
         return $classKey;
     }
 
     public function prepareQueryAfterCount(xPDOQuery $c) {
-        $c->select($this->modx->getSelectColumns('Article','Article'));
-        $c->select(array(
+        $c->select($this->modx->getSelectColumns(Article::class,'Article'));
+        $c->select([
             'createdby_username' => 'CreatedBy.username',
-        ));
+        ]);
         if ($this->tvTags) {
-            $c->select(array(
+            $c->select([
                 'tags' => 'Tags.value',
-            ));
+            ]);
         }
         if ($this->commentsEnabled) {
-            $commentsQuery = $this->modx->newQuery('quipComment');
-            $commentsQuery->innerJoin('quipThread','Thread');
-            $commentsQuery->where(array(
+            $commentsQuery = $this->modx->newQuery(quipComment::class);
+            $commentsQuery->innerJoin(quipThread::class,'Thread');
+            $commentsQuery->where([
                 'Thread.resource = Article.id',
-            ));
-            $commentsQuery->select(array(
-                'COUNT('.$this->modx->getSelectColumns('quipComment','quipComment','',array('id')).')',
-            ));
+            ]);
+            $commentsQuery->select([
+                'COUNT('.$this->modx->getSelectColumns(quipComment::class,'quipComment','', ['id']).')',
+            ]);
             $commentsQuery->construct();
-            $c->select(array(
+            $c->select([
                 '('.$commentsQuery->toSQL().') AS '.$this->modx->escape('comments'),
-            ));
+            ]);
         }
         return $c;
     }
@@ -200,36 +200,36 @@ class ArticleGetListProcessor extends modObjectGetListProcessor {
         $trimLength = $this->modx->getOption('articles.mgr_article_content_preview_length',null,300);
         $resourceArray['content'] = strip_tags($this->ellipsis($object->getContent(),$trimLength));
 
-        $resourceArray['actions'] = array();
-        $resourceArray['actions'][] = array(
+        $resourceArray['actions'] = [];
+        $resourceArray['actions'][] = [
             'className' => 'edit',
             'text' => $this->modx->lexicon('edit'),
-        );
-        $resourceArray['actions'][] = array(
+        ];
+        $resourceArray['actions'][] = [
             'className' => 'view',
             'text' => $this->modx->lexicon('view'),
-        );
+        ];
         if (!empty($resourceArray['deleted'])) {
-            $resourceArray['actions'][] = array(
+            $resourceArray['actions'][] = [
                 'className' => 'undelete',
                 'text' => $this->modx->lexicon('undelete'),
-            );
+            ];
         } else {
-            $resourceArray['actions'][] = array(
+            $resourceArray['actions'][] = [
                 'className' => 'delete',
                 'text' => $this->modx->lexicon('delete'),
-            );
+            ];
         }
         if (!empty($resourceArray['published'])) {
-            $resourceArray['actions'][] = array(
+            $resourceArray['actions'][] = [
                 'className' => 'unpublish',
                 'text' => $this->modx->lexicon('unpublish'),
-            );
+            ];
         } else {
-            $resourceArray['actions'][] = array(
+            $resourceArray['actions'][] = [
                 'className' => 'publish orange',
                 'text' => $this->modx->lexicon('publish'),
-            );
+            ];
         }
         return $resourceArray;
     }
@@ -241,4 +241,4 @@ class ArticleGetListProcessor extends modObjectGetListProcessor {
         return $string;
     }
 }
-return 'ArticleGetListProcessor';
+return ArticleGetListProcessor::class;

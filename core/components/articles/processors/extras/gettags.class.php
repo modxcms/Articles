@@ -13,27 +13,27 @@ class ArticleExtrasGetTagsProcessor extends modObjectGetListProcessor {
             return false;
         }
 
-        $parent = $this->modx->getObject('modResource', $container);
+        $parent = $this->modx->getObject(modResource::class, $container);
         if(!$parent){
             return false;
         }
 
         $articleIDs = $this->modx->getChildIds($parent->id,6,array('context' => $parent->get('context_key')));
 
-        $templateVariable = $this->modx->getObject('modTemplateVar', array('name' => 'articlestags'));
+        $templateVariable = $this->modx->getObject(modTemplateVar::class, ['name' => 'articlestags']);
         if(!$templateVariable){
             return false;
         }
 
-        $c = $this->modx->newQuery('modTemplateVarResource');
+        $c = $this->modx->newQuery(modTemplateVarResource::class);
 
-        $c->where(array(
+        $c->where([
                        'tmplvarid' => $templateVariable->id,
                        'contentid:IN' => $articleIDs
-                  ));
+        ]);
 
-        $tagsObject = $this->modx->getCollection('modTemplateVarResource', $c);
-        $tags = array();
+        $tagsObject = $this->modx->getCollection(modTemplateVarResource::class, $c);
+        $tags = [];
 
         foreach($tagsObject as $tagObject){
             $addTags = explode(',',$tagObject->value);
@@ -45,9 +45,9 @@ class ArticleExtrasGetTagsProcessor extends modObjectGetListProcessor {
 
         $tags = ArticlesService::arrayUnique($tags);
         sort($tags);
-        $returnArray = array();
+        $returnArray = [];
         foreach($tags as $tag){
-            $returnArray[] = array($tag);
+            $returnArray[] = [$tag];
         }
 
         return $this->success('', $returnArray);

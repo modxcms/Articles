@@ -32,11 +32,11 @@ $toPlaceholder = $modx->getOption('toPlaceholder',$scriptProperties,'');
 
 $items = explode($delimiter,$string);
 $items = array_unique($items);
-$list = array();
+$list = [];
 foreach ($items as $item) {
-    $list[] = $modx->getChunk($tpl,array(
+    $list[] = $modx->getChunk($tpl, [
         'item' => $item,
-    ));
+    ]);
 }
 
 $output = implode($outputSeparator,$list);

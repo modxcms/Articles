@@ -11,7 +11,7 @@ Articles.grid.ContainerArticles = function(config) {
         ,title: _('articles.articles')
         ,url: Articles.connector_url
         ,baseParams: {
-            action: 'article/getList'
+            action: 'article/getlist'
             ,'parent': config.resource
         }
         ,saveParams: {

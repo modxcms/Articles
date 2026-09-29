@@ -14,7 +14,24 @@ Articles.page.UpdateContainer = function(config) {
     config.canDelete = false;
     Articles.page.UpdateContainer.superclass.constructor.call(this,config);
 };
-Ext.extend(Articles.page.UpdateContainer,MODx.page.UpdateResource);
+Ext.extend(Articles.page.UpdateContainer,MODx.page.UpdateResource,{
+    cancel: function(btn,e) {
+        var fp = Ext.getCmp(this.config.formpanel);
+        if (fp && fp.isDirty()) {
+            Ext.Msg.confirm(_('warning'),_('resource_cancel_dirty_confirm'),function(e) {
+                if (e == 'yes') {
+                    fp.warnUnsavedChanges = false;
+                    MODx.releaseLock(MODx.request.id);
+                    MODx.sleep(400);
+                    MODx.loadPage('?');
+                }
+            },this);
+        } else {
+            MODx.releaseLock(MODx.request.id);
+            MODx.loadPage('?');
+        }
+    }
+});
 Ext.reg('articles-page-container-update',Articles.page.UpdateContainer);
 
 
@@ -145,6 +162,9 @@ Ext.extend(Articles.panel.Container,MODx.panel.Resource,{
 
     ,getMainLeftFields: function(config) {
         config = config || {record:{}};
+
+        var aliasLength = ~~MODx.config['friendly_alias_max_length'] || 0;
+
         return [{
             xtype: 'textfield'
             ,fieldLabel: _('articles.container_title')+'<span class="required">*</span>'
@@ -173,7 +193,7 @@ Ext.extend(Articles.panel.Container,MODx.panel.Resource,{
             ,description: '<b>[[*alias]]</b><br />'+_('articles.container_alias_desc')
             ,name: 'alias'
             ,id: 'modx-resource-alias'
-            ,maxLength: 100
+            ,maxLength: (aliasLength > 255 || aliasLength === 0) ? 255 : aliasLength
             ,anchor: '100%'
             ,value: config.record.alias || ''
         },{
@@ -259,6 +279,42 @@ Ext.extend(Articles.panel.Container,MODx.panel.Resource,{
             ,id: 'modx-resource-published'
             ,inputValue: 1
             ,checked: parseInt(config.record.published)
+        },{
+            xtype: 'xdatetime'
+            ,fieldLabel: _('resource_publishedon')
+            ,description: '<b>[[*publishedon]]</b><br />'+_('resource_publishedon_help')
+            ,name: 'publishedon'
+            ,id: 'modx-resource-publishedon'
+            ,allowBlank: true
+            ,dateFormat: MODx.config.manager_date_format
+            ,timeFormat: MODx.config.manager_time_format
+            ,dateWidth: 120
+            ,timeWidth: 120
+            ,value: config.record.publishedon
+        },{
+            xtype: MODx.config.publish_document ? 'xdatetime' : 'hidden'
+            ,fieldLabel: _('resource_publishdate')
+            ,description: '<b>[[*pub_date]]</b><br />'+_('resource_publishdate_help')
+            ,name: 'pub_date'
+            ,id: 'modx-resource-pub-date'
+            ,allowBlank: true
+            ,dateFormat: MODx.config.manager_date_format
+            ,timeFormat: MODx.config.manager_time_format
+            ,dateWidth: 120
+            ,timeWidth: 120
+            ,value: config.record.pub_date
+        },{
+            xtype: MODx.config.publish_document ? 'xdatetime' : 'hidden'
+            ,fieldLabel: _('resource_unpublishdate')
+            ,description: '<b>[[*unpub_date]]</b><br />'+_('resource_unpublishdate_help')
+            ,name: 'unpub_date'
+            ,id: 'modx-resource-unpub-date'
+            ,allowBlank: true
+            ,dateFormat: MODx.config.manager_date_format
+            ,timeFormat: MODx.config.manager_time_format
+            ,dateWidth: 120
+            ,timeWidth: 120
+            ,value: config.record.unpub_date
         }]
     }
 });

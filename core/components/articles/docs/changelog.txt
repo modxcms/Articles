@@ -1,5 +1,38 @@
 Changelog for Articles.
 
+Articles 1.8.1 :: 16th March, 2023
+===============================
+- Fix to allow custom manager themes to work with Articles
+
+
+Articles 1.8.0 :: 2nd April, 2022
+===============================
+- Fixes invalid markup in sample templates [#52]
+- Partly support for MODX 3
+- Fixes the container suffix being added to the uri when using a custom container suffix [issue #70]
+- Fixes the RSS feed not working when the container suffix was appended to the resource [issue #106]
+- Fixed the hardcoded character limit for the alias field [issue #150]
+- Adds the description field when creating/updating an Article [issue #57]
+- Adds publishing fields to Article container forms
+- Removed old GPM config.json [2bdf82f]
+- Added class_alias \modTransportPackage::class for transition between MODX 2.x and 3.x [c566270]
+- Fix wrong class key [ce45222]
+- Download dependencies on install, instead of shipping as part of the package. [115c298]
+- Added a _bootstrap/index.php script to get up and running with the dev version quickly. [57074b7]
+- Confirmed upgrade from MODX 2.x to 3.x works now, and fixed articles grid baseParam. [323669b]
+
+Articles 1.7.13
+===============================
+- Fix the tag filtering with integer values [#137]
+- Warn users about unsaved changes only if there are actual unsaved changes [issue #53]
+
+Articles 1.7.12
+===============================
+- Fixes an issue where the Articles RSS URL would return the error page
+- Adds the possibility to set the summary (introtext) for the Articles container [#142]
+- Fixes a bug where the setting `Group By Year Chunk` had no effect [#122]
+- Update French translations [#121]
+
 Articles 1.7.11
 ===============================
 - Updated view/close buttons to work correctly with the overriding

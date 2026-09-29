@@ -24,9 +24,9 @@
  * @subpackage processors
  */
 class ArticleDeleteMultipleProcessor extends modObjectProcessor {
-    public $classKey = 'Article';
+    public $classKey = Article::class;
     public $objectType = 'article';
-    public $languageTopics = array('resource','articles:default');
+    public $languageTopics = ['resource','articles:default'];
 
     public function process() {
         $ids = $this->getProperty('ids',null);
@@ -37,11 +37,11 @@ class ArticleDeleteMultipleProcessor extends modObjectProcessor {
 
         foreach ($ids as $id) {
             if (empty($id)) continue;
-            $this->modx->runProcessor('resource/delete',array(
+            $this->modx->runProcessor('resource/delete', [
                 'id' => $id,
-            ));
+            ]);
         }
         return $this->success();
     }
 }
-return 'ArticleDeleteMultipleProcessor';
+return ArticleDeleteMultipleProcessor::class;
